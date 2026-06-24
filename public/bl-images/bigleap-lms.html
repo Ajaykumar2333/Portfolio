@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Big Leap LMS</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #f5f6fa; color: #1a1a2e; }
+
+  /* LAYOUT */
+  .app { display: flex; height: 100vh; overflow: hidden; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px; min-width: 220px; background: #0d1b2a; display: flex;
+    flex-direction: column; height: 100vh; position: relative;
+  }
+  .sidebar-logo {
+    padding: 20px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .logo-box {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-icon {
+    width: 34px; height: 34px; background: #F16232; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; color: #fff; letter-spacing: -1px;
+  }
+  .logo-text { display: flex; flex-direction: column; }
+  .logo-text span:first-child { font-size: 13px; font-weight: 700; color: #fff; line-height: 1; }
+  .logo-text span:last-child { font-size: 10px; color: #F16232; font-weight: 600; letter-spacing: 1px; }
+
+  .sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
+  .nav-section-label {
+    font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.35);
+    letter-spacing: 1.2px; padding: 0 8px; margin: 16px 0 6px;
+    text-transform: uppercase;
+  }
+  .nav-section-label:first-child { margin-top: 0; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+    border-radius: 8px; cursor: pointer; transition: all 0.15s;
+    color: rgba(255,255,255,0.6); font-size: 13.5px; font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+  .nav-item.active { background: rgba(241,98,50,0.15); color: #F16232; }
+  .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; }
+  .nav-logout { color: #ef4444 !important; }
+  .nav-logout:hover { background: rgba(239,68,68,0.1) !important; }
+
+  .sidebar-user {
+    padding: 14px 16px; border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .user-avatar {
+    width: 34px; height: 34px; border-radius: 50%; background: #F16232;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .user-info { flex: 1; min-width: 0; }
+  .user-name { font-size: 12.5px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .user-role { font-size: 10.5px; color: rgba(255,255,255,0.4); }
+
+  /* MAIN */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* TOPBAR */
+  .topbar {
+    background: #fff; border-bottom: 1px solid #e8eaf0; padding: 0 28px;
+    height: 60px; display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .topbar-title { font-size: 16px; font-weight: 600; color: #0d1b2a; }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .search-box {
+    display: flex; align-items: center; gap: 8px; background: #f5f6fa;
+    border: 1px solid #e8eaf0; border-radius: 8px; padding: 7px 14px;
+    font-size: 13px; color: #888; width: 240px;
+  }
+  .search-box svg { width: 15px; height: 15px; color: #aaa; flex-shrink: 0; }
+  .topbar-user { display: flex; align-items: center; gap: 10px; }
+  .topbar-avatar {
+    width: 36px; height: 36px; border-radius: 50%; background: #0d1b2a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff; overflow: hidden;
+  }
+  .topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .topbar-uinfo { text-align: right; }
+  .topbar-uname { font-size: 13px; font-weight: 600; color: #0d1b2a; }
+  .topbar-urole { font-size: 11px; color: #888; }
+
+  /* CONTENT */
+  .content { flex: 1; overflow-y: auto; padding: 28px; }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── DASHBOARD ── */
+  .dash-hero {
+    background: #0d1b2a; border-radius: 12px; padding: 28px 32px;
+    margin-bottom: 24px; position: relative; overflow: hidden;
+  }
+  .dash-hero::after {
+    content: ''; position: absolute; right: -40px; top: -40px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: rgba(241,98,50,0.08); pointer-events: none;
+  }
+  .dash-week { font-size: 11px; font-weight: 600; color: #F16232; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .dash-greeting { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .dash-greeting span { color: #F16232; }
+  .dash-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 20px; }
+  .dash-hero-btns { display: flex; gap: 12px; }
+  .btn-orange {
+    background: #F16232; color: #fff; border: none; border-radius: 8px;
+    padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-dark {
+    background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .progress-bar-wrap { margin-top: 20px; }
+  .progress-bar-bg { background: rgba(255,255,255,0.12); border-radius: 99px; height: 5px; }
+  .progress-bar-fill { background: #F16232; height: 5px; border-radius: 99px; width: 33%; }
+  .progress-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 6px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  .stat-card {
+    background: #fff; border: 1px solid #e8eaf0; border-radius: 10px;
+    padding: 16px 18px; display: flex; align-items: center; gap: 14px;
+  }
+  .stat-icon {
+    width: 40px; height: 40px; border-radius: 10px; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .stat-icon.orange { background: rgba(241,98,50,0.1); }
+  .stat-icon.blue { background: rgba(37,99,235,0.1); }
+  .stat-icon.green { background: rgba(16,185,129,0.1); }
+  .stat-icon.purple { background: rgba(139,92,246,0.1); }
+  .stat-icon svg { width: 20px; height: 20px; }
+  .stat-icon.orange svg { color: #F16232; }
+  .stat-icon.blue svg { color: #2563eb; }
+  .stat-icon.green svg { color: #10b981; }
+  .stat-icon.purple svg { color: #8b5cf6; }
+  .stat-val { font-size: 22px; font-weight: 700; color: #0d1b2a; line-height: 1; }
+  .stat-label { font-size: 12px; color: #888; margin-top: 3px; }
+  .stat-sub { font-size: 11px; color: #10b981; margin-top: 2px; }
+
+  .dash-two-col { display: grid; grid-template-columns: 1fr 320px; gap: 20px; margin-bottom: 24px; }
+  .section-card { background: #fff; border: 1px solid #e8eaf0; border-radius: 12px; padding: 20px 22px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .section-title { font-size: 14px; font-weight: 600; color: #0d1b2a; }
+  .view-all { font-size: 12px; color: #2563eb; cursor: pointer; text-decoration: none; }
+
+  .course-card-sm {
+    background: #f8f9fc; border: 1px solid #e8eaf0; border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 10px; cursor: pointer;
+  }
+  .course-card-sm:last-child { margin-bottom: 0; }
+  .course-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .course-name-sm { font-size: 13px; font-weight: 600; color: #0d1b2a; }
+  .course-badge { font-size: 10px; font-weight: 600; background: rgba(241,98,50,0.1); color: #F16232; padding: 3px 8px; border-radius: 99px; }
+  .course-meta-sm { font-size: 11px; color: #888; margin-bottom: 8px; }
+  .progress-row { display: flex; align-items: center; gap: 10px; }
+  .prog-bg { flex: 1; background: #e8eaf0; border-radius: 99px; height: 4px; }
+  .prog-fill { background: #F16232; height: 4px; border-radius: 99px; }
+  .prog-pct { font-size: 11px; font-weight: 600; color: #F16232; }
+
+  .schedule-item {
+    display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid #f0f1f5;
+  }
+  .schedule-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .schedule-time { font-size: 11px; font-weight: 700; color: #0d1b2a; text-align: center; min-width: 36px; }
+  .schedule-time span { display: block; font-size: 9px; font-weight: 500; color: #888; }
+  .schedule-info { flex: 1; }
+  .schedule-name { font-size: 12.5px; font-weight: 600; color: #0d1b2a; }
+  .schedule-mentor { font-size: 11px; color: #888; }
+  .badge-live { font-size: 10px; font-weight: 700; background: #fee2e2; color: #dc2626; padding: 2px 7px; border-radius: 99px; }
+  .badge-upcoming { font-size: 10px; font-weight: 600; background: #dcfce7; color: #16a34a; padding: 2px 7px; border-radius: 99px; }
+
+  /* ── MY COURSES ── */
+  .courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .course-card {
+    background: #fff; border: 1px solid #e8eaf0; border-radius: 12px; overflow: hidden;
+    cursor: pointer; transition: box-shadow 0.15s;
+  }
+  .course-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .course-thumb {
+    height: 140px; background: #0d1b2a; display: flex; align-items: center;
+    justify-content: center; position: relative; overflow: hidden;
+  }
+  .course-thumb-overlay {
+    position: absolute; inset: 0; background: linear-gradient(135deg, #0d1b2a 0%, #1a3a5c 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .course-thumb-icon { width: 48px; height: 48px; background: rgba(241,98,50,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+  .course-thumb-icon svg { width: 26px; height: 26px; color: #F16232; }
+  .course-tag {
+    position: absolute; top: 12px; left: 12px; font-size: 10px; font-weight: 700;
+    background: #F16232; color: #fff; padding: 3px 9px; border-radius: 99px;
+  }
+  .course-body { padding: 16px 18px; }
+  .course-title { font-size: 14px; font-weight: 600; color: #0d1b2a; margin-bottom: 6px; line-height: 1.4; }
+  .course-meta { font-size: 11.5px; color: #888; margin-bottom: 12px; display: flex; gap: 12px; }
+  .course-meta span { display: flex; align-items: center; gap: 4px; }
+  .course-meta svg { width: 13px; height: 13px; }
+  .course-progress-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; }
+  .course-progress-label span:first-child { color: #888; }
+  .course-progress-label span:last-child { color: #F16232; font-weight: 600; }
+  .course-prog-bg { background: #e8eaf0; border-radius: 99px; height: 5px; margin-bottom: 14px; }
+  .course-prog-fill { background: #F16232; height: 5px; border-radius: 99px; }
+  .btn-continue {
+    width: 100%; background: #2563eb; color: #fff; border: none; border-radius: 8px;
+    padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn-continue svg { width: 15px; height: 15px; }
+
+  /* ── CONTINUE LEARNING ── */
+  .lesson-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+  .lesson-nav-bar {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+  }
+  .lesson-nav-btns { display: flex; gap: 10px; }
+  .btn-prev {
+    border: 1.5px solid #F16232; color: #F16232; background: transparent;
+    border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .btn-next {
+    background: #F16232; color: #fff; border: none;
+    border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .video-player {
+    background: #111; border-radius: 12px; aspect-ratio: 16/9; position: relative;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 16px;
+  }
+  .play-btn {
+    width: 56px; height: 56px; background: #F16232; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .play-btn svg { width: 24px; height: 24px; color: #fff; margin-left: 3px; }
+  .video-label { position: absolute; bottom: 14px; left: 0; right: 0; text-align: center; font-size: 12px; color: rgba(255,255,255,0.6); }
+  .lesson-title-big { font-size: 18px; font-weight: 700; color: #0d1b2a; margin-bottom: 8px; }
+  .lesson-desc { font-size: 13.5px; color: #555; line-height: 1.65; margin-bottom: 20px; }
+  .lesson-action-btns { display: flex; gap: 10px; margin-bottom: 24px; }
+  .btn-mark {
+    background: #2563eb; color: #fff; border: none; border-radius: 8px;
+    padding: 9px 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .btn-notes {
+    background: #fff; color: #0d1b2a; border: 1px solid #e8eaf0; border-radius: 8px;
+    padding: 9px 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .resources-title { font-size: 14px; font-weight: 600; color: #0d1b2a; margin-bottom: 12px; }
+  .resource-item {
+    background: #f8f9fc; border: 1px solid #e8eaf0; border-radius: 8px;
+    padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center;
+    gap: 10px; cursor: pointer; color: #2563eb; font-size: 13px;
+  }
+  .resource-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* Curriculum sidebar */
+  .curriculum-sidebar { background: #fff; border: 1px solid #e8eaf0; border-radius: 12px; overflow: hidden; }
+  .curr-header {
+    background: #0d1b2a; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .curr-header-title { font-size: 13px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .curr-header-title svg { width: 16px; height: 16px; color: #F16232; }
+  .curr-done { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .curr-chapter {
+    border-bottom: 1px solid #f0f1f5;
+  }
+  .curr-chapter-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; cursor: pointer; background: #f8f9fc;
+  }
+  .curr-chapter-name { font-size: 12.5px; font-weight: 600; color: #0d1b2a; }
+  .curr-chapter-toggle svg { width: 16px; height: 16px; color: #888; }
+  .curr-lesson {
+    display: flex; align-items: center; gap: 10px; padding: 9px 16px 9px 24px;
+    border-bottom: 1px solid #f5f6fa; cursor: pointer;
+  }
+  .curr-lesson:hover { background: #f8f9fc; }
+  .curr-lesson.active { background: rgba(241,98,50,0.06); }
+  .curr-lesson-icon { width: 20px; height: 20px; flex-shrink: 0; }
+  .curr-lesson-icon svg { width: 14px; height: 14px; color: #aaa; }
+  .curr-lesson-icon.done svg { color: #10b981; }
+  .curr-lesson-name { font-size: 12px; color: #444; flex: 1; }
+  .curr-lesson.active .curr-lesson-name { color: #F16232; font-weight: 600; }
+
+  /* ── LIVE SESSION ── */
+  .live-tabs { display: flex; gap: 0; background: #fff; border: 1px solid #e8eaf0; border-radius: 10px; padding: 4px; margin-bottom: 20px; width: fit-content; }
+  .live-tab {
+    padding: 8px 24px; border-radius: 7px; font-size: 13px; font-weight: 500;
+    cursor: pointer; color: #888; transition: all 0.15s;
+  }
+  .live-tab.active { background: #0d1b2a; color: #fff; }
+  .session-list { display: flex; flex-direction: column; gap: 14px; }
+  .session-card {
+    background: #fff; border: 1px solid #e8eaf0; border-radius: 12px;
+    padding: 18px 22px; display: flex; align-items: center; gap: 20px;
+  }
+  .session-date-box {
+    background: #f8f9fc; border: 1px solid #e8eaf0; border-radius: 10px;
+    padding: 10px 14px; text-align: center; min-width: 56px; flex-shrink: 0;
+  }
+  .session-day { font-size: 20px; font-weight: 700; color: #0d1b2a; line-height: 1; }
+  .session-mon { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; }
+  .session-info { flex: 1; }
+  .session-name { font-size: 14px; font-weight: 600; color: #0d1b2a; margin-bottom: 4px; }
+  .session-meta { font-size: 12px; color: #888; display: flex; gap: 14px; margin-bottom: 8px; }
+  .session-meta span { display: flex; align-items: center; gap: 4px; }
+  .session-meta svg { width: 13px; height: 13px; }
+  .session-chapter { font-size: 11.5px; color: #2563eb; }
+  .session-action { flex-shrink: 0; }
+  .btn-join {
+    background: #F16232; color: #fff; border: none; border-radius: 8px;
+    padding: 9px 22px; font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-join svg { width: 14px; height: 14px; }
+  .btn-join.past { background: #f5f6fa; color: #888; border: 1px solid #e8eaf0; cursor: default; }
+  .live-now-badge {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700;
+    color: #dc2626; background: #fee2e2; padding: 3px 9px; border-radius: 99px; margin-bottom: 6px;
+  }
+  .live-dot { width: 6px; height: 6px; background: #dc2626; border-radius: 50%; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ── ASSIGNMENTS ── */
+  .assign-tabs { display: flex; gap: 0; background: #fff; border: 1px solid #e8eaf0; border-radius: 10px; padding: 4px; margin-bottom: 20px; width: fit-content; }
+  .assign-tab { padding: 8px 24px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; color: #888; transition: all 0.15s; }
+  .assign-tab.active { background: #0d1b2a; color: #fff; }
+  .assign-list { display: flex; flex-direction: column; gap: 14px; }
+  .assign-card {
+    background: #fff; border: 1px solid #e8eaf0; border-radius: 12px; padding: 18px 22px;
+  }
+  .assign-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+  .assign-name { font-size: 14px; font-weight: 600; color: #0d1b2a; margin-bottom: 4px; }
+  .assign-course { font-size: 12px; color: #888; }
+  .status-badge {
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 99px; flex-shrink: 0;
+  }
+  .status-pending { background: #fef9c3; color: #854d0e; }
+  .status-submitted { background: #dcfce7; color: #166534; }
+  .status-graded { background: #dbeafe; color: #1d4ed8; }
+  .status-overdue { background: #fee2e2; color: #991b1b; }
+  .assign-meta { display: flex; gap: 18px; font-size: 12px; color: #888; margin-bottom: 14px; }
+  .assign-meta span { display: flex; align-items: center; gap: 5px; }
+  .assign-meta svg { width: 13px; height: 13px; }
+  .assign-desc { font-size: 12.5px; color: #555; line-height: 1.6; margin-bottom: 14px; }
+  .btn-submit {
+    background: #2563eb; color: #fff; border: none; border-radius: 8px;
+    padding: 8px 20px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  .btn-view-sub {
+    background: #f8f9fc; color: #0d1b2a; border: 1px solid #e8eaf0; border-radius: 8px;
+    padding: 8px 20px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  .grade-box { background: #f8f9fc; border: 1px solid #e8eaf0; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+  .grade-score { font-size: 18px; font-weight: 700; color: #2563eb; }
+  .grade-label { font-size: 12px; color: #888; }
+  .grade-feedback { font-size: 12px; color: #555; }
+
+  /* ── CERTIFICATES ── */
+  .cert-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .cert-card {
+    background: #fff; border: 1px solid #e8eaf0; border-radius: 12px; overflow: hidden;
+  }
+  .cert-banner {
+    background: #0d1b2a; padding: 24px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px; position: relative;
+  }
+  .cert-banner::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(241,98,50,0.04) 10px, rgba(241,98,50,0.04) 11px);
+  }
+  .cert-icon { width: 52px; height: 52px; background: rgba(241,98,50,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+  .cert-icon svg { width: 28px; height: 28px; color: #F16232; }
+  .cert-title-banner { font-size: 13px; font-weight: 700; color: #fff; text-align: center; }
+  .cert-body { padding: 16px 18px; }
+  .cert-name { font-size: 14px; font-weight: 600; color: #0d1b2a; margin-bottom: 4px; }
+  .cert-date { font-size: 12px; color: #888; margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
+  .cert-date svg { width: 13px; height: 13px; }
+  .cert-id { font-size: 11px; color: #aaa; margin-bottom: 14px; }
+  .btn-download {
+    width: 100%; background: #0d1b2a; color: #fff; border: none; border-radius: 8px;
+    padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn-download svg { width: 15px; height: 15px; }
+  .cert-locked { opacity: 0.5; }
+  .cert-locked .cert-banner { background: #888; }
+  .lock-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; }
+  .lock-overlay svg { width: 28px; height: 28px; color: rgba(255,255,255,0.4); }
+  .lock-text { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+  /* ── MY PROFILE ── */
+  .profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; align-items: start; }
+  .profile-card { background: #fff; border: 1px solid #e8eaf0; border-radius: 12px; padding: 28px 22px; text-align: center; }
+  .profile-avatar-big {
+    width: 80px; height: 80px; border-radius: 50%; background: #F16232;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 700; color: #fff; margin: 0 auto 14px;
+  }
+  .profile-name-big { font-size: 18px; font-weight: 700; color: #0d1b2a; margin-bottom: 4px; }
+  .profile-email { font-size: 13px; color: #888; margin-bottom: 16px; }
+  .profile-divider { border: none; border-top: 1px solid #f0f1f5; margin: 16px 0; }
+  .profile-detail-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; }
+  .profile-detail-label { font-size: 12px; color: #888; }
+  .profile-detail-val { font-size: 12.5px; font-weight: 600; color: #0d1b2a; }
+  .profile-badge { font-size: 11px; font-weight: 600; background: #dcfce7; color: #166534; padding: 3px 9px; border-radius: 99px; }
+  .profile-right { display: flex; flex-direction: column; gap: 16px; }
+  .profile-section-card { background: #fff; border: 1px solid #e8eaf0; border-radius: 12px; padding: 20px 22px; }
+  .profile-section-title { font-size: 14px; font-weight: 600; color: #0d1b2a; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #f0f1f5; }
+  .profile-field { margin-bottom: 14px; }
+  .profile-field:last-child { margin-bottom: 0; }
+  .profile-field label { display: block; font-size: 12px; font-weight: 500; color: #888; margin-bottom: 5px; }
+  .profile-field input {
+    width: 100%; border: 1px solid #e8eaf0; border-radius: 8px;
+    padding: 9px 12px; font-size: 13px; color: #0d1b2a; background: #f8f9fc;
+    outline: none;
+  }
+  .profile-field input:focus { border-color: #2563eb; background: #fff; }
+  .profile-fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .btn-save {
+    background: #2563eb; color: #fff; border: none; border-radius: 8px;
+    padding: 10px 24px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 4px;
+  }
+  .enrolled-course-row {
+    display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid #f0f1f5;
+  }
+  .enrolled-course-row:last-child { border-bottom: none; }
+  .enrolled-icon { width: 38px; height: 38px; background: rgba(13,27,42,0.07); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .enrolled-icon svg { width: 18px; height: 18px; color: #0d1b2a; }
+  .enrolled-info { flex: 1; }
+  .enrolled-name { font-size: 13px; font-weight: 600; color: #0d1b2a; }
+  .enrolled-batch { font-size: 11.5px; color: #888; }
+  .enrolled-pct { font-size: 13px; font-weight: 700; color: #F16232; }
+
+  /* page title */
+  .page-title { font-size: 20px; font-weight: 700; color: #0d1b2a; margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: #888; margin-bottom: 22px; }
+
+  /* empty state */
+  .empty-state { text-align: center; padding: 60px 20px; color: #aaa; }
+  .empty-state svg { width: 48px; height: 48px; margin-bottom: 12px; color: #ddd; }
+  .empty-state p { font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-box">
+        <div class="logo-icon">BL</div>
+        <div class="logo-text">
+          <span>Big Leap</span>
+          <span>LMS</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <div class="nav-item active" onclick="showPage('dashboard', this)">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="showPage('mycourses', this)">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 7H20v13H6.5A2.5 2.5 0 014 17.5v-13z"/></svg>
+        My Courses
+      </div>
+      <div class="nav-item" onclick="showPage('livesession', this)">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+        Live Session
+      </div>
+
+      <div class="nav-section-label">Academics</div>
+      <div class="nav-item" onclick="showPage('assignments', this)">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Assignments
+      </div>
+      <div class="nav-item" onclick="showPage('certificates', this)">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        Certificates
+      </div>
+
+      <div class="nav-section-label">Account</div>
+      <div class="nav-item" onclick="showPage('profile', this)">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Profile
+      </div>
+      <div class="nav-item nav-logout" onclick="showPage('dashboard', document.querySelector('.nav-item'))">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Logout
+      </div>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">AK</div>
+      <div class="user-info">
+        <div class="user-name">Ajay Kumar</div>
+        <div class="user-role">Student</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-right">
+        <div class="search-box">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Search courses, lessons...
+        </div>
+        <div class="topbar-user">
+          <div class="topbar-uinfo">
+            <div class="topbar-uname">Arjun Sharma</div>
+            <div class="topbar-urole">Student</div>
+          </div>
+          <div class="topbar-avatar">AS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="page active" id="page-dashboard">
+        <div class="dash-hero">
+          <div class="dash-week">Monday, April 27 · Week 8 of 24</div>
+          <div class="dash-greeting">Good morning, <span>Ajay!</span> 👋</div>
+          <div class="dash-sub">You're on a 5-day streak. Keep it up — you're 33% through your Data Science Program</div>
+          <div class="dash-hero-btns">
+            <button class="btn-orange" onclick="showPage('continueLearning', document.querySelectorAll('.nav-item')[2])">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Continue: Python Functions
+            </button>
+            <button class="btn-dark" onclick="showPage('livesession', document.querySelectorAll('.nav-item')[2])">Join Today's Live Class</button>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+            <div class="progress-label">33% complete · 42 of 64 lessons done</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            </div>
+            <div>
+              <div class="stat-val">42</div>
+              <div class="stat-label">Lessons Completed</div>
+              <div class="stat-sub">↑ 6 this week</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="stat-val">32h</div>
+              <div class="stat-label">Learning Hours</div>
+              <div class="stat-sub">↑ 4h this week</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>
+            </div>
+            <div>
+              <div class="stat-val">3</div>
+              <div class="stat-label">Assignments Done</div>
+              <div class="stat-sub">1 pending</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+            </div>
+            <div>
+              <div class="stat-val">5</div>
+              <div class="stat-label">Day Streak 🔥</div>
+              <div class="stat-sub">Keep going!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-two-col">
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">Continue Learning</div>
+              <a class="view-all" onclick="showPage('mycourses', document.querySelectorAll('.nav-item')[1])">View All →</a>
+            </div>
+            <div class="course-card-sm" onclick="showPage('continueLearning', document.querySelectorAll('.nav-item')[2])">
+              <div class="course-card-top">
+                <div class="course-name-sm">Python for Data Engineering</div>
+                <div class="course-badge">Active</div>
+              </div>
+              <div class="course-meta-sm">64 Lessons · 32h · Batch: DE-2026-A</div>
+              <div class="progress-row">
+                <div class="prog-bg"><div class="prog-fill" style="width:65%"></div></div>
+                <div class="prog-pct">65%</div>
+              </div>
+            </div>
+            <div class="course-card-sm" onclick="showPage('continueLearning', document.querySelectorAll('.nav-item')[2])">
+              <div class="course-card-top">
+                <div class="course-name-sm">Data Science with NumPy & Pandas</div>
+                <div class="course-badge">Active</div>
+              </div>
+              <div class="course-meta-sm">48 Lessons · 28h · Batch: DS-2026-B</div>
+              <div class="progress-row">
+                <div class="prog-bg"><div class="prog-fill" style="width:30%"></div></div>
+                <div class="prog-pct">30%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">Today's Schedule</div>
+              <a class="view-all" onclick="showPage('livesession', document.querySelectorAll('.nav-item')[2])">View All →</a>
+            </div>
+            <div class="schedule-item">
+              <div class="schedule-time">10:00<span>AM</span></div>
+              <div class="schedule-info">
+                <div class="schedule-name">Python Functions &amp; Closure</div>
+                <div class="schedule-mentor">with Priya Menon</div>
+                <div style="margin-top:4px"><span class="badge-live">● LIVE NOW</span></div>
+              </div>
+            </div>
+            <div class="schedule-item">
+              <div class="schedule-time">2:00<span>PM</span></div>
+              <div class="schedule-info">
+                <div class="schedule-name">Machine Learning Intro</div>
+                <div class="schedule-mentor">with Priya Menon</div>
+                <div style="margin-top:4px"><span class="badge-upcoming">Upcoming</span></div>
+              </div>
+            </div>
+            <div class="schedule-item">
+              <div class="schedule-time">5:00<span>PM</span></div>
+              <div class="schedule-info">
+                <div class="schedule-name">Python Functions &amp; Closure</div>
+                <div class="schedule-mentor">with Priya Menon</div>
+                <div style="margin-top:4px"><span class="badge-upcoming">Upcoming</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MY COURSES ── -->
+      <div class="page" id="page-mycourses">
+        <div class="page-title">My Courses</div>
+        <div class="page-sub">All enrolled courses and your progress</div>
+        <div class="courses-grid">
+          <div class="course-card" onclick="showPage('continueLearning', document.querySelectorAll('.nav-item')[2])">
+            <div class="course-thumb">
+              <div class="course-thumb-overlay">
+                <div class="course-thumb-icon">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </div>
+              </div>
+              <div class="course-tag">Active</div>
+            </div>
+            <div class="course-body">
+              <div class="course-title">Python for Data Engineering</div>
+              <div class="course-meta">
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>64 lessons</span>
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>32h</span>
+              </div>
+              <div class="course-progress-label"><span>Progress</span><span>65%</span></div>
+              <div class="course-prog-bg"><div class="course-prog-fill" style="width:65%"></div></div>
+              <button class="btn-continue">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Continue Learning
+              </button>
+            </div>
+          </div>
+
+          <div class="course-card" onclick="showPage('continueLearning', document.querySelectorAll('.nav-item')[2])">
+            <div class="course-thumb">
+              <div class="course-thumb-overlay" style="background: linear-gradient(135deg, #0d1b2a 0%, #1a2a4a 100%)">
+                <div class="course-thumb-icon">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+              </div>
+              <div class="course-tag">Active</div>
+            </div>
+            <div class="course-body">
+              <div class="course-title">Data Science with NumPy &amp; Pandas</div>
+              <div class="course-meta">
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>48 lessons</span>
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>28h</span>
+              </div>
+              <div class="course-progress-label"><span>Progress</span><span>30%</span></div>
+              <div class="course-prog-bg"><div class="course-prog-fill" style="width:30%"></div></div>
+              <button class="btn-continue">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Continue Learning
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CONTINUE LEARNING ── -->
+      <div class="page" id="page-continueLearning">
+        <div class="lesson-nav-bar">
+          <div style="font-size:13px;color:#888;">Python for Data Engineering · Chapter 5</div>
+          <div class="lesson-nav-btns">
+            <button class="btn-prev">← Previous</button>
+            <button class="btn-next">Next →</button>
+          </div>
+        </div>
+        <div class="lesson-layout">
+          <div>
+            <div class="video-player">
+              <div class="play-btn">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <div class="video-label">Lesson 42 — Python Functions &amp; Closures</div>
+            </div>
+            <div class="lesson-title-big">Python Functions, Closures &amp; Decorators</div>
+            <div class="lesson-desc">In this lesson, you'll master Python's functional programming features — from first-class functions and closures to powerful decorators used in real production data pipelines. We'll build decorators for logging, timing, and caching, which you'll use directly in your capstone project.</div>
+            <div class="lesson-action-btns">
+              <button class="btn-mark">✓ Mark Complete</button>
+              <button class="btn-notes">⬇ Download Notes</button>
+            </div>
+            <div class="resources-title">Resources</div>
+            <div class="resource-item">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Lesson Notes: Functions &amp; Closures.pdf
+            </div>
+            <div class="resource-item">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Practice Notebook: decorators_lab.ipynb
+            </div>
+            <div class="resource-item">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              GitHub: Chapter 5 Code Examples
+            </div>
+          </div>
+
+          <div class="curriculum-sidebar">
+            <div class="curr-header">
+              <div class="curr-header-title">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h8"/></svg>
+                Course Curriculum
+              </div>
+              <div class="curr-done">42/64 done</div>
+            </div>
+            <div class="curr-chapter">
+              <div class="curr-chapter-header">
+                <div class="curr-chapter-name">Chapter 1: Python Basics</div>
+                <div class="curr-chapter-toggle"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></div>
+              </div>
+              <div class="curr-lesson">
+                <div class="curr-lesson-icon done"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="curr-lesson-name">Intro Python</div>
+              </div>
+              <div class="curr-lesson">
+                <div class="curr-lesson-icon done"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="curr-lesson-name">Variables &amp; Data Types</div>
+              </div>
+            </div>
+            <div class="curr-chapter">
+              <div class="curr-chapter-header">
+                <div class="curr-chapter-name">Chapter 2: Control Flow</div>
+                <div class="curr-chapter-toggle"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></div>
+              </div>
+              <div class="curr-lesson">
+                <div class="curr-lesson-icon done"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="curr-lesson-name">If/Else &amp; Loops</div>
+              </div>
+            </div>
+            <div class="curr-chapter">
+              <div class="curr-chapter-header">
+                <div class="curr-chapter-name">Chapter 3: Data Structures</div>
+                <div class="curr-chapter-toggle"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></div>
+              </div>
+              <div class="curr-lesson">
+                <div class="curr-lesson-icon done"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="curr-lesson-name">Lists &amp; Tuples</div>
+              </div>
+              <div class="curr-lesson">
+                <div class="curr-lesson-icon done"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="curr-lesson-name">Dictionaries &amp; Sets</div>
+              </div>
+            </div>
+            <div class="curr-chapter">
+              <div class="curr-chapter-header">
+                <div class="curr-chapter-name">Chapter 4: OOP Concepts</div>
+                <div class="curr-chapter-toggle"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+              </div>
+            </div>
+            <div class="curr-chapter">
+              <div class="curr-chapter-header">
+                <div class="curr-chapter-name">Chapter 5: Functions &amp; Decorators</div>
+                <div class="curr-chapter-toggle"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></div>
+              </div>
+              <div class="curr-lesson active">
+                <div class="curr-lesson-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                <div class="curr-lesson-name">Python Functions &amp; Closures</div>
+              </div>
+              <div class="curr-lesson">
+                <div class="curr-lesson-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                <div class="curr-lesson-name">Decorators in Practice</div>
+              </div>
+            </div>
+            <div class="curr-chapter">
+              <div class="curr-chapter-header">
+                <div class="curr-chapter-name">Chapter 6: File I/O &amp; APIs</div>
+                <div class="curr-chapter-toggle"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LIVE SESSION ── -->
+      <div class="page" id="page-livesession">
+        <div class="page-title">Live Sessions</div>
+        <div class="page-sub">Scheduled and past live classes for your batch</div>
+        <div class="live-tabs">
+          <div class="live-tab active" onclick="switchTab(this, 'upcoming')">Upcoming</div>
+          <div class="live-tab" onclick="switchTab(this, 'past')">Past Sessions</div>
+        </div>
+
+        <div class="session-list" id="upcoming-sessions">
+          <div class="session-card">
+            <div class="session-date-box">
+              <div class="session-day">27</div>
+              <div class="session-mon">Apr</div>
+            </div>
+            <div class="session-info">
+              <div class="live-now-badge"><div class="live-dot"></div>LIVE NOW</div>
+              <div class="session-name">Python Functions &amp; Closures</div>
+              <div class="session-meta">
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>10:00 AM – 12:00 PM</span>
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Priya Menon</span>
+                <span>Google Meet</span>
+              </div>
+              <div class="session-chapter">Chapter 5 — Functions &amp; Decorators</div>
+            </div>
+            <div class="session-action">
+              <button class="btn-join">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+                Join Now
+              </button>
+            </div>
+          </div>
+
+          <div class="session-card">
+            <div class="session-date-box">
+              <div class="session-day">28</div>
+              <div class="session-mon">Apr</div>
+            </div>
+            <div class="session-info">
+              <div class="session-name">Decorators &amp; Generators</div>
+              <div class="session-meta">
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>10:00 AM – 12:00 PM</span>
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Priya Menon</span>
+                <span>Google Meet</span>
+              </div>
+              <div class="session-chapter">Chapter 5 — Functions &amp; Decorators</div>
+            </div>
+            <div class="session-action">
+              <button class="btn-join">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+                Join
+              </button>
+            </div>
+          </div>
+
+          <div class="session-card">
+            <div class="session-date-box">
+              <div class="session-day">30</div>
+              <div class="session-mon">Apr</div>
+            </div>
+            <div class="session-info">
+              <div class="session-name">File I/O &amp; Working with APIs</div>
+              <div class="session-meta">
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>10:00 AM – 12:00 PM</span>
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Priya Menon</span>
+                <span>Google Meet</span>
+              </div>
+              <div class="session-chapter">Chapter 6 — File I/O &amp; APIs</div>
+            </div>
+            <div class="session-action">
+              <button class="btn-join">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+                Join
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="session-list" id="past-sessions" style="display:none">
+          <div class="session-card">
+            <div class="session-date-box" style="opacity:0.5">
+              <div class="session-day">24</div>
+              <div class="session-mon">Apr</div>
+            </div>
+            <div class="session-info">
+              <div class="session-name">OOP: Classes &amp; Inheritance</div>
+              <div class="session-meta">
+                <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>10:00 AM – 12:00 PM</span>
+                <span>Priya Menon</span>
+              </div>
+              <div class="session-chapter">Chapter 4 — OOP Concepts · <span style="color:#10b981;font-weight:600;">Recording available</span></div>
+            </div>
+            <div class="session-action">
+              <button class="btn-join past">Completed</button>
+            </div>
+          </div>
+          <div class="session-card">
+            <div class="session-date-box" style="opacity:0.5">
+              <div class="session-day">22</div>
+              <div class="session-mon">Apr</div>
+            </div>
+            <div class="session-info">
+              <div class="session-name">Data Structures Deep Dive</div>
+              <div class="session-meta">
+                <span>10:00 AM – 12:00 PM</span>
+                <span>Priya Menon</span>
+              </div>
+              <div class="session-chapter">Chapter 3 — Data Structures · <span style="color:#10b981;font-weight:600;">Recording available</span></div>
+            </div>
+            <div class="session-action">
+              <button class="btn-join past">Completed</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ASSIGNMENTS ── -->
+      <div class="page" id="page-assignments">
+        <div class="page-title">Assignments</div>
+        <div class="page-sub">Submit your work and track feedback from your trainer</div>
+        <div class="assign-tabs">
+          <div class="assign-tab active" onclick="switchAssignTab(this, 'pending-assign')">Pending</div>
+          <div class="assign-tab" onclick="switchAssignTab(this, 'submitted-assign')">Submitted</div>
+          <div class="assign-tab" onclick="switchAssignTab(this, 'graded-assign')">Graded</div>
+        </div>
+
+        <div class="assign-list" id="pending-assign">
+          <div class="assign-card">
+            <div class="assign-top">
+              <div>
+                <div class="assign-name">Build a Decorator Library</div>
+                <div class="assign-course">Python for Data Engineering · Chapter 5</div>
+              </div>
+              <span class="status-badge status-pending">Pending</span>
+            </div>
+            <div class="assign-meta">
+              <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Due: 30 Apr 2026</span>
+              <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>File upload</span>
+            </div>
+            <div class="assign-desc">Create a Python decorator library with at least 3 decorators: a timer, a logger, and a cache decorator. Submit as a .py file with comments explaining each decorator.</div>
+            <button class="btn-submit">Upload Submission</button>
+          </div>
+
+          <div class="assign-card">
+            <div class="assign-top">
+              <div>
+                <div class="assign-name">Data Structures Challenge</div>
+                <div class="assign-course">Python for Data Engineering · Chapter 3</div>
+              </div>
+              <span class="status-badge status-overdue">Overdue</span>
+            </div>
+            <div class="assign-meta">
+              <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Due: 22 Apr 2026</span>
+              <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>File upload</span>
+            </div>
+            <div class="assign-desc">Solve 5 data structure problems using Python lists, tuples, dicts and sets. Must include time complexity analysis for each solution.</div>
+            <button class="btn-submit">Upload Submission</button>
+          </div>
+        </div>
+
+        <div class="assign-list" id="submitted-assign" style="display:none">
+          <div class="assign-card">
+            <div class="assign-top">
+              <div>
+                <div class="assign-name">OOP Mini Project</div>
+                <div class="assign-course">Python for Data Engineering · Chapter 4</div>
+              </div>
+              <span class="status-badge status-submitted">Submitted</span>
+            </div>
+            <div class="assign-meta">
+              <span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Submitted: 24 Apr 2026</span>
+            </div>
+            <div class="assign-desc">Build a mini library management system using OOP concepts — classes, inheritance, encapsulation.</div>
+            <button class="btn-view-sub">View Submission</button>
+          </div>
+        </div>
+
+        <div class="assign-list" id="graded-assign" style="display:none">
+          <div class="assign-card">
+            <div class="assign-top">
+              <div>
+                <div class="assign-name">Control Flow Problems</div>
+                <div class="assign-course">Python for Data Engineering · Chapter 2</div>
+              </div>
+              <span class="status-badge status-graded">Graded</span>
+            </div>
+            <div class="assign-meta">
+              <span>Submitted: 18 Apr 2026</span>
+              <span>Graded: 20 Apr 2026</span>
+            </div>
+            <div class="grade-box">
+              <div class="grade-score">88/100</div>
+              <div>
+                <div class="grade-label">Score</div>
+                <div class="grade-feedback">Good work on loops. Improve edge case handling in problem 3.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CERTIFICATES ── -->
+      <div class="page" id="page-certificates">
+        <div class="page-title">Certificates</div>
+        <div class="page-sub">Complete your courses to earn certificates</div>
+        <div class="cert-grid">
+          <div class="cert-card">
+            <div class="cert-banner" style="position:relative">
+              <div class="cert-icon">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <div class="cert-title-banner">Certificate of Completion</div>
+            </div>
+            <div class="cert-body">
+              <div class="cert-name">Python for Data Engineering</div>
+              <div class="cert-date"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Issued: 15 March 2026</div>
+              <div class="cert-id">Certificate ID: BL-2026-DE-0042</div>
+              <button class="btn-download">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download Certificate
+              </button>
+            </div>
+          </div>
+
+          <div class="cert-card cert-locked">
+            <div class="cert-banner" style="position:relative; background: #555;">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="28" height="28" style="color:rgba(255,255,255,0.4)"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                <div style="font-size:11px;color:rgba(255,255,255,0.5);">Complete course to unlock</div>
+              </div>
+            </div>
+            <div class="cert-body">
+              <div class="cert-name">Data Science with NumPy &amp; Pandas</div>
+              <div class="cert-date" style="color:#bbb;">Not yet earned</div>
+              <div class="cert-id">30% complete · 14 lessons remaining</div>
+              <button class="btn-download" style="background:#ccc;cursor:not-allowed;">Locked</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── MY PROFILE ── -->
+      <div class="page" id="page-profile">
+        <div class="page-title">My Profile</div>
+        <div class="page-sub">Your personal info and enrolled courses</div>
+        <div class="profile-layout">
+          <div>
+            <div class="profile-card">
+              <div class="profile-avatar-big">AK</div>
+              <div class="profile-name-big">Ajay Kumar</div>
+              <div class="profile-email">ajayallyted@gmail.com</div>
+              <hr class="profile-divider">
+              <div class="profile-detail-row">
+                <span class="profile-detail-label">Status</span>
+                <span class="profile-badge">Active</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="profile-detail-label">Joined</span>
+                <span class="profile-detail-val">Jan 2026</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="profile-detail-label">Courses</span>
+                <span class="profile-detail-val">2 Enrolled</span>
+              </div>
+              <div class="profile-detail-row">
+                <span class="profile-detail-label">Streak</span>
+                <span class="profile-detail-val">5 Days 🔥</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-right">
+            <div class="profile-section-card">
+              <div class="profile-section-title">Personal Information</div>
+              <div class="profile-fields-grid">
+                <div class="profile-field">
+                  <label>Full Name</label>
+                  <input type="text" value="Ajay Kumar" />
+                </div>
+                <div class="profile-field">
+                  <label>Email Address</label>
+                  <input type="email" value="ajayallyted@gmail.com" />
+                </div>
+                <div class="profile-field">
+                  <label>Mobile Number</label>
+                  <input type="text" value="+91 99662 33450" />
+                </div>
+                <div class="profile-field">
+                  <label>Location</label>
+                  <input type="text" value="Hyderabad, Telangana" />
+                </div>
+              </div>
+              <button class="btn-save">Save Changes</button>
+            </div>
+
+            <div class="profile-section-card">
+              <div class="profile-section-title">Enrolled Courses</div>
+              <div class="enrolled-course-row">
+                <div class="enrolled-icon">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </div>
+                <div class="enrolled-info">
+                  <div class="enrolled-name">Python for Data Engineering</div>
+                  <div class="enrolled-batch">Batch: DE-2026-A · Started Jan 2026</div>
+                </div>
+                <div class="enrolled-pct">65%</div>
+              </div>
+              <div class="enrolled-course-row">
+                <div class="enrolled-icon">
+                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <div class="enrolled-info">
+                  <div class="enrolled-name">Data Science with NumPy &amp; Pandas</div>
+                  <div class="enrolled-batch">Batch: DS-2026-B · Started Feb 2026</div>
+                </div>
+                <div class="enrolled-pct">30%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const titles = {
+    dashboard: 'Dashboard',
+    mycourses: 'My Courses',
+    continueLearning: 'Continue Learning',
+    livesession: 'Live Session',
+    assignments: 'Assignments',
+    certificates: 'Certificates',
+    profile: 'My Profile'
+  };
+
+  function showPage(id, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const page = document.getElementById('page-' + id);
+    if (page) page.classList.add('active');
+    if (navEl) navEl.classList.add('active');
+    document.getElementById('topbar-title').textContent = titles[id] || id;
+  }
+
+  function switchTab(el, showId) {
+    el.parentElement.querySelectorAll('.live-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('upcoming-sessions').style.display = showId === 'upcoming' ? 'flex' : 'none';
+    document.getElementById('past-sessions').style.display = showId === 'past' ? 'flex' : 'none';
+  }
+
+  function switchAssignTab(el, showId) {
+    el.parentElement.querySelectorAll('.assign-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    ['pending-assign','submitted-assign','graded-assign'].forEach(id => {
+      document.getElementById(id).style.display = id === showId ? 'flex' : 'none';
+    });
+  }
+</script>
+</body>
+</html>

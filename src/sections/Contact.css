@@ -1,0 +1,134 @@
+.contact {
+    background-color: #f2f2f0;
+    padding: 100px 80px;
+}
+
+.contact-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+}
+
+.section-tag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #f05a28;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.contact-title {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.accent {
+    color: #f05a28;
+}
+
+.contact-desc {
+    color: #666;
+    font-size: 0.97rem;
+    line-height: 1.8;
+    margin-bottom: 36px;
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.contact-link {
+    color: #444;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.contact-link:hover {
+    color: #f05a28;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 14px 16px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #f05a28;
+}
+
+.contact-btn {
+    background: #f05a28;
+    color: #ffffff;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    align-self: flex-start;
+}
+
+.contact-btn:hover {
+    background: #d44e20;
+}
+
+.contact-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 60px 40px;
+    background: #fff;
+    border-radius: 16px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .contact {
+        padding: 60px 24px;
+    }
+    .contact-container {
+        grid-template-columns: 1fr;
+        gap: 48px;
+    }
+}

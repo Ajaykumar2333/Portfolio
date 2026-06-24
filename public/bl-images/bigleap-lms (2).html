@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Big Leap LMS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,sans-serif;background:#f0f2f8;color:#1a1a2e;overflow:hidden;}
+.app{display:flex;height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:228px;min-width:228px;background:#040444;display:flex;flex-direction:column;height:100vh;}
+.sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.logo-wrap{display:flex;align-items:center;gap:10px;}
+.logo-box{width:36px;height:36px;background:#F16232;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#fff;flex-shrink:0;}
+.logo-texts span:first-child{display:block;font-size:13px;font-weight:700;color:#fff;line-height:1.1;}
+.logo-texts span:last-child{display:block;font-size:9px;color:#F16232;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto;}
+.nav-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.28);letter-spacing:1.5px;text-transform:uppercase;padding:0 10px;margin:16px 0 5px;}
+.nav-label:first-child{margin-top:0;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.55);font-size:13px;font-weight:500;margin-bottom:2px;transition:all 0.15s;position:relative;user-select:none;}
+.nav-item:hover:not(.disabled){background:rgba(255,255,255,0.07);color:#fff;}
+.nav-item.active{background:rgba(241,98,50,0.18);color:#F16232;}
+.nav-item svg{width:17px;height:17px;flex-shrink:0;}
+.nav-item.disabled{opacity:0.35;cursor:not-allowed;}
+.nav-logout{color:#f87171!important;margin-top:4px;}
+.nav-logout:hover{background:rgba(248,113,113,0.1)!important;}
+.sidebar-user{padding:14px 16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;}
+.s-av{width:36px;height:36px;border-radius:50%;background:#F16232;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.s-name{font-size:12.5px;font-weight:600;color:#fff;}
+.s-email{font-size:10px;color:rgba(255,255,255,0.35);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:#fff;border-bottom:1px solid #e4e7f0;padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.topbar-title{font-size:16px;font-weight:700;color:#040444;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.search-bar{display:flex;align-items:center;gap:8px;background:#f5f6fb;border:1px solid #e4e7f0;border-radius:10px;padding:8px 16px;width:250px;}
+.search-bar svg{width:14px;height:14px;color:#aaa;flex-shrink:0;}
+.search-bar span{font-size:13px;color:#aaa;}
+.notif{position:relative;width:38px;height:38px;border-radius:50%;background:#f5f6fb;border:1px solid #e4e7f0;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.notif svg{width:18px;height:18px;color:#040444;}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:#F16232;border-radius:50%;border:2px solid #fff;}
+.top-user{display:flex;align-items:center;gap:10px;}
+.top-av{width:38px;height:38px;border-radius:50%;background:#F16232;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;}
+.top-uname{font-size:13px;font-weight:600;color:#040444;text-align:right;}
+.top-urole{font-size:11px;color:#888;text-align:right;}
+
+.content{flex:1;overflow-y:auto;padding:26px 28px;}
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── DASHBOARD EMPTY ── */
+.dash-hero-empty{background:linear-gradient(135deg,#040444 0%,#0a0a6e 65%,#150a5e 100%);border-radius:14px;padding:28px 32px;margin-bottom:20px;}
+.dash-date{font-size:10.5px;font-weight:700;color:#F16232;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:7px;}
+.dash-greet{font-size:23px;font-weight:800;color:#fff;margin-bottom:6px;}
+.dash-greet span{color:#F16232;}
+.dash-hero-sub{font-size:13px;color:rgba(255,255,255,0.45);}
+
+.stats-row{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-bottom:20px;}
+.stat-c{background:#fff;border:1px solid #e4e7f0;border-radius:11px;padding:14px 12px;display:flex;align-items:center;gap:10px;}
+.stat-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stat-ic svg{width:17px;height:17px;}
+.ic-o{background:rgba(241,98,50,0.1);} .ic-o svg{color:#F16232;}
+.ic-b{background:rgba(4,4,68,0.08);} .ic-b svg{color:#040444;}
+.ic-g{background:rgba(16,185,129,0.1);} .ic-g svg{color:#10b981;}
+.ic-p{background:rgba(139,92,246,0.1);} .ic-p svg{color:#8b5cf6;}
+.ic-a{background:rgba(245,158,11,0.1);} .ic-a svg{color:#f59e0b;}
+.ic-t{background:rgba(20,184,166,0.1);} .ic-t svg{color:#14b8a6;}
+.stat-num{font-size:20px;font-weight:800;color:#040444;line-height:1;}
+.stat-lbl{font-size:10.5px;color:#888;margin-top:2px;}
+
+.empty-card{background:#fff;border:1px solid #e4e7f0;border-radius:12px;padding:20px 22px;}
+.empty-card-hd{font-size:14px;font-weight:700;color:#040444;margin-bottom:0;display:flex;align-items:center;gap:8px;}
+.count-badge{background:#f0f2f8;color:#888;font-size:11px;padding:2px 9px;border-radius:99px;font-weight:600;}
+.empty-body{text-align:center;padding:44px 20px;}
+.empty-emoji{font-size:52px;margin-bottom:14px;}
+.empty-title{font-size:15px;font-weight:700;color:#040444;margin-bottom:6px;}
+.empty-sub{font-size:13px;color:#888;margin-bottom:20px;}
+.btn-browse{background:#F16232;color:#fff;border:none;border-radius:9px;padding:12px 28px;font-size:13.5px;font-weight:700;cursor:pointer;transition:opacity 0.15s;}
+.btn-browse:hover{opacity:0.88;}
+
+/* locked page */
+.locked-page{display:flex;align-items:center;justify-content:center;min-height:60vh;flex-direction:column;gap:14px;}
+.locked-icon{width:72px;height:72px;background:#f0f2f8;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.locked-icon svg{width:32px;height:32px;color:#ccc;}
+.locked-title{font-size:16px;font-weight:700;color:#040444;}
+.locked-sub{font-size:13px;color:#888;text-align:center;max-width:300px;line-height:1.6;}
+.btn-locked-browse{background:#040444;color:#fff;border:none;border-radius:9px;padding:11px 26px;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px;}
+.btn-locked-browse:hover{background:#F16232;}
+
+/* ── DASHBOARD ENROLLED ── */
+.dash-hero-full{background:linear-gradient(135deg,#040444 0%,#0a0a6e 65%,#150a5e 100%);border-radius:14px;padding:28px 32px;margin-bottom:20px;position:relative;overflow:hidden;}
+.dash-hero-full::after{content:'';position:absolute;right:-50px;top:-50px;width:240px;height:240px;border-radius:50%;background:rgba(241,98,50,0.06);pointer-events:none;}
+.dash-btns{display:flex;gap:12px;margin-top:20px;}
+.btn-o{background:#F16232;color:#fff;border:none;border-radius:9px;padding:11px 22px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;}
+.btn-o svg{width:14px;height:14px;}
+.btn-ghost{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:9px;padding:11px 22px;font-size:13px;font-weight:600;cursor:pointer;}
+.prog-wrap{margin-top:18px;}
+.prog-bg-d{background:rgba(255,255,255,0.12);border-radius:99px;height:5px;}
+.prog-fill-d{background:#F16232;height:5px;border-radius:99px;}
+.prog-label-d{font-size:11px;color:rgba(255,255,255,0.38);margin-top:6px;}
+
+.dash-two{display:grid;grid-template-columns:1fr 290px;gap:16px;margin-bottom:20px;}
+.sec-card{background:#fff;border:1px solid #e4e7f0;border-radius:12px;padding:18px 20px;}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.sec-title{font-size:14px;font-weight:700;color:#040444;}
+.view-all{font-size:12px;color:#F16232;cursor:pointer;font-weight:600;}
+.crs-mini{background:#f8f9fd;border:1px solid #e4e7f0;border-radius:10px;padding:13px 15px;margin-bottom:9px;cursor:pointer;}
+.crs-mini:last-child{margin-bottom:0;}
+.crs-mini-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.crs-mini-name{font-size:13px;font-weight:700;color:#040444;}
+.act-badge{font-size:10px;font-weight:700;background:rgba(241,98,50,0.12);color:#F16232;padding:3px 9px;border-radius:99px;}
+.crs-mini-meta{font-size:11px;color:#888;margin-bottom:8px;}
+.prog-row{display:flex;align-items:center;gap:10px;}
+.prog-bg{flex:1;background:#e4e7f0;border-radius:99px;height:4px;}
+.prog-fill{background:#F16232;height:4px;border-radius:99px;}
+.prog-pct{font-size:11px;font-weight:700;color:#F16232;min-width:28px;text-align:right;}
+.sched-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f0f1f8;}
+.sched-item:last-child{border-bottom:none;padding-bottom:0;}
+.sched-time{font-size:11px;font-weight:700;color:#040444;min-width:36px;text-align:center;padding-top:2px;}
+.sched-time small{display:block;font-weight:500;color:#aaa;font-size:9px;}
+.sched-name{font-size:12.5px;font-weight:600;color:#040444;}
+.sched-mentor{font-size:11px;color:#888;margin-bottom:3px;}
+.badge-live{font-size:9px;font-weight:700;background:#fee2e2;color:#dc2626;padding:2px 8px;border-radius:99px;display:inline-flex;align-items:center;gap:4px;}
+.live-dot{width:5px;height:5px;background:#dc2626;border-radius:50%;animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.badge-up{font-size:9px;font-weight:600;background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:99px;}
+
+/* ── COURSES CATALOG ── */
+.pg-title{font-size:20px;font-weight:700;color:#040444;margin-bottom:4px;}
+.pg-sub{font-size:13px;color:#888;margin-bottom:20px;}
+.filter-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.chip{padding:7px 18px;border-radius:99px;border:1.5px solid #e4e7f0;font-size:12.5px;font-weight:600;cursor:pointer;color:#555;background:#fff;transition:all 0.15s;}
+.chip.active{background:#040444;color:#fff;border-color:#040444;}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.crs-card{background:#fff;border:1px solid #e4e7f0;border-radius:14px;overflow:hidden;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;}
+.crs-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(4,4,68,0.1);}
+.crs-thumb{height:148px;background:#040444;position:relative;display:flex;align-items:center;justify-content:center;}
+.crs-thumb-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.thumb-ico{width:52px;height:52px;background:rgba(241,98,50,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;}
+.thumb-ico svg{width:28px;height:28px;color:#F16232;}
+.thumb-pop{position:absolute;top:12px;left:12px;background:#111;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;}
+.thumb-price{position:absolute;top:12px;right:12px;background:#F16232;color:#fff;font-size:12px;font-weight:800;padding:3px 11px;border-radius:99px;}
+.crs-body{padding:15px 17px;}
+.crs-cat{font-size:10px;font-weight:800;color:#F16232;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.crs-name{font-size:14px;font-weight:700;color:#040444;margin-bottom:5px;line-height:1.4;}
+.crs-desc{font-size:12px;color:#666;line-height:1.55;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.stars-row{display:flex;align-items:center;gap:5px;margin-bottom:9px;}
+.stars{color:#f59e0b;font-size:13px;}
+.stars-score{font-size:12px;font-weight:700;color:#040444;}
+.stars-count{font-size:11px;color:#888;}
+.crs-price{font-size:15px;font-weight:800;color:#040444;margin-bottom:13px;}
+.crs-price small{font-size:11px;color:#888;font-weight:400;}
+.crs-btns{display:grid;grid-template-columns:1fr 1.6fr;gap:8px;}
+.btn-syl{background:#fff;border:1.5px solid #e4e7f0;border-radius:8px;padding:9px;font-size:12px;font-weight:600;cursor:pointer;color:#040444;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-syl svg{width:13px;height:13px;}
+.btn-enroll{background:#040444;color:#fff;border:none;border-radius:8px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer;transition:background 0.15s;}
+.btn-enroll:hover{background:#F16232;}
+
+/* ── MY COURSES ── */
+.my-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.my-card{background:#fff;border:1px solid #e4e7f0;border-radius:14px;overflow:hidden;}
+.my-thumb{height:140px;background:#040444;position:relative;display:flex;align-items:center;justify-content:center;}
+.my-thumb-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.my-thumb-ico{width:50px;height:50px;background:rgba(241,98,50,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;}
+.my-thumb-ico svg{width:26px;height:26px;color:#F16232;}
+.my-tag{position:absolute;top:12px;left:12px;background:#F16232;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;}
+.my-body{padding:15px 17px;}
+.my-name{font-size:14px;font-weight:700;color:#040444;margin-bottom:5px;line-height:1.4;}
+.my-meta{font-size:11px;color:#888;margin-bottom:11px;display:flex;gap:12px;}
+.my-meta span{display:flex;align-items:center;gap:4px;}
+.my-meta svg{width:12px;height:12px;}
+.my-prog-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;}
+.my-prog-lbl span:last-child{color:#F16232;font-weight:700;}
+.my-prog-bg{background:#e4e7f0;border-radius:99px;height:5px;margin-bottom:13px;}
+.my-prog-fill{background:#F16232;height:5px;border-radius:99px;}
+.btn-cont{width:100%;background:#040444;color:#fff;border:none;border-radius:9px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-cont:hover{background:#F16232;}
+.btn-cont svg{width:14px;height:14px;}
+.suggest-strip{margin-top:28px;}
+.suggest-title{font-size:15px;font-weight:700;color:#040444;margin-bottom:12px;}
+.suggest-title span{font-size:12px;font-weight:400;color:#888;margin-left:6px;}
+.sug-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.sug-card{background:#fff;border:1px solid #e4e7f0;border-radius:12px;padding:13px 15px;display:flex;gap:12px;align-items:flex-start;}
+.sug-ico{width:40px;height:40px;background:#040444;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sug-ico svg{width:19px;height:19px;color:#F16232;}
+.sug-name{font-size:12.5px;font-weight:700;color:#040444;margin-bottom:3px;line-height:1.3;}
+.sug-price{font-size:12px;font-weight:700;color:#F16232;margin-bottom:7px;}
+.btn-sug{background:#f5f6fb;border:1px solid #e4e7f0;border-radius:7px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer;color:#040444;}
+.btn-sug:hover{background:#040444;color:#fff;}
+
+/* ── CONTINUE LEARNING ── */
+.lesson-layout{display:grid;grid-template-columns:1fr 285px;gap:16px;align-items:start;}
+.lesson-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;}
+.lesson-bc{font-size:12.5px;color:#888;}
+.lesson-bc strong{color:#040444;}
+.nav-btns{display:flex;gap:8px;}
+.btn-prev-l{border:1.5px solid #F16232;color:#F16232;background:#fff;border-radius:8px;padding:8px 18px;font-size:12.5px;font-weight:700;cursor:pointer;}
+.btn-next-l{background:#F16232;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:12.5px;font-weight:700;cursor:pointer;}
+.video-player{background:#080820;border-radius:12px;aspect-ratio:16/9;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden;}
+.play-btn{width:58px;height:58px;background:#F16232;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 0 14px rgba(241,98,50,0.12);}
+.play-btn svg{width:24px;height:24px;color:#fff;margin-left:4px;}
+.vid-label{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:12px;color:rgba(255,255,255,0.45);}
+.lesson-title{font-size:18px;font-weight:800;color:#040444;margin-bottom:8px;}
+.lesson-desc{font-size:13px;color:#555;line-height:1.65;margin-bottom:18px;}
+.lesson-actions{display:flex;gap:10px;margin-bottom:20px;}
+.btn-mark{background:#040444;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;}
+.btn-mark:hover{background:#F16232;}
+.btn-dl{background:#fff;color:#040444;border:1.5px solid #e4e7f0;border-radius:8px;padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;}
+.res-title{font-size:13px;font-weight:700;color:#040444;margin-bottom:9px;}
+.res-item{background:#f8f9fd;border:1px solid #e4e7f0;border-radius:8px;padding:11px 14px;margin-bottom:7px;display:flex;align-items:center;gap:10px;cursor:pointer;color:#040444;font-size:12.5px;font-weight:500;}
+.res-item svg{width:14px;height:14px;color:#F16232;flex-shrink:0;}
+.curr-box{background:#fff;border:1px solid #e4e7f0;border-radius:12px;overflow:hidden;}
+.curr-hd{background:#040444;padding:14px 15px;display:flex;align-items:center;justify-content:space-between;}
+.curr-hd-title{font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px;}
+.curr-hd-title svg{width:14px;height:14px;color:#F16232;}
+.curr-done{font-size:11px;color:rgba(255,255,255,0.38);}
+.curr-ch{border-bottom:1px solid #f0f1f8;}
+.curr-ch-hd{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;background:#f8f9fd;}
+.curr-ch-name{font-size:12px;font-weight:700;color:#040444;}
+.curr-ch-arr{width:13px;height:13px;color:#aaa;}
+.curr-li{display:flex;align-items:center;gap:9px;padding:8px 14px 8px 20px;border-bottom:1px solid #f5f6fb;cursor:pointer;}
+.curr-li:hover{background:#f8f9fd;}
+.curr-li.playing{background:rgba(241,98,50,0.07);}
+.curr-li-ico svg{width:13px;height:13px;color:#ccc;}
+.curr-li-ico.done svg{color:#10b981;}
+.curr-li-name{font-size:12px;color:#555;flex:1;}
+.curr-li.playing .curr-li-name{color:#F16232;font-weight:700;}
+
+/* ── LIVE SESSION ── */
+.tabs-row{display:flex;background:#fff;border:1px solid #e4e7f0;border-radius:10px;padding:4px;width:fit-content;margin-bottom:18px;}
+.tab-btn{padding:8px 24px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;color:#888;border:none;background:transparent;transition:all 0.15s;}
+.tab-btn.active{background:#040444;color:#fff;}
+.sess-list{display:flex;flex-direction:column;gap:13px;}
+.sess-card{background:#fff;border:1px solid #e4e7f0;border-radius:12px;padding:17px 20px;display:flex;align-items:center;gap:18px;}
+.sess-date{background:#f8f9fd;border:1px solid #e4e7f0;border-radius:10px;padding:10px 14px;text-align:center;min-width:54px;flex-shrink:0;}
+.sess-day{font-size:22px;font-weight:800;color:#040444;line-height:1;}
+.sess-mon{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;}
+.sess-info{flex:1;}
+.live-now{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:#dc2626;background:#fee2e2;padding:3px 9px;border-radius:99px;margin-bottom:6px;}
+.sess-name{font-size:14px;font-weight:700;color:#040444;margin-bottom:4px;}
+.sess-meta{font-size:12px;color:#888;display:flex;gap:12px;margin-bottom:5px;}
+.sess-chapter{font-size:11.5px;color:#2563eb;}
+.btn-join{background:#F16232;color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;}
+.btn-join.past{background:#f5f6fb;color:#aaa;border:1px solid #e4e7f0;cursor:default;}
+
+/* ── ASSIGNMENTS ── */
+.asgn-list{display:flex;flex-direction:column;gap:13px;}
+.asgn-card{background:#fff;border:1px solid #e4e7f0;border-radius:12px;padding:18px 20px;}
+.asgn-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
+.asgn-name{font-size:14px;font-weight:700;color:#040444;margin-bottom:3px;}
+.asgn-course{font-size:12px;color:#888;}
+.pill{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;flex-shrink:0;}
+.pill-pending{background:#fef9c3;color:#854d0e;}
+.pill-submitted{background:#dcfce7;color:#166534;}
+.pill-graded{background:#dbeafe;color:#1d4ed8;}
+.pill-overdue{background:#fee2e2;color:#991b1b;}
+.asgn-meta{display:flex;gap:14px;font-size:12px;color:#888;margin-bottom:11px;}
+.asgn-desc{font-size:12.5px;color:#555;line-height:1.6;margin-bottom:13px;}
+.btn-submit-a{background:#040444;color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:12.5px;font-weight:700;cursor:pointer;}
+.btn-submit-a:hover{background:#F16232;}
+.btn-view-a{background:#f8f9fd;color:#040444;border:1px solid #e4e7f0;border-radius:8px;padding:9px 22px;font-size:12.5px;font-weight:600;cursor:pointer;}
+.grade-box{background:#f8f9fd;border:1px solid #e4e7f0;border-radius:9px;padding:12px 16px;display:flex;align-items:center;gap:14px;}
+.grade-score{font-size:22px;font-weight:800;color:#040444;}
+.grade-lbl{font-size:11px;color:#888;}
+.grade-fb{font-size:12px;color:#555;line-height:1.5;}
+
+/* ── CERTIFICATES ── */
+.cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.cert-card{background:#fff;border:1px solid #e4e7f0;border-radius:14px;overflow:hidden;}
+.cert-banner{background:#040444;padding:26px 22px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;}
+.cert-banner-ico{width:52px;height:52px;background:rgba(241,98,50,0.15);border-radius:13px;display:flex;align-items:center;justify-content:center;}
+.cert-banner-ico svg{width:28px;height:28px;color:#F16232;}
+.cert-banner-title{font-size:12px;font-weight:700;color:rgba(255,255,255,0.65);}
+.cert-body{padding:15px 17px;}
+.cert-name{font-size:14px;font-weight:700;color:#040444;margin-bottom:4px;}
+.cert-date{font-size:12px;color:#888;margin-bottom:4px;}
+.cert-id{font-size:11px;color:#aaa;margin-bottom:13px;}
+.btn-dl-cert{width:100%;background:#040444;color:#fff;border:none;border-radius:9px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-dl-cert:hover{background:#F16232;}
+.btn-dl-cert svg{width:14px;height:14px;}
+.cert-locked-bg{background:#aaa;}
+.btn-locked{background:#ddd;color:#aaa;cursor:not-allowed;}
+
+/* ── PROFILE ── */
+.profile-layout{display:grid;grid-template-columns:265px 1fr;gap:16px;align-items:start;}
+.profile-left{background:#fff;border:1px solid #e4e7f0;border-radius:14px;padding:26px 20px;text-align:center;}
+.p-av{width:80px;height:80px;border-radius:50%;background:#F16232;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;margin:0 auto 13px;}
+.p-name{font-size:18px;font-weight:800;color:#040444;margin-bottom:4px;}
+.p-email{font-size:13px;color:#888;margin-bottom:14px;}
+.p-hr{border:none;border-top:1px solid #f0f1f8;margin:13px 0;}
+.p-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;}
+.p-lbl{font-size:12px;color:#888;}
+.p-val{font-size:12.5px;font-weight:700;color:#040444;}
+.p-active{font-size:11px;font-weight:700;background:#dcfce7;color:#166534;padding:3px 10px;border-radius:99px;}
+.profile-right{display:flex;flex-direction:column;gap:14px;}
+.p-sec{background:#fff;border:1px solid #e4e7f0;border-radius:14px;padding:18px 20px;}
+.p-sec-title{font-size:14px;font-weight:700;color:#040444;margin-bottom:13px;padding-bottom:10px;border-bottom:1px solid #f0f1f8;}
+.p-fields{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.p-field label{display:block;font-size:12px;font-weight:600;color:#888;margin-bottom:5px;}
+.p-field input{width:100%;border:1.5px solid #e4e7f0;border-radius:9px;padding:10px 13px;font-size:13px;color:#040444;background:#f8f9fd;outline:none;font-family:inherit;}
+.p-field input:focus{border-color:#040444;background:#fff;}
+.btn-save{background:#040444;color:#fff;border:none;border-radius:9px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;margin-top:5px;}
+.btn-save:hover{background:#F16232;}
+.enr-row{display:flex;align-items:center;gap:13px;padding:11px 0;border-bottom:1px solid #f0f1f8;}
+.enr-row:last-child{border-bottom:none;}
+.enr-ico{width:38px;height:38px;background:#f0f1f8;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.enr-ico svg{width:17px;height:17px;color:#040444;}
+.enr-name{font-size:13px;font-weight:700;color:#040444;}
+.enr-batch{font-size:11.5px;color:#888;}
+.enr-pct{font-size:14px;font-weight:800;color:#F16232;margin-left:auto;}
+
+/* ── ENROLL POPUP ── */
+.overlay{position:fixed;inset:0;background:rgba(4,4,68,0.6);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;}
+.overlay.hidden{display:none;}
+.popup{background:#fff;border-radius:18px;width:100%;max-width:470px;padding:30px;position:relative;animation:popIn 0.2s ease;}
+@keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+.popup-close{position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:50%;background:#f5f6fb;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.popup-close svg{width:15px;height:15px;color:#555;}
+.popup-secure{font-size:10px;font-weight:800;color:#F16232;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;}
+.popup-cname{font-size:17px;font-weight:800;color:#040444;margin-bottom:18px;line-height:1.35;}
+.popup-fee{background:#fff8f4;border:1.5px solid #F16232;border-radius:10px;padding:13px 17px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.popup-fee-lbl{font-size:13px;font-weight:600;color:#555;}
+.popup-fee-val{font-size:18px;font-weight:800;color:#F16232;}
+.popup-stu{background:#f8f9fd;border:1px solid #e4e7f0;border-radius:10px;padding:13px 17px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.popup-stu-left{display:flex;align-items:center;gap:11px;}
+.popup-stu-av{width:36px;height:36px;border-radius:50%;background:#040444;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;}
+.popup-stu-name{font-size:13.5px;font-weight:700;color:#040444;}
+.popup-stu-email{font-size:11.5px;color:#888;}
+.popup-check svg{width:20px;height:20px;color:#10b981;}
+.popup-summary{margin-bottom:14px;}
+.popup-sum-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0f1f8;}
+.popup-sum-row:last-child{border-bottom:none;}
+.popup-sum-lbl{font-size:13px;color:#888;}
+.popup-sum-val{font-size:13px;font-weight:700;color:#040444;}
+.popup-rzp{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:11px 15px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:#15803d;font-weight:600;margin-bottom:18px;}
+.popup-rzp svg{width:15px;height:15px;flex-shrink:0;}
+.popup-actions{display:grid;grid-template-columns:1fr 1.5fr;gap:11px;}
+.btn-cancel{background:#fff;border:1.5px solid #e4e7f0;border-radius:10px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;color:#555;}
+.btn-pay{background:#040444;color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;}
+.btn-pay:hover{background:#F16232;}
+
+/* SUCCESS */
+.success-overlay{position:fixed;inset:0;background:rgba(4,4,68,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;}
+.success-overlay.hidden{display:none;}
+.success-box{background:#fff;border-radius:18px;padding:38px 34px;text-align:center;max-width:370px;width:100%;animation:popIn 0.2s ease;}
+.success-ico{width:68px;height:68px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.success-ico svg{width:34px;height:34px;color:#10b981;}
+.success-title{font-size:20px;font-weight:800;color:#040444;margin-bottom:7px;}
+.success-sub{font-size:13px;color:#888;margin-bottom:22px;line-height:1.6;}
+.btn-go{background:#F16232;color:#fff;border:none;border-radius:10px;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;width:100%;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-wrap">
+      <div class="logo-box">BL</div>
+      <div class="logo-texts"><span>Big Leap</span><span>Technologies</span></div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Main</div>
+    <div class="nav-item active" id="nav-dashboard" onclick="goPage('dashboard',this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
+    </div>
+    <div class="nav-item" id="nav-courses" onclick="goPage('courses',this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Courses
+    </div>
+    <div class="nav-item" id="nav-mycourses" onclick="goPage('mycourses',this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>My Courses
+    </div>
+    <div class="nav-item" id="nav-live" onclick="goPage('live',this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>Live Session
+    </div>
+    <div class="nav-label">Academics</div>
+    <div class="nav-item disabled" id="nav-assignments" onclick="tryLocked(this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2m-3 7l2 2 4-4"/></svg>Assignments
+    </div>
+    <div class="nav-item disabled" id="nav-certificates" onclick="tryLocked(this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Certificates
+    </div>
+    <div class="nav-label">Account</div>
+    <div class="nav-item" id="nav-profile" onclick="goPage('profile',this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Profile
+    </div>
+    <div class="nav-item nav-logout">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>Logout
+    </div>
+  </nav>
+  <div class="sidebar-user">
+    <div class="s-av">AK</div>
+    <div><div class="s-name">Ajay Kumar</div><div class="s-email">ajayallyted@gmail.com</div></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-right">
+      <div class="search-bar"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>Search courses, lessons...</span></div>
+      <div class="notif"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="notif-dot"></div></div>
+      <div class="top-user"><div><div class="top-uname">Ajay Kumar</div><div class="top-urole">Student</div></div><div class="top-av">AK</div></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── DASHBOARD (shows both states) ── -->
+    <div class="page active" id="page-dashboard">
+
+      <!-- EMPTY STATE -->
+      <div id="dash-empty">
+        <div class="dash-hero-empty">
+          <div class="dash-date">Tuesday, 23 June 2026</div>
+          <div class="dash-greet">Good afternoon, <span>Ajay</span> 👋</div>
+          <div class="dash-hero-sub">You have 0 active courses and 0 upcoming live sessions this week.</div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-c"><div class="stat-ic ic-o"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"/></svg></div><div><div class="stat-num">0</div><div class="stat-lbl">Enrolled Courses</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-b"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="stat-num">0h</div><div class="stat-lbl">Total Content</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-g"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg></div><div><div class="stat-num">0</div><div class="stat-lbl">Total Lessons</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-p"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div><div><div class="stat-num">0</div><div class="stat-lbl">Live Sessions</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-a"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div><div class="stat-num">0</div><div class="stat-lbl">Projects</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-t"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="stat-num">0</div><div class="stat-lbl">Active Batches</div></div></div>
+        </div>
+        <div class="empty-card">
+          <div class="empty-card-hd">My Courses <span class="count-badge">0</span></div>
+          <div class="empty-body">
+            <div class="empty-emoji">📚</div>
+            <div class="empty-title">No courses enrolled yet</div>
+            <div class="empty-sub">Browse our available courses and start your learning journey today.</div>
+            <button class="btn-browse" onclick="goPage('courses',document.getElementById('nav-courses'))">Browse Available Courses →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENROLLED STATE -->
+      <div id="dash-enrolled" style="display:none;">
+        <div class="dash-hero-full">
+          <div class="dash-date">Tuesday, 23 June 2026 · Week 8 of 24</div>
+          <div class="dash-greet">Good afternoon, <span>Ajay</span> 👋</div>
+          <div class="dash-hero-sub" style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:5px;">You're on a 5-day streak. Keep it up — you're 65% through Python for Data Engineering</div>
+          <div class="dash-btns">
+            <button class="btn-o" onclick="goPage('learn',document.getElementById('nav-mycourses'))"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>Continue Learning</button>
+            <button class="btn-ghost" onclick="goPage('live',document.getElementById('nav-live'))">Join Today's Live Class</button>
+          </div>
+          <div class="prog-wrap">
+            <div class="prog-bg-d"><div class="prog-fill-d" style="width:65%"></div></div>
+            <div class="prog-label-d">65% complete · 42 of 64 lessons done</div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-c"><div class="stat-ic ic-o"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"/></svg></div><div><div class="stat-num">2</div><div class="stat-lbl">Enrolled Courses</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-b"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="stat-num">60h</div><div class="stat-lbl">Total Content</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-g"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg></div><div><div class="stat-num">42</div><div class="stat-lbl">Lessons Done</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-p"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div><div><div class="stat-num">3</div><div class="stat-lbl">Live Sessions</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-a"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div><div class="stat-num">5</div><div class="stat-lbl">Streak 🔥</div></div></div>
+          <div class="stat-c"><div class="stat-ic ic-t"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="stat-num">2</div><div class="stat-lbl">Active Batches</div></div></div>
+        </div>
+        <div class="dash-two">
+          <div class="sec-card">
+            <div class="sec-hd"><div class="sec-title">Continue Learning</div><span class="view-all" onclick="goPage('mycourses',document.getElementById('nav-mycourses'))">View All →</span></div>
+            <div class="crs-mini" onclick="goPage('learn',document.getElementById('nav-mycourses'))"><div class="crs-mini-top"><div class="crs-mini-name">Python for Data Engineering</div><div class="act-badge">Active</div></div><div class="crs-mini-meta">64 Lessons · 32h · Batch: DE-2026-A</div><div class="prog-row"><div class="prog-bg"><div class="prog-fill" style="width:65%"></div></div><div class="prog-pct">65%</div></div></div>
+            <div class="crs-mini" onclick="goPage('learn',document.getElementById('nav-mycourses'))"><div class="crs-mini-top"><div class="crs-mini-name">Data Skills Bootcamp — SQL + Power BI</div><div class="act-badge">Active</div></div><div class="crs-mini-meta">48 Lessons · 28h · Batch: DS-2026-B</div><div class="prog-row"><div class="prog-bg"><div class="prog-fill" style="width:30%"></div></div><div class="prog-pct">30%</div></div></div>
+          </div>
+          <div class="sec-card">
+            <div class="sec-hd"><div class="sec-title">Today's Schedule</div><span class="view-all" onclick="goPage('live',document.getElementById('nav-live'))">View All →</span></div>
+            <div class="sched-item"><div class="sched-time">10:00<small>AM</small></div><div><div class="sched-name">Python Functions & Closure</div><div class="sched-mentor">Priya Menon</div><span class="badge-live"><span class="live-dot"></span>LIVE NOW</span></div></div>
+            <div class="sched-item"><div class="sched-time">2:00<small>PM</small></div><div><div class="sched-name">Machine Learning Intro</div><div class="sched-mentor">Priya Menon</div><span class="badge-up">Upcoming</span></div></div>
+            <div class="sched-item"><div class="sched-time">5:00<small>PM</small></div><div><div class="sched-name">SQL Joins & Aggregations</div><div class="sched-mentor">Ravi Kumar</div><span class="badge-up">Upcoming</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COURSES CATALOG ── -->
+    <div class="page" id="page-courses">
+      <div class="pg-title">Explore Courses</div>
+      <div class="pg-sub">Discover and enroll in courses that match your career goals</div>
+      <div class="filter-row">
+        <div class="chip active">All Courses</div>
+        <div class="chip">Data Engineering</div>
+        <div class="chip">Data Science</div>
+        <div class="chip">Python</div>
+        <div class="chip">SQL & Databases</div>
+      </div>
+      <div class="cat-grid">
+        <div class="crs-card">
+          <div class="crs-thumb"><div class="crs-thumb-inner"><div class="thumb-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div></div><div class="thumb-pop">POPULAR</div><div class="thumb-price">₹4,999</div></div>
+          <div class="crs-body"><div class="crs-cat">Data Engineer</div><div class="crs-name">Data Skills Bootcamp — SQL + Power BI with PostgreSQL</div><div class="crs-desc">Go from zero database knowledge to writing real queries and building live dashboards.</div><div class="stars-row"><span class="stars">★★★★☆</span><span class="stars-score">4.3</span><span class="stars-count">(16,325)</span></div><div class="crs-price">₹4,999 <small>one-time payment</small></div><div class="crs-btns"><button class="btn-syl"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Syllabus</button><button class="btn-enroll" onclick="openEnroll('Data Skills Bootcamp — SQL + Power BI with PostgreSQL','₹4,999')">Enroll Now →</button></div></div>
+        </div>
+        <div class="crs-card">
+          <div class="crs-thumb" style="background:#080830"><div class="crs-thumb-inner"><div class="thumb-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div></div><div class="thumb-pop">POPULAR</div><div class="thumb-price">₹3,999</div></div>
+          <div class="crs-body"><div class="crs-cat">Data Engineer</div><div class="crs-name">Python Zero to Job Ready</div><div class="crs-desc">Master Python from scratch and land your first tech job with confidence.</div><div class="stars-row"><span class="stars">★★★★☆</span><span class="stars-score">4.3</span><span class="stars-count">(16,325)</span></div><div class="crs-price">₹3,999 <small>one-time payment</small></div><div class="crs-btns"><button class="btn-syl"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Syllabus</button><button class="btn-enroll" onclick="openEnroll('Python Zero to Job Ready','₹3,999')">Enroll Now →</button></div></div>
+        </div>
+        <div class="crs-card">
+          <div class="crs-thumb" style="background:#0a0a44"><div class="crs-thumb-inner"><div class="thumb-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div></div><div class="thumb-pop">POPULAR</div><div class="thumb-price">₹29,999</div></div>
+          <div class="crs-body"><div class="crs-cat">Data Engineer</div><div class="crs-name">Big Data Engineer Industry Experience Program</div><div class="crs-desc">Most programmes teach you tools. This one teaches you engineering from your very first lesson.</div><div class="stars-row"><span class="stars">★★★★☆</span><span class="stars-score">4.3</span><span class="stars-count">(16,325)</span></div><div class="crs-price">₹29,999 <small>one-time payment</small></div><div class="crs-btns"><button class="btn-syl"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Syllabus</button><button class="btn-enroll" onclick="openEnroll('Big Data Engineer Industry Experience Program','₹29,999')">Enroll Now →</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MY COURSES EMPTY ── -->
+    <div class="page" id="page-mycourses-empty">
+      <div class="pg-title">My Courses</div>
+      <div class="pg-sub">Your enrolled courses and learning progress</div>
+      <div class="empty-card">
+        <div class="empty-card-hd">Enrolled Courses <span class="count-badge">0</span></div>
+        <div class="empty-body">
+          <div class="empty-emoji">🎓</div>
+          <div class="empty-title">No courses enrolled yet</div>
+          <div class="empty-sub">Enroll in a course to start your learning journey. Your progress will appear here.</div>
+          <button class="btn-browse" onclick="goPage('courses',document.getElementById('nav-courses'))">Browse Courses →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MY COURSES ENROLLED ── -->
+    <div class="page" id="page-mycourses-enrolled">
+      <div class="pg-title">My Courses</div>
+      <div class="pg-sub">Your enrolled courses and learning progress</div>
+      <div class="my-grid">
+        <div class="my-card"><div class="my-thumb"><div class="my-thumb-inner"><div class="my-thumb-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div></div><div class="my-tag">Active</div></div><div class="my-body"><div class="my-name">Python for Data Engineering</div><div class="my-meta"><span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>64 lessons</span><span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>32h</span></div><div class="my-prog-lbl"><span>Progress</span><span>65%</span></div><div class="my-prog-bg"><div class="my-prog-fill" style="width:65%"></div></div><button class="btn-cont" onclick="goPage('learn',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>Continue Learning</button></div></div>
+        <div class="my-card"><div class="my-thumb" style="background:#0a0a44"><div class="my-thumb-inner"><div class="my-thumb-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div></div><div class="my-tag">Active</div></div><div class="my-body"><div class="my-name">Data Skills Bootcamp — SQL + Power BI</div><div class="my-meta"><span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>48 lessons</span><span><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>28h</span></div><div class="my-prog-lbl"><span>Progress</span><span>30%</span></div><div class="my-prog-bg"><div class="my-prog-fill" style="width:30%"></div></div><button class="btn-cont" onclick="goPage('learn',this)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>Continue Learning</button></div></div>
+      </div>
+      <div class="suggest-strip">
+        <div class="suggest-title">Recommended for You <span>based on your enrolled courses</span></div>
+        <div class="sug-grid">
+          <div class="sug-card"><div class="sug-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div><div class="sug-name">Big Data Engineer Industry Experience</div><div class="sug-price">₹29,999</div><button class="btn-sug" onclick="openEnroll('Big Data Engineer Industry Experience','₹29,999')">Enroll Now →</button></div></div>
+          <div class="sug-card"><div class="sug-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div><div class="sug-name">Apache Spark & PySpark for Data Eng.</div><div class="sug-price">₹8,999</div><button class="btn-sug" onclick="openEnroll('Apache Spark & PySpark','₹8,999')">Enroll Now →</button></div></div>
+          <div class="sug-card"><div class="sug-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div><div class="sug-name">Power BI Advanced — DAX & Reporting</div><div class="sug-price">₹5,999</div><button class="btn-sug" onclick="openEnroll('Power BI Advanced','₹5,999')">Enroll Now →</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTINUE LEARNING ── -->
+    <div class="page" id="page-learn">
+      <div class="lesson-topbar">
+        <div class="lesson-bc">Python for Data Engineering · <strong>Chapter 5 — Functions & Decorators</strong></div>
+        <div class="nav-btns"><button class="btn-prev-l">← Previous</button><button class="btn-next-l">Next →</button></div>
+      </div>
+      <div class="lesson-layout">
+        <div>
+          <div class="video-player"><div class="play-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="vid-label">Lesson 42 — Python Functions & Closures</div></div>
+          <div class="lesson-title">Python Functions, Closures & Decorators</div>
+          <div class="lesson-desc">In this lesson, you'll master Python's functional programming features — from first-class functions and closures to powerful decorators used in real production data pipelines. We'll build decorators for logging, timing, and caching, which you'll use directly in your capstone project.</div>
+          <div class="lesson-actions"><button class="btn-mark">✓ Mark Complete</button><button class="btn-dl">⬇ Download Notes</button></div>
+          <div class="res-title">Resources</div>
+          <div class="res-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Lesson Notes: Functions & Closures.pdf</div>
+          <div class="res-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Practice Notebook: decorators_lab.ipynb</div>
+          <div class="res-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>GitHub: Chapter 5 Code Examples</div>
+        </div>
+        <div class="curr-box">
+          <div class="curr-hd"><div class="curr-hd-title"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h8"/></svg>Course Curriculum</div><div class="curr-done">42/64 done</div></div>
+          <div class="curr-ch"><div class="curr-ch-hd"><div class="curr-ch-name">Chapter 1: Python Basics</div><svg class="curr-ch-arr" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></div>
+            <div class="curr-li"><div class="curr-li-ico done"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="curr-li-name">Intro Python</div></div>
+            <div class="curr-li"><div class="curr-li-ico done"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="curr-li-name">Variables & Data Types</div></div>
+          </div>
+          <div class="curr-ch"><div class="curr-ch-hd"><div class="curr-ch-name">Chapter 2: Control Flow</div><svg class="curr-ch-arr" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></div>
+            <div class="curr-li"><div class="curr-li-ico done"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="curr-li-name">If/Else & Loops</div></div>
+          </div>
+          <div class="curr-ch"><div class="curr-ch-hd"><div class="curr-ch-name">Chapter 5: Functions & Decorators</div><svg class="curr-ch-arr" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></div>
+            <div class="curr-li playing"><div class="curr-li-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="curr-li-name">Python Functions & Closures</div></div>
+            <div class="curr-li"><div class="curr-li-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="curr-li-name">Decorators in Practice</div></div>
+          </div>
+          <div class="curr-ch"><div class="curr-ch-hd"><div class="curr-ch-name">Chapter 6: File I/O & APIs</div><svg class="curr-ch-arr" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LIVE SESSION ── -->
+    <div class="page" id="page-live">
+      <div class="pg-title">Live Sessions</div>
+      <div class="pg-sub">Your scheduled and past live classes</div>
+      <div class="tabs-row">
+        <button class="tab-btn active" onclick="switchLiveTab(this,'upcoming-s','past-s')">Upcoming</button>
+        <button class="tab-btn" onclick="switchLiveTab(this,'past-s','upcoming-s')">Past Sessions</button>
+      </div>
+      <div class="sess-list" id="upcoming-s">
+        <div class="sess-card"><div class="sess-date"><div class="sess-day">27</div><div class="sess-mon">Apr</div></div><div class="sess-info"><div class="live-now"><span class="live-dot"></span>LIVE NOW</div><div class="sess-name">Python Functions & Closures</div><div class="sess-meta"><span>10:00 AM – 12:00 PM</span><span>Priya Menon</span><span>Google Meet</span></div><div class="sess-chapter">Chapter 5 — Functions & Decorators</div></div><button class="btn-join">Join Now</button></div>
+        <div class="sess-card"><div class="sess-date"><div class="sess-day">28</div><div class="sess-mon">Apr</div></div><div class="sess-info"><div class="sess-name">Decorators & Generators</div><div class="sess-meta"><span>10:00 AM – 12:00 PM</span><span>Priya Menon</span><span>Google Meet</span></div><div class="sess-chapter">Chapter 5 — Functions & Decorators</div></div><button class="btn-join">Join</button></div>
+        <div class="sess-card"><div class="sess-date"><div class="sess-day">30</div><div class="sess-mon">Apr</div></div><div class="sess-info"><div class="sess-name">File I/O & Working with APIs</div><div class="sess-meta"><span>10:00 AM – 12:00 PM</span><span>Priya Menon</span><span>Google Meet</span></div><div class="sess-chapter">Chapter 6 — File I/O & APIs</div></div><button class="btn-join">Join</button></div>
+      </div>
+      <div class="sess-list" id="past-s" style="display:none">
+        <div class="sess-card"><div class="sess-date" style="opacity:0.5"><div class="sess-day">24</div><div class="sess-mon">Apr</div></div><div class="sess-info"><div class="sess-name">OOP: Classes & Inheritance</div><div class="sess-meta"><span>10:00 AM – 12:00 PM</span><span>Priya Menon</span></div><div class="sess-chapter">Chapter 4 · <span style="color:#10b981;font-weight:700;">Recording available</span></div></div><button class="btn-join past">Completed</button></div>
+        <div class="sess-card"><div class="sess-date" style="opacity:0.5"><div class="sess-day">22</div><div class="sess-mon">Apr</div></div><div class="sess-info"><div class="sess-name">Data Structures Deep Dive</div><div class="sess-meta"><span>10:00 AM – 12:00 PM</span><span>Priya Menon</span></div><div class="sess-chapter">Chapter 3 · <span style="color:#10b981;font-weight:700;">Recording available</span></div></div><button class="btn-join past">Completed</button></div>
+      </div>
+    </div>
+
+    <!-- ── ASSIGNMENTS ── -->
+    <div class="page" id="page-assignments">
+      <div class="pg-title">Assignments</div>
+      <div class="pg-sub">Submit your work and track feedback from your trainer</div>
+      <div class="tabs-row">
+        <button class="tab-btn active" onclick="switchAssignTab(this,'pending-a')">Pending</button>
+        <button class="tab-btn" onclick="switchAssignTab(this,'submitted-a')">Submitted</button>
+        <button class="tab-btn" onclick="switchAssignTab(this,'graded-a')">Graded</button>
+      </div>
+      <div class="asgn-list" id="pending-a">
+        <div class="asgn-card"><div class="asgn-top"><div><div class="asgn-name">Build a Decorator Library</div><div class="asgn-course">Python for Data Engineering · Chapter 5</div></div><span class="pill pill-pending">Pending</span></div><div class="asgn-meta"><span>Due: 30 Apr 2026</span><span>File Upload</span></div><div class="asgn-desc">Create a Python decorator library with at least 3 decorators: a timer, a logger, and a cache decorator. Submit as a .py file with comments explaining each decorator.</div><button class="btn-submit-a">Upload Submission</button></div>
+        <div class="asgn-card"><div class="asgn-top"><div><div class="asgn-name">Data Structures Challenge</div><div class="asgn-course">Python for Data Engineering · Chapter 3</div></div><span class="pill pill-overdue">Overdue</span></div><div class="asgn-meta"><span>Due: 22 Apr 2026</span></div><div class="asgn-desc">Solve 5 data structure problems using Python lists, tuples, dicts and sets. Must include time complexity analysis.</div><button class="btn-submit-a">Upload Submission</button></div>
+      </div>
+      <div class="asgn-list" id="submitted-a" style="display:none">
+        <div class="asgn-card"><div class="asgn-top"><div><div class="asgn-name">OOP Mini Project</div><div class="asgn-course">Python for Data Engineering · Chapter 4</div></div><span class="pill pill-submitted">Submitted</span></div><div class="asgn-meta"><span>Submitted: 24 Apr 2026</span></div><div class="asgn-desc">Build a mini library management system using OOP concepts — classes, inheritance, encapsulation.</div><button class="btn-view-a">View Submission</button></div>
+      </div>
+      <div class="asgn-list" id="graded-a" style="display:none">
+        <div class="asgn-card"><div class="asgn-top"><div><div class="asgn-name">Control Flow Problems</div><div class="asgn-course">Python for Data Engineering · Chapter 2</div></div><span class="pill pill-graded">Graded</span></div><div class="asgn-meta"><span>Submitted: 18 Apr 2026</span><span>Graded: 20 Apr 2026</span></div><div class="grade-box"><div><div class="grade-score">88/100</div><div class="grade-lbl">Score</div></div><div class="grade-fb">Good work on loops. Improve your edge case handling in problem 3. Overall strong submission.</div></div></div>
+      </div>
+    </div>
+
+    <!-- ── CERTIFICATES ── -->
+    <div class="page" id="page-certificates">
+      <div class="pg-title">Certificates</div>
+      <div class="pg-sub">Complete your courses to earn verified certificates</div>
+      <div class="cert-grid">
+        <div class="cert-card"><div class="cert-banner"><div class="cert-banner-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="cert-banner-title">Certificate of Completion</div></div><div class="cert-body"><div class="cert-name">Python for Data Engineering</div><div class="cert-date">Issued: 15 March 2026</div><div class="cert-id">Certificate ID: BL-2026-DE-0042</div><button class="btn-dl-cert"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Certificate</button></div></div>
+        <div class="cert-card"><div class="cert-banner cert-locked-bg" style="position:relative"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:7px"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="30" height="30" style="color:rgba(255,255,255,0.4)"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div style="font-size:11px;color:rgba(255,255,255,0.5)">Complete course to unlock</div></div></div><div class="cert-body"><div class="cert-name">Data Skills Bootcamp — SQL + Power BI</div><div class="cert-date" style="color:#bbb">Not yet earned</div><div class="cert-id">30% complete · 34 lessons remaining</div><button class="btn-dl-cert btn-locked">Locked</button></div></div>
+      </div>
+    </div>
+
+    <!-- ── PROFILE ── -->
+    <div class="page" id="page-profile">
+      <div class="pg-title">My Profile</div>
+      <div class="pg-sub">Manage your personal information and enrolled courses</div>
+      <div class="profile-layout">
+        <div class="profile-left">
+          <div class="p-av">AK</div>
+          <div class="p-name">Ajay Kumar</div>
+          <div class="p-email">ajayallyted@gmail.com</div>
+          <hr class="p-hr">
+          <div class="p-row"><span class="p-lbl">Status</span><span class="p-active">Active</span></div>
+          <div class="p-row"><span class="p-lbl">Joined</span><span class="p-val">Jan 2026</span></div>
+          <div class="p-row"><span class="p-lbl">Courses</span><span class="p-val">2 Enrolled</span></div>
+          <div class="p-row"><span class="p-lbl">Streak</span><span class="p-val">5 Days 🔥</span></div>
+          <div class="p-row"><span class="p-lbl">Batch</span><span class="p-val">DE-2026-A</span></div>
+        </div>
+        <div class="profile-right">
+          <div class="p-sec">
+            <div class="p-sec-title">Personal Information</div>
+            <div class="p-fields">
+              <div class="p-field"><label>Full Name</label><input type="text" value="Ajay Kumar"></div>
+              <div class="p-field"><label>Email Address</label><input type="email" value="ajayallyted@gmail.com"></div>
+              <div class="p-field"><label>Mobile Number</label><input type="text" value="+91 99662 33450"></div>
+              <div class="p-field"><label>Location</label><input type="text" value="Hyderabad, Telangana"></div>
+            </div>
+            <button class="btn-save">Save Changes</button>
+          </div>
+          <div class="p-sec">
+            <div class="p-sec-title">Enrolled Courses</div>
+            <div class="enr-row"><div class="enr-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div><div><div class="enr-name">Python for Data Engineering</div><div class="enr-batch">Batch: DE-2026-A · Started Jan 2026</div></div><div class="enr-pct">65%</div></div>
+            <div class="enr-row"><div class="enr-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z"/></svg></div><div><div class="enr-name">Data Skills Bootcamp — SQL + Power BI</div><div class="enr-batch">Batch: DS-2026-B · Started Feb 2026</div></div><div class="enr-pct">30%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ENROLL POPUP -->
+<div class="overlay hidden" id="enroll-overlay" onclick="if(event.target===this)closeEnroll()">
+  <div class="popup">
+    <button class="popup-close" onclick="closeEnroll()"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="popup-secure">🔒 Secure Checkout</div>
+    <div class="popup-cname" id="popup-cname">Course Name</div>
+    <div class="popup-fee"><div class="popup-fee-lbl">Course Fee</div><div class="popup-fee-val" id="popup-price">₹4,999</div></div>
+    <div class="popup-stu">
+      <div class="popup-stu-left"><div class="popup-stu-av">A</div><div><div class="popup-stu-name">Ajay kumar</div><div class="popup-stu-email">ajayallyted@gmail.com</div></div></div>
+      <div class="popup-check"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+    </div>
+    <div class="popup-summary">
+      <div class="popup-sum-row"><div class="popup-sum-lbl">Amount to pay</div><div class="popup-sum-val" id="popup-amount">₹4,999</div></div>
+      <div class="popup-sum-row"><div class="popup-sum-lbl">Payment via</div><div class="popup-sum-val">Razorpay</div></div>
+    </div>
+    <div class="popup-rzp"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Secured by Razorpay — UPI, Cards, Net Banking & more</div>
+    <div class="popup-actions">
+      <button class="btn-cancel" onclick="closeEnroll()">Cancel</button>
+      <button class="btn-pay" onclick="handlePay()">Pay <span id="popup-pay-label">₹4,999</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-overlay hidden" id="success-overlay">
+  <div class="success-box">
+    <div class="success-ico"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div class="success-title">Enrollment Successful! 🎉</div>
+    <div class="success-sub">You're now enrolled in <strong id="success-cname"></strong>.<br>Your course has been added to My Courses.</div>
+    <button class="btn-go" onclick="goAfterSuccess()">Go to My Courses →</button>
+  </div>
+</div>
+
+<script>
+let enrolled = false;
+let currentCourse = '';
+let currentPrice = '';
+
+const pageTitles = {
+  dashboard:'Dashboard', courses:'Courses', mycourses:'My Courses',
+  learn:'Continue Learning', live:'Live Session',
+  assignments:'Assignments', certificates:'Certificates', profile:'My Profile'
+};
+
+function goPage(id, navEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item:not(.disabled):not(.nav-logout)').forEach(n => n.classList.remove('active'));
+
+  let pageId = id;
+
+  // my courses shows different page based on state
+  if (id === 'mycourses') {
+    pageId = enrolled ? 'mycourses-enrolled' : 'mycourses-empty';
+  }
+
+  const page = document.getElementById('page-' + pageId);
+  if (page) page.classList.add('active');
+  if (navEl && navEl.classList && !navEl.classList.contains('disabled')) navEl.classList.add('active');
+
+  // update topbar
+  document.getElementById('topbar-title').textContent = pageTitles[id] || id;
+
+  // if learn — highlight mycourses nav
+  if (id === 'learn') {
+    document.getElementById('nav-mycourses').classList.add('active');
+  }
+}
+
+function tryLocked(el) {
+  if (el.classList.contains('disabled')) return;
+}
+
+function openEnroll(name, price) {
+  currentCourse = name;
+  currentPrice = price;
+  document.getElementById('popup-cname').textContent = name;
+  document.getElementById('popup-price').textContent = price;
+  document.getElementById('popup-amount').textContent = price;
+  document.getElementById('popup-pay-label').textContent = price;
+  document.getElementById('enroll-overlay').classList.remove('hidden');
+}
+
+function closeEnroll() {
+  document.getElementById('enroll-overlay').classList.add('hidden');
+}
+
+function handlePay() {
+  closeEnroll();
+  document.getElementById('success-cname').textContent = currentCourse;
+  document.getElementById('success-overlay').classList.remove('hidden');
+  // unlock everything
+  enrolled = true;
+  // show dash-enrolled
+  document.getElementById('dash-empty').style.display = 'none';
+  document.getElementById('dash-enrolled').style.display = 'block';
+  // enable locked nav items
+  ['nav-assignments','nav-certificates'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('disabled');
+    el.onclick = function() { goPage(id.replace('nav-',''), this); };
+  });
+}
+
+function goAfterSuccess() {
+  document.getElementById('success-overlay').classList.add('hidden');
+  goPage('mycourses', document.getElementById('nav-mycourses'));
+}
+
+function switchLiveTab(btn, showId, hideId) {
+  btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(showId).style.display = 'flex';
+  document.getElementById(hideId).style.display = 'none';
+}
+
+function switchAssignTab(btn, showId) {
+  btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['pending-a','submitted-a','graded-a'].forEach(id => {
+    document.getElementById(id).style.display = id === showId ? 'flex' : 'none';
+  });
+}
+</script>
+</body>
+</html>
