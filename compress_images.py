@@ -8,7 +8,7 @@ folders = [
     r"public\images",
 ]
 
-extensions = ('.png', '.jpg', '.jpeg')
+extensions = ('.jpg', '.jpg', '.jpeg')
 
 total_before = 0
 total_after = 0
@@ -41,7 +41,7 @@ for folder in folders:
                     img.save(jpeg_path, 'JPEG', quality=60, optimize=True)
                     
                     # Remove original PNG if we converted it
-                    if filepath.lower().endswith('.png') and jpeg_path != filepath:
+                    if filepath.lower().endswith('.jpg') and jpeg_path != filepath:
                         os.remove(filepath)
 
                     size_after = os.path.getsize(jpeg_path)

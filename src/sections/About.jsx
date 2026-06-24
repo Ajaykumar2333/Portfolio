@@ -14,7 +14,7 @@ const About = () => {
 
         <div className="about-left">
           <div className="about-img-wrapper">
-            <div className="about-img-placeholder"><img src="./assets/Ajaypic.png" alt="" /></div>
+            <div className="about-img-placeholder"><img src="./assets/Ajaypic.jpg" alt="" /></div>
             <div className="about-badge">
               <span className="badge-num">3+</span>
               <span className="badge-label">years</span>

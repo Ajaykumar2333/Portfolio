@@ -53,7 +53,7 @@ const HRMSDetail = () => {
             {/* ── HERO IMAGE ── */}
             <div className="hrms-hero-img">
                 <img
-                    src="/images/hrmsadmin-manager/Admin dashboard.png"
+                    src="/images/hrmsadmin-manager/Admin dashboard.jpg"
                     alt="Allyted HRMS Dashboard"
                     className="hrms-hero-img-full"
                 />
@@ -219,7 +219,7 @@ const HRMSDetail = () => {
                         </div>
                     </div>
                     <div className="hrms-flow-img-wrap">
-                        <img src="/images/hrmsflow/flow-01-leave.png" alt="Flow 01 - Employee Applies for Leave" className="hrms-flow-img" />
+                        <img src="/images/hrmsflow/flow-01-leave.jpg" alt="Flow 01 - Employee Applies for Leave" className="hrms-flow-img" />
                     </div>
                 </div>
 
@@ -234,7 +234,7 @@ const HRMSDetail = () => {
                         </div>
                     </div>
                     <div className="hrms-flow-img-wrap">
-                        <img src="/images/hrmsflow/flow-02-attendance.png" alt="Flow 02 - Clock In Out" className="hrms-flow-img" />
+                        <img src="/images/hrmsflow/flow-02-attendance.jpg" alt="Flow 02 - Clock In Out" className="hrms-flow-img" />
                     </div>
                 </div>
 
@@ -249,7 +249,7 @@ const HRMSDetail = () => {
                         </div>
                     </div>
                     <div className="hrms-flow-img-wrap">
-                        <img src="/images/hrmsflow/flow-03-reimbursement.png" alt="Flow 03 - Reimbursement" className="hrms-flow-img" />
+                        <img src="/images/hrmsflow/flow-03-reimbursement.jpg" alt="Flow 03 - Reimbursement" className="hrms-flow-img" />
                     </div>
                 </div>
 
@@ -264,7 +264,7 @@ const HRMSDetail = () => {
                         </div>
                     </div>
                     <div className="hrms-flow-img-wrap">
-                        <img src="/images/hrmsflow/flow-04-new-employee.png" alt="Flow 04 - Admin Creates Employee" className="hrms-flow-img" />
+                        <img src="/images/hrmsflow/flow-04-new-employee.jpg" alt="Flow 04 - Admin Creates Employee" className="hrms-flow-img" />
                     </div>
                 </div>
 
@@ -279,7 +279,7 @@ const HRMSDetail = () => {
                         </div>
                     </div>
                     <div className="hrms-flow-img-wrap">
-                        <img src="/images/hrmsflow/flow-05-approval.png" alt="Flow 05 - Leave Approval" className="hrms-flow-img" />
+                        <img src="/images/hrmsflow/flow-05-approval.jpg" alt="Flow 05 - Leave Approval" className="hrms-flow-img" />
                     </div>
                 </div>
 
@@ -303,7 +303,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-pill">Employee Dashboard</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsemployee/Employeedashboard.png" alt="Employee Dashboard" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsemployee/Employeedashboard.jpg" alt="Employee Dashboard" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -313,7 +313,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-pill">My Attendance</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsemployee/myattendance.png" alt="My Attendance" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsemployee/myattendance.jpg" alt="My Attendance" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -332,7 +332,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-note">Balance shown before the form. Employee knows exactly what they have.</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsemployee/requestleave.png" alt="Request Leave" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsemployee/requestleave.jpg" alt="Request Leave" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -344,7 +344,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Step 2 — Select Dates</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/selectingdates.png" alt="Selecting Dates" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/selectingdates.jpg" alt="Selecting Dates" className="hrms-screen-img-full" />
                             </div>
                             <p className="hrms-screen-caption">Date picker with quick shortcuts</p>
                         </div>
@@ -353,7 +353,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Step 3 — Choose Leave Type</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/selectingleavetypes.png" alt="Leave Types" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/selectingleavetypes.jpg" alt="Leave Types" className="hrms-screen-img-full" />
                             </div>
                             <p className="hrms-screen-caption">Per-day leave type selection</p>
                         </div>
@@ -367,7 +367,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-note">Instead of rejecting silently, the system shows this warning and offers LOP as a conscious choice.</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsemployee/noleavebalancepage.png" alt="No Leave Balance" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsemployee/noleavebalancepage.jpg" alt="No Leave Balance" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -379,7 +379,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Selecting Loss of Pay</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/selectingLop.png" alt="LOP Selection" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/selectingLop.jpg" alt="LOP Selection" className="hrms-screen-img-full" />
                             </div>
                             <p className="hrms-screen-caption">Employee consciously selects LOP</p>
                         </div>
@@ -388,7 +388,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">LOP Confirmed</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/LOP Selected.png" alt="LOP Selected" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/LOP Selected.jpg" alt="LOP Selected" className="hrms-screen-img-full" />
                             </div>
                             <p className="hrms-screen-caption">Required balance drops to 0 — ready to submit</p>
                         </div>
@@ -401,7 +401,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-pill">My Leaves</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsemployee/leaves.png" alt="My Leaves" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsemployee/leaves.jpg" alt="My Leaves" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -411,7 +411,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-pill">Holiday Calendar</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsemployee/Holidaysemployeeview.png" alt="Holidays" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsemployee/Holidaysemployeeview.jpg" alt="Holidays" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -427,7 +427,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Reimbursements List</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/Reimbursement.png" alt="Reimbursements List" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/Reimbursement.jpg" alt="Reimbursements List" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -435,7 +435,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Create Reimbursement</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/Reimbursementform.png" alt="Create Reimbursement" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/Reimbursementform.jpg" alt="Create Reimbursement" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -452,7 +452,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Payslips List</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/payslips.png" alt="Payslips" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/payslips.jpg" alt="Payslips" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -460,7 +460,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Request Payslip</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/requestpayslipform.png" alt="Request Payslip" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/requestpayslipform.jpg" alt="Request Payslip" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -477,7 +477,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Resignations List</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/Resignation.png" alt="Resignations" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/Resignation.jpg" alt="Resignations" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -485,7 +485,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Submit Resignation</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/resignationform.png" alt="Submit Resignation" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/resignationform.jpg" alt="Submit Resignation" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -502,7 +502,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">My Service Requests</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/servicerequest.png" alt="My Service Requests" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/servicerequest.jpg" alt="My Service Requests" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -510,7 +510,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Accessories Catalog</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/servicerequestaccessories.png" alt="Accessories" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/servicerequestaccessories.jpg" alt="Accessories" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -518,7 +518,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Request Service</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsemployee/servicerequestpopup.png" alt="Service Request Popup" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsemployee/servicerequestpopup.jpg" alt="Service Request Popup" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -530,7 +530,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-pill">Learnings</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsemployee/Learnings.png" alt="Learnings" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsemployee/Learnings.jpg" alt="Learnings" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -555,7 +555,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-note hrms-screen-note-dark">Team snapshot — attendance, pending approvals, leave status at a glance.</span>
                     </div>
                     <div className="hrms-screen-frame hrms-screen-frame-dark">
-                        <img src="/images/hrmsadmin-manager/managerdashboard.png" alt="Manager Dashboard" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsadmin-manager/managerdashboard.jpg" alt="Manager Dashboard" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -566,7 +566,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-note hrms-screen-note-dark">Who clocked in, who is late, who is absent — live across the entire team.</span>
                     </div>
                     <div className="hrms-screen-frame hrms-screen-frame-dark">
-                        <img src="/images/hrmsadmin-manager/allEmployeesattendance.png" alt="All Employees Attendance" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsadmin-manager/allEmployeesattendance.jpg" alt="All Employees Attendance" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -582,7 +582,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill hrms-screen-pill-dark">Leave Requests — Table View</span>
                             </div>
                             <div className="hrms-screen-frame hrms-screen-frame-dark">
-                                <img src="/images/hrmsadmin-manager/leaverequeststable.png" alt="Leave Requests Table" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/leaverequeststable.jpg" alt="Leave Requests Table" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -590,7 +590,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill hrms-screen-pill-dark">Leave Requests — Card View</span>
                             </div>
                             <div className="hrms-screen-frame hrms-screen-frame-dark">
-                                <img src="/images/hrmsadmin-manager/leaverequestcard (2).png" alt="Leave Requests Card" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/leaverequestcard (2).jpg" alt="Leave Requests Card" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -598,7 +598,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill hrms-screen-pill-dark">Rejected Leaves</span>
                             </div>
                             <div className="hrms-screen-frame hrms-screen-frame-dark">
-                                <img src="/images/hrmsadmin-manager/rejectedleves.png" alt="Rejected Leaves" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/rejectedleves.jpg" alt="Rejected Leaves" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -625,7 +625,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-note">Full company overview — headcount, pending requests, attendance summary.</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsadmin-manager/Admin dashboard.png" alt="Admin Dashboard" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsadmin-manager/Admin dashboard.jpg" alt="Admin Dashboard" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -641,7 +641,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Employee Directory</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/employeedirectory.png" alt="Employee Directory" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/employeedirectory.jpg" alt="Employee Directory" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -649,7 +649,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Add New Employee</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/addnewemployeeform.png" alt="Add Employee" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/addnewemployeeform.jpg" alt="Add Employee" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -667,7 +667,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Pending Reimbursements</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/Reimbursementrequests.png" alt="Pending Reimbursements" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/Reimbursementrequests.jpg" alt="Pending Reimbursements" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -675,7 +675,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Approved Reimbursements</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/approvedreimbursementrequests.png" alt="Approved Reimbursements" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/approvedreimbursementrequests.jpg" alt="Approved Reimbursements" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -693,7 +693,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Roles List</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/Roles.png" alt="Roles" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/Roles.jpg" alt="Roles" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -701,7 +701,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Add Role + Permissions</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/addnewroleform.png" alt="Add Role" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/addnewroleform.jpg" alt="Add Role" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -709,7 +709,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Departments</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/Departments.png" alt="Departments" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/Departments.jpg" alt="Departments" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -717,7 +717,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Add Department</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/Departmentform.png" alt="Add Department" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/Departmentform.jpg" alt="Add Department" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -735,7 +735,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Holidays List</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/holidays.png" alt="Holidays" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/holidays.jpg" alt="Holidays" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -743,7 +743,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Add Holiday</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/holidayform.png" alt="Add Holiday" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/holidayform.jpg" alt="Add Holiday" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -761,7 +761,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Assets List</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/Assets-adding.png" alt="Assets" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/Assets-adding.jpg" alt="Assets" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -769,7 +769,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Add Asset</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/assetaddingform.png" alt="Add Asset" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/assetaddingform.jpg" alt="Add Asset" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>
@@ -781,7 +781,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-pill">Manage Payslip Requests</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsadmin-manager/Payslipsrequests.png" alt="Payslip Requests" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsadmin-manager/Payslipsrequests.jpg" alt="Payslip Requests" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -791,7 +791,7 @@ const HRMSDetail = () => {
                         <span className="hrms-screen-pill">Manage Service Requests</span>
                     </div>
                     <div className="hrms-screen-frame">
-                        <img src="/images/hrmsadmin-manager/servicerequests.png" alt="Service Requests" className="hrms-screen-img-full" />
+                        <img src="/images/hrmsadmin-manager/servicerequests.jpg" alt="Service Requests" className="hrms-screen-img-full" />
                     </div>
                 </div>
 
@@ -806,7 +806,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Learnings List</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/Roles (1).png" alt="Learnings Admin" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/Roles (1).jpg" alt="Learnings Admin" className="hrms-screen-img-full" />
                             </div>
                         </div>
                         <div className="hrms-screen-pair-item">
@@ -814,7 +814,7 @@ const HRMSDetail = () => {
                                 <span className="hrms-screen-pill">Add Learning Resource</span>
                             </div>
                             <div className="hrms-screen-frame">
-                                <img src="/images/hrmsadmin-manager/Learnigns form.png" alt="Add Learning" className="hrms-screen-img-full" />
+                                <img src="/images/hrmsadmin-manager/Learnigns form.jpg" alt="Add Learning" className="hrms-screen-img-full" />
                             </div>
                         </div>
                     </div>

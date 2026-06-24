@@ -113,7 +113,7 @@ const VoydDetail = () => {
       </section>
 
       {/* ── HERO IMAGE ── */}
-      <Screen src="/voyd/hero.png" alt="Voyd Interiors Homepage" label="" full sub={null} onOpen={openImage} />
+      <Screen src="/voyd/hero.jpg" alt="Voyd Interiors Homepage" label="" full sub={null} onOpen={openImage} />
 
       {/* ── 01 OVERVIEW ── */}
       <section className="vd-section vd-white">
@@ -451,21 +451,21 @@ const VoydDetail = () => {
           </p>
         </div>
 
-        <Screen src="/voyd/homepage.png" alt="Voyd Homepage" label="Homepage" sub="Trust building + journey overview" onOpen={openImage} />
-        <Screen src="/voyd/get-a-quote.png" alt="Get a Quote popup" label="Get a Quote — Popup" sub="Self/Others, Property & Project tabs" onOpen={openImage} />
-        <Screen src="/voyd/my-quotations.png" alt="My Quotations page" label="My Quotations" sub="Quotations vs Drafts, status tracking" onOpen={openImage} />
-        <Screen src="/voyd/project-dashboard.png" alt="Project Dashboard" label="Project Dashboard" sub="Budget tracker + filterable product grid" onOpen={openImage} />
-        <Screen src="/voyd/add-ons-panel.png" alt="Interior Elements Add-Ons panel" label="Interior Elements Add-Ons" sub="Room-wise customization — Living/Dining, Master Bedroom, Pooja Room" onOpen={openImage} />
-        <Screen src="/voyd/quality-checker.png" alt="Quality Checker" label="Quality Checker" sub="Product / Product Type / Sub Type + image, send report" onOpen={openImage} />
-        <Screen src="/voyd/designer-growth.png" alt="Designer Growth page" label="Designer Growth Page" sub="Leads, payments, material sourcing, studio access" onOpen={openImage} />
+        <Screen src="/voyd/homepage.jpg" alt="Voyd Homepage" label="Homepage" sub="Trust building + journey overview" onOpen={openImage} />
+        <Screen src="/voyd/get-a-quote.jpg" alt="Get a Quote popup" label="Get a Quote — Popup" sub="Self/Others, Property & Project tabs" onOpen={openImage} />
+        <Screen src="/voyd/my-quotations.jpg" alt="My Quotations page" label="My Quotations" sub="Quotations vs Drafts, status tracking" onOpen={openImage} />
+        <Screen src="/voyd/project-dashboard.jpg" alt="Project Dashboard" label="Project Dashboard" sub="Budget tracker + filterable product grid" onOpen={openImage} />
+        <Screen src="/voyd/add-ons-panel.jpg" alt="Interior Elements Add-Ons panel" label="Interior Elements Add-Ons" sub="Room-wise customization — Living/Dining, Master Bedroom, Pooja Room" onOpen={openImage} />
+        <Screen src="/voyd/quality-checker.jpg" alt="Quality Checker" label="Quality Checker" sub="Product / Product Type / Sub Type + image, send report" onOpen={openImage} />
+        <Screen src="/voyd/designer-growth.jpg" alt="Designer Growth page" label="Designer Growth Page" sub="Leads, payments, material sourcing, studio access" onOpen={openImage} />
 
         <div className="vd-inner" style={{ paddingTop: "40px" }}>
           <p className="vd-screen-label-full" style={{ padding: "0 0 16px", color: "rgba(255,255,255,0.4)" }}>Shopping Experience</p>
           <div className="vd-screen-grid-2">
-            <Screen src="/voyd/shop.png" alt="Shop page" label="Shop — by Room / Category" full={false} onOpen={openImage} />
-            <Screen src="/voyd/product-detail.png" alt="Product Detail Page" label="Product Detail Page" full={false} onOpen={openImage} />
-            <Screen src="/voyd/cart.png" alt="Cart page" label="My Cart" full={false} onOpen={openImage} />
-            <Screen src="/voyd/checkout.png" alt="Checkout page" label="Checkout" full={false} onOpen={openImage} />
+            <Screen src="/voyd/shop.jpg" alt="Shop page" label="Shop — by Room / Category" full={false} onOpen={openImage} />
+            <Screen src="/voyd/product-detail.jpg" alt="Product Detail Page" label="Product Detail Page" full={false} onOpen={openImage} />
+            <Screen src="/voyd/cart.jpg" alt="Cart page" label="My Cart" full={false} onOpen={openImage} />
+            <Screen src="/voyd/checkout.jpg" alt="Checkout page" label="Checkout" full={false} onOpen={openImage} />
           </div>
         </div>
       </section>
@@ -541,7 +541,7 @@ const VoydDetail = () => {
 
           {/* STYLE GUIDE SCREENSHOT */}
           <h3 className="vd-subheading" style={{ marginTop: "48px" }}>Style Guide</h3>
-          <Screen src="/voyd/styleguide.png" alt="Voyd Style Guide" label="Style Guide — Colors, Type, Components" sub={null} onOpen={openImage} />
+          <Screen src="/voyd/styleguide.jpg" alt="Voyd Style Guide" label="Style Guide — Colors, Type, Components" sub={null} onOpen={openImage} />
         </div>
       </section>
 

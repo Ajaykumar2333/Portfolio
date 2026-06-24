@@ -51,7 +51,7 @@ const JaldihireDetail = () => {
 
       {/* ── HERO BANNER IMAGE ── */}
       <div className="jh-img-banner">
-        <img src={img("JHHomepage.png")} alt="Jaldihire Homepage" className="jh-banner-img" />
+        <img src={img("JHHomepage.jpg")} alt="Jaldihire Homepage" className="jh-banner-img" />
       </div>
 
       {/* ── 01 OVERVIEW ── */}
@@ -140,7 +140,7 @@ const JaldihireDetail = () => {
               <span className="jh-screen-label">Homepage — Full View</span>
             </div>
             <div className="jh-screen-frame">
-              <img src={img("Homepagge.png")} alt="Jaldihire Homepage" className="jh-screen-img" />
+              <img src={img("Homepagge.jpg")} alt="Jaldihire Homepage" className="jh-screen-img" />
             </div>
           </div>
 
@@ -149,19 +149,19 @@ const JaldihireDetail = () => {
             <div className="jh-screen-card">
               <span className="jh-screen-label">Employer Page</span>
               <div className="jh-screen-frame">
-                <img src={img("Employer.png")} alt="Employer Landing Page" className="jh-screen-img" />
+                <img src={img("Employer.jpg")} alt="Employer Landing Page" className="jh-screen-img" />
               </div>
             </div>
             <div className="jh-screen-card">
               <span className="jh-screen-label">Applicant Page</span>
               <div className="jh-screen-frame">
-                <img src={img("Applicant.png")} alt="Applicant Landing Page" className="jh-screen-img" />
+                <img src={img("Applicant.jpg")} alt="Applicant Landing Page" className="jh-screen-img" />
               </div>
             </div>
             <div className="jh-screen-card">
               <span className="jh-screen-label">Interviewer Page</span>
               <div className="jh-screen-frame">
-                <img src={img("interviewer.png")} alt="Interviewer Page" className="jh-screen-img" />
+                <img src={img("interviewer.jpg")} alt="Interviewer Page" className="jh-screen-img" />
               </div>
             </div>
           </div>
@@ -171,13 +171,13 @@ const JaldihireDetail = () => {
             <div className="jh-screen-card">
               <span className="jh-screen-label">Services Page</span>
               <div className="jh-screen-frame">
-                <img src={img("Services with content.png")} alt="Services Page" className="jh-screen-img" />
+                <img src={img("Services with content.jpg")} alt="Services Page" className="jh-screen-img" />
               </div>
             </div>
             <div className="jh-screen-card">
               <span className="jh-screen-label">About Us Page</span>
               <div className="jh-screen-frame">
-                <img src={img("aboutus.png")} alt="About Us Page" className="jh-screen-img" />
+                <img src={img("aboutus.jpg")} alt="About Us Page" className="jh-screen-img" />
               </div>
             </div>
           </div>
@@ -243,7 +243,7 @@ const JaldihireDetail = () => {
               <span className="jh-screen-badge">Figma</span>
             </div>
             <div className="jh-screen-frame jh-frame-ds">
-              <img src={img("Style Guide.png")} alt="Style Guide" className="jh-screen-img" />
+              <img src={img("Style Guide.jpg")} alt="Style Guide" className="jh-screen-img" />
             </div>
           </div>
 
@@ -258,7 +258,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Buttons.png")} alt="Button Components" className="jh-screen-img" />
+                  <img src={img("Buttons.jpg")} alt="Button Components" className="jh-screen-img" />
                 </div>
               </div>
             </div>
@@ -273,7 +273,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Forminputs.png")} alt="Form Input Components" className="jh-screen-img" />
+                  <img src={img("Forminputs.jpg")} alt="Form Input Components" className="jh-screen-img" />
                 </div>
               </div>
             </div>
@@ -288,7 +288,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Alerts.png")} alt="Alert Components" className="jh-screen-img" />
+                  <img src={img("Alerts.jpg")} alt="Alert Components" className="jh-screen-img" />
                 </div>
               </div>
             </div>
@@ -303,7 +303,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Table.png")} alt="Table Components" className="jh-screen-img" />
+                  <img src={img("Table.jpg")} alt="Table Components" className="jh-screen-img" />
                 </div>
               </div>
             </div>
@@ -318,7 +318,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Dropdowns.png")} alt="Dropdown Components" className="jh-screen-img" />
+                  <img src={img("Dropdowns.jpg")} alt="Dropdown Components" className="jh-screen-img" />
                 </div>
               </div>
             </div>
@@ -333,7 +333,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Icons.png")} alt="Icon Library" className="jh-screen-img" />
+                  <img src={img("Icons.jpg")} alt="Icon Library" className="jh-screen-img" />
                 </div>
               </div>
             </div>
@@ -361,7 +361,7 @@ const JaldihireDetail = () => {
               <span className="jh-screen-badge jh-badge-dark">Figma → Dev Handoff</span>
             </div>
             <div className="jh-screen-frame jh-frame-dark">
-              <img src={img("EmployerDashboard.png")} alt="Employer Dashboard" className="jh-screen-img" />
+              <img src={img("EmployerDashboard.jpg")} alt="Employer Dashboard" className="jh-screen-img" />
             </div>
           </div>
 
@@ -406,7 +406,7 @@ const JaldihireDetail = () => {
             </div>
             <div className="jh-job-spotlight-screen">
               <div className="jh-screen-frame jh-frame-dark">
-                <img src={img("joblistingspage.png")} alt="Job Listings Page" className="jh-screen-img" />
+                <img src={img("joblistingspage.jpg")} alt="Job Listings Page" className="jh-screen-img" />
               </div>
             </div>
           </div>
@@ -427,7 +427,7 @@ const JaldihireDetail = () => {
             </div>
             <div className="jh-job-spotlight-screen">
               <div className="jh-screen-frame jh-frame-dark">
-                <img src={img("jobdescription.png")} alt="Job Description Page" className="jh-screen-img" />
+                <img src={img("jobdescription.jpg")} alt="Job Description Page" className="jh-screen-img" />
               </div>
             </div>
           </div>
@@ -448,7 +448,7 @@ const JaldihireDetail = () => {
             </div>
             <div className="jh-job-spotlight-screen">
               <div className="jh-screen-frame jh-frame-dark">
-                <img src={img("jobappplication.png")} alt="Job Application Form" className="jh-screen-img" />
+                <img src={img("jobappplication.jpg")} alt="Job Application Form" className="jh-screen-img" />
               </div>
             </div>
           </div>

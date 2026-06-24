@@ -188,10 +188,10 @@ const TrainexDetail = () => {
       {/* ── HERO BANNER IMAGE ── */}
       <div className="tx-img-banner">
         <img
-          src="/assets/hero-banner.png"
+          src="/assets/hero-banner.jpg"
           alt="Trainex Homepage"
           className="tx-banner-img tx-clickable-img"
-          onClick={() => openImage("/assets/Homepage.png", "Trainex Homepage")}
+          onClick={() => openImage("/assets/Homepage.jpg", "Trainex Homepage")}
         />
       </div>
 
@@ -379,10 +379,10 @@ const TrainexDetail = () => {
           </p>
           <div className="tx-wf-grid">
             {[
-              { src: "/assets/wf-homepage.png", label: "Homepage — Layout & Hierarchy" },
-              { src: "/assets/wf-courses.png",  label: "Courses Page — Filters & Cards" },
-              { src: "/assets/wf-lms.png",      label: "LMS Dashboard — Information Layout" },
-              { src: "/assets/wf-mobile.png",   label: "Mobile — Responsive Layout" },
+              { src: "/assets/wf-homepage.jpg", label: "Homepage — Layout & Hierarchy" },
+              { src: "/assets/wf-courses.jpg",  label: "Courses Page — Filters & Cards" },
+              { src: "/assets/wf-lms.jpg",      label: "LMS Dashboard — Information Layout" },
+              { src: "/assets/wf-mobile.jpg",   label: "Mobile — Responsive Layout" },
             ].map((wf, i) => (
               <div key={i} className="tx-wf-item">
                 <img
@@ -525,9 +525,9 @@ const TrainexDetail = () => {
 
           <div
             className="tx-screen-showcase-hero tx-clickable-img"
-            onClick={() => openImage("/assets/Homepage.png", "Homepage — Full View")}
+            onClick={() => openImage("/assets/Homepage.jpg", "Homepage — Full View")}
           >
-            <img src="/assets/Homepage.png" alt="Homepage Full View" />
+            <img src="/assets/Homepage.jpg" alt="Homepage Full View" />
             <div className="tx-screen-showcase-label">
               <h4>Homepage — Full View</h4>
               <span>Awareness + Conversion</span>
@@ -537,12 +537,12 @@ const TrainexDetail = () => {
           <h3 className="tx-subheading" style={{ marginTop: "48px" }}>Website Pages</h3>
           <div className="tx-bento-grid">
             {[
-              { num: "01", name: "Courses",       purpose: "Awareness + Conversion", src: "/assets/course.png" },
-              { num: "02", name: "Our Programs",   purpose: "Discovery + Enrollment",  src: "/assets/ourprograms.png" },
-              { num: "03", name: "Projects",       purpose: "Value Add",               src: "/assets/Projects.png" },
-              { num: "04", name: "Project Detail", purpose: "Deep Dive",               src: "/assets/Projectdetail.png" },
-              { num: "05", name: "Reviews",        purpose: "Trust Building",          src: "/assets/reviews.png" },
-              { num: "06", name: "Live Sessions",  purpose: "Engagement",              src: "/assets/livesession.png" },
+              { num: "01", name: "Courses",       purpose: "Awareness + Conversion", src: "/assets/course.jpg" },
+              { num: "02", name: "Our Programs",   purpose: "Discovery + Enrollment",  src: "/assets/ourprograms.jpg" },
+              { num: "03", name: "Projects",       purpose: "Value Add",               src: "/assets/Projects.jpg" },
+              { num: "04", name: "Project Detail", purpose: "Deep Dive",               src: "/assets/Projectdetail.jpg" },
+              { num: "05", name: "Reviews",        purpose: "Trust Building",          src: "/assets/reviews.jpg" },
+              { num: "06", name: "Live Sessions",  purpose: "Engagement",              src: "/assets/livesession.jpg" },
             ].map((page, i) => (
               <div
                 key={i}
@@ -570,9 +570,9 @@ const TrainexDetail = () => {
 
           <div
             className="tx-screen-showcase-hero tx-clickable-img"
-            onClick={() => openImage("/assets/lms-dashboard.png", "LMS Dashboard — Full View")}
+            onClick={() => openImage("/assets/lms-dashboard.jpg", "LMS Dashboard — Full View")}
           >
-            <img src="/assets/lms-dashboard.png" alt="LMS Dashboard" />
+            <img src="/assets/lms-dashboard.jpg" alt="LMS Dashboard" />
             <div className="tx-screen-showcase-label">
               <h4>LMS Dashboard — Full View</h4>
               <span>Student Home</span>
@@ -582,12 +582,12 @@ const TrainexDetail = () => {
           <h3 className="tx-subheading tx-subheading-white" style={{ marginTop: "48px" }}>LMS Screens</h3>
           <div className="tx-lms-bento">
             {[
-              { src: "/assets/lms-continue.png",   label: "Continue Learning Banner" },
-              { src: "/assets/lms-stats.png",       label: "Stat Cards" },
-              { src: "/assets/lms-assignments.png", label: "Assignments — Urgency Colors" },
-              { src: "/assets/lms-progress.png",    label: "Progress Overview" },
-              { src: "/assets/lms-recordings.png",  label: "Recordings Screen" },
-              { src: "/assets/lms-profile.png",     label: "My Profile Screen" },
+              { src: "/assets/lms-continue.jpg",   label: "Continue Learning Banner" },
+              { src: "/assets/lms-stats.jpg",       label: "Stat Cards" },
+              { src: "/assets/lms-assignments.jpg", label: "Assignments — Urgency Colors" },
+              { src: "/assets/lms-progress.jpg",    label: "Progress Overview" },
+              { src: "/assets/lms-recordings.jpg",  label: "Recordings Screen" },
+              { src: "/assets/lms-profile.jpg",     label: "My Profile Screen" },
             ].map((item, i) => (
               <div
                 key={i}
@@ -742,10 +742,10 @@ const TrainexDetail = () => {
               <div
                 key={name}
                 className="tx-poster-card tx-clickable-img"
-                onClick={() => openImage(`/assets/${name}.png`, `Poster ${i + 1}`)}
+                onClick={() => openImage(`/assets/${name}.jpg`, `Poster ${i + 1}`)}
               >
                 <img
-                  src={`/assets/${name}.png`}
+                  src={`/assets/${name}.jpg`}
                   alt={`Poster ${i + 1}`}
                   className="tx-screen-img"
                   style={{ aspectRatio: "1/1", objectFit: "cover" }}
