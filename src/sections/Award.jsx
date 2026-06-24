@@ -48,7 +48,7 @@ const Award = () => {
           <div className="award-img-wrap">
             <div>
               
-            <img src="./assets/Bestemployee.jpg" alt="" />
+            <img src="./assets/Bestemployee.png" alt="" />
             </div>
             <div className="award-badge">
             </div>
