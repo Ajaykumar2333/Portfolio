@@ -53,7 +53,7 @@ const HRMSDetail = () => {
             {/* ── HERO IMAGE ── */}
             <div className="hrms-hero-img">
                 <img
-                    src="/images/hrmsadmin-manager/Admin dashboard.jpg"
+                    src="/images/hrmsadmin-manager/Admin dashboard.png"
                     alt="Allyted HRMS Dashboard"
                     className="hrms-hero-img-full"
                 />

@@ -8,7 +8,7 @@ folders = [
     r"public\images",
 ]
 
-extensions = ('.jpg', '.jpg', '.jpeg')
+extensions = ('.png', '.jpg', '.jpeg')
 
 total_before = 0
 total_after = 0
@@ -24,27 +24,23 @@ for folder in folders:
                 try:
                     img = Image.open(filepath)
                     
-                    # Resize if very large (max 1280px width)
-                    if img.width > 1280:
-                        ratio = 1280 / img.width
-                        new_size = (1280, int(img.height * ratio))
+                    # Resize if very large (max 1920px width)
+                    if img.width > 1920:
+                        ratio = 1920 / img.width
+                        new_size = (1920, int(img.height * ratio))
                         img = img.resize(new_size, Image.LANCZOS)
 
-                    # Convert all to JPEG for maximum compression
-                    jpeg_path = os.path.splitext(filepath)[0] + '.jpg'
-                    
-                    if img.mode in ('RGBA', 'P', 'LA'):
-                        img = img.convert('RGB')
-                    elif img.mode != 'RGB':
-                        img = img.convert('RGB')
-                    
-                    img.save(jpeg_path, 'JPEG', quality=60, optimize=True)
-                    
-                    # Remove original PNG if we converted it
-                    if filepath.lower().endswith('.jpg') and jpeg_path != filepath:
-                        os.remove(filepath)
+                    # Save JPGs with better quality, keep PNGs as PNG
+                    if file.lower().endswith('.jpg') or file.lower().endswith('.jpeg'):
+                        if img.mode in ('RGBA', 'P'):
+                            img = img.convert('RGB')
+                        img.save(filepath, 'JPEG', quality=85, optimize=True)
+                        size_after = os.path.getsize(filepath)
+                    else:
+                        # Keep PNG as PNG, just optimize
+                        img.save(filepath, 'PNG', optimize=True)
+                        size_after = os.path.getsize(filepath)
 
-                    size_after = os.path.getsize(jpeg_path)
                     total_after += size_after
                     saved = size_before - size_after
                     print(f"✅ {file}: {size_before//1024}KB → {size_after//1024}KB (saved {saved//1024}KB)")

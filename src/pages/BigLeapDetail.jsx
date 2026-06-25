@@ -673,7 +673,16 @@ const BigLeapDetail = () => {
         <div className="bl-inner">
           <div className="bl-section-label">09 — Design System</div>
           <h2 className="bl-heading">Colors, decisions & <span className="bl-accent">thinking behind them</span></h2>
+        </div>
 
+        {/* Design System full-width image */}
+        <div className="bl-inner-wide">
+          <div className="bl-screen-frame bl-screen-frame-light" style={{marginBottom: "64px"}}>
+            <img src={img("DesignSystem.png")} alt="Big Leap Design System" className="bl-screen-img" />
+          </div>
+        </div>
+
+        <div className="bl-inner">
           <h3 className="bl-subheading">Color System</h3>
           <p className="bl-body">Two visual systems — one for the public website, one for the admin — sharing the same brand identity.</p>
 
