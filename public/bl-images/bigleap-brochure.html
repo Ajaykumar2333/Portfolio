@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BigLeap Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #0d2040;
+    --navy-light: #132845;
+    --orange: #f16232;
+    --orange-light: #ff6b35;
+    --white: #ffffff;
+    --light-gray: #f0f4f8;
+    --mid-gray: #dce6f0;
+    --dark-gray: #8aa0b8;
+    --green: #22c55e;
+    --yellow: #fbbf24;
+    --text-body: #1e293b;
+  }
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+    background: #c8d6e5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .brochure {
+    width: 1280px;
+    background: var(--light-gray);
+    display: grid;
+    grid-template-columns: 220px 310px 440px 310px;
+    grid-template-rows: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  /* ── COL 1: LEFT PANEL ── */
+  .col-left {
+    grid-column: 1;
+    grid-row: 1;
+    background: var(--navy);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo-area {
+    padding: 16px 14px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .logo-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    position: relative;
+  }
+
+  .logo-icon svg { width: 100%; height: 100%; }
+
+  .logo-text-big {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text-big span { color: var(--orange); }
+
+  .logo-sub {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--dark-gray);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    padding-left: 42px;
+  }
+
+  .logo-tagline {
+    font-size: 9px;
+    color: var(--dark-gray);
+    font-style: italic;
+    padding-left: 42px;
+  }
+
+  .hero-headline {
+    padding: 18px 14px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .hero-headline .become {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--dark-gray);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .hero-headline h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .hero-headline h1 .orange { color: var(--orange); }
+
+  .hero-cta-box {
+    background: var(--orange);
+    margin: 0 14px;
+    padding: 8px 10px;
+    border-radius: 3px;
+    margin-top: 12px;
+  }
+
+  .hero-cta-box p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.4;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .hero-desc {
+    padding: 10px 14px 0;
+    font-size: 9px;
+    color: var(--dark-gray);
+    line-height: 1.6;
+  }
+
+  .hero-desc strong { color: var(--orange); font-weight: 700; }
+
+  .hero-img-placeholder {
+    margin: 14px 0 0;
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(180deg, var(--navy-mid) 0%, #0a2040 50%, #05111f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-img-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 60%, rgba(0,100,200,0.25) 0%, transparent 70%);
+  }
+
+  .engineer-silhouette {
+    font-size: 70px;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 20px rgba(0,100,255,0.4));
+    z-index: 1;
+  }
+
+  .three-pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .pillar {
+    padding: 10px 6px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .pillar:last-child { border-right: none; }
+
+  .pillar-icon {
+    font-size: 18px;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .pillar-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 7.5px;
+    font-weight: 800;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .pillar-desc {
+    font-size: 7px;
+    color: var(--dark-gray);
+    line-height: 1.5;
+  }
+
+  .quote-bar {
+    background: var(--navy-mid);
+    padding: 12px 14px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .quote-bar p {
+    font-size: 9.5px;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .quote-bar p::before { content: '\201C'; color: var(--orange); font-size: 24px; line-height: 0; vertical-align: -8px; margin-right: 2px; }
+  .quote-bar p::after  { content: '\201D'; color: var(--orange); font-size: 24px; line-height: 0; vertical-align: -8px; margin-left: 2px; }
+
+  .contact-bar {
+    background: #071220;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 7.5px;
+    color: var(--dark-gray);
+  }
+
+  .contact-item span { font-size: 9px; }
+
+  /* ── COL 2: DOES THIS SOUND LIKE YOU ── */
+  .col-mid-left {
+    grid-column: 2;
+    grid-row: 1;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-left: 2px solid var(--mid-gray);
+  }
+
+  .section-header-plain {
+    padding: 14px 16px 10px;
+    border-bottom: 2px solid var(--mid-gray);
+  }
+
+  .section-header-plain h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .section-header-plain h2 .orange { color: var(--orange); }
+
+  .pain-list {
+    padding: 10px 16px;
+    border-bottom: 2px solid var(--mid-gray);
+  }
+
+  .pain-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .pain-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff0eb;
+    border: 1.5px solid var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pain-icon::after {
+    content: '✕';
+    font-size: 7px;
+    color: var(--orange);
+    font-weight: 900;
+  }
+
+  .pain-item p {
+    font-size: 9px;
+    color: var(--text-body);
+    line-height: 1.5;
+  }
+
+  .not-talent-box {
+    margin: 10px 16px;
+    background: var(--light-gray);
+    border: 1.5px solid var(--mid-gray);
+    border-radius: 4px;
+    padding: 10px 12px;
+  }
+
+  .not-talent-box p {
+    font-size: 9px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .not-talent-box strong {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--navy);
+    display: block;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .not-talent-box strong .orange { color: var(--orange); }
+
+  .difference-section {
+    padding: 10px 16px;
+    border-top: 2px solid var(--mid-gray);
+  }
+
+  .diff-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .diff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1.5px solid var(--mid-gray);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .diff-col-header {
+    padding: 7px 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .diff-col-header.students {
+    background: #e8ecf0;
+    color: var(--navy);
+    border-right: 1.5px solid var(--mid-gray);
+  }
+
+  .diff-col-header.bigleap {
+    background: var(--orange);
+    color: var(--white);
+  }
+
+  .vs-badge-row {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 0;
+  }
+
+  .diff-row {
+    display: contents;
+  }
+
+  .diff-cell {
+    padding: 5px 8px;
+    font-size: 8px;
+    line-height: 1.5;
+    border-top: 1px solid var(--mid-gray);
+  }
+
+  .diff-cell.left {
+    border-right: 1.5px solid var(--mid-gray);
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .diff-cell.left::before {
+    content: '📺';
+    font-size: 9px;
+    flex-shrink: 0;
+  }
+
+  .diff-cell.left.demo::before { content: '📋'; }
+  .diff-cell.left.tool::before { content: '🔧'; }
+  .diff-cell.left.assign::before { content: '📄'; }
+  .diff-cell.left.cert::before { content: '🎖️'; }
+  .diff-cell.left.finish::before { content: '🏁'; }
+  .diff-cell.left.hope::before { content: '🤞'; }
+
+  .diff-cell.right {
+    color: #1e3a5f;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .diff-cell.right::before {
+    content: '⚙️';
+    font-size: 9px;
+    flex-shrink: 0;
+  }
+
+  .diff-cell.right.solve::before { content: '💼'; }
+  .diff-cell.right.understand::before { content: '🏗️'; }
+  .diff-cell.right.collab::before { content: '👥'; }
+  .diff-cell.right.practical::before { content: '💡'; }
+  .diff-cell.right.mindset::before { content: '🧠'; }
+  .diff-cell.right.prep::before { content: '🚀'; }
+
+  .vs-separator {
+    position: relative;
+    grid-column: 1 / -1;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .journey-section {
+    padding: 10px 16px;
+    border-top: 2px solid var(--mid-gray);
+    margin-top: auto;
+  }
+
+  .journey-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .journey-flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2px;
+  }
+
+  .journey-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex: 1;
+  }
+
+  .journey-icon-box {
+    width: 30px;
+    height: 30px;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .journey-label {
+    font-size: 7px;
+    color: var(--text-body);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .journey-arrow {
+    color: var(--orange);
+    font-size: 10px;
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+
+  .transform-bar {
+    background: var(--navy);
+    padding: 10px 16px;
+    text-align: center;
+  }
+
+  .transform-bar p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+  }
+
+  .transform-bar p .orange { color: var(--orange); }
+
+  /* ── COL 3: CENTER ── */
+  .col-center {
+    grid-column: 3;
+    grid-row: 1;
+    background: var(--light-gray);
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid var(--mid-gray);
+    border-right: 2px solid var(--mid-gray);
+  }
+
+  .center-top-header {
+    background: var(--navy);
+    padding: 12px 16px;
+    text-align: center;
+  }
+
+  .center-top-header h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+  }
+
+  .center-top-header h2 .orange { color: var(--orange); }
+
+  /* Industry Simulation */
+  .sim-section {
+    background: var(--white);
+    margin: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1.5px solid var(--mid-gray);
+  }
+
+  .sim-header {
+    background: var(--orange);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sim-header .badge {
+    background: rgba(255,255,255,0.25);
+    border-radius: 2px;
+    padding: 2px 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .sim-header h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .sim-body {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 6px;
+    align-items: start;
+  }
+
+  .sim-steps-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sim-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .step-num {
+    width: 20px;
+    height: 20px;
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 7.5px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .step-icon {
+    width: 22px;
+    height: 22px;
+    background: #e8ecf0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .step-label {
+    font-size: 8px;
+    font-weight: 600;
+    color: var(--text-body);
+    line-height: 1.3;
+  }
+
+  .sim-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .industry-ready-circle {
+    width: 75px;
+    height: 75px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6px;
+    border: 3px solid var(--navy);
+    position: relative;
+    top: 20px;
+  }
+
+  .irc-num {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .irc-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .irc-sub {
+    font-size: 6.5px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.3;
+  }
+
+  /* Career Acceleration */
+  .career-section {
+    background: var(--white);
+    margin: 0 10px 10px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1.5px solid var(--mid-gray);
+  }
+
+  .career-header {
+    background: var(--navy);
+    padding: 6px 12px;
+  }
+
+  .career-header h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    text-align: center;
+  }
+
+  .career-flow {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+
+  .career-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    position: relative;
+  }
+
+  .career-icon-box {
+    width: 36px;
+    height: 36px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--white);
+  }
+
+  .career-label {
+    font-size: 7.5px;
+    font-weight: 700;
+    color: var(--text-body);
+    line-height: 1.3;
+  }
+
+  .career-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orange);
+    font-size: 14px;
+    font-weight: 900;
+    padding-top: 8px;
+  }
+
+  .career-flow-row {
+    padding: 0 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    border-top: 1px solid var(--mid-gray);
+    padding-top: 8px;
+    margin: 0 10px 8px;
+  }
+
+  .get-hired-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--orange);
+    margin: 0 10px 10px;
+    border-radius: 4px;
+    padding: 8px;
+  }
+
+  .get-hired-btn .icon { font-size: 18px; }
+
+  .get-hired-btn span {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Mindset */
+  .mindset-section {
+    background: var(--navy);
+    margin: 0 10px 10px;
+    border-radius: 4px;
+    padding: 8px 10px;
+  }
+
+  .mindset-header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .mindset-icons {
+    display: flex;
+    justify-content: space-around;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .mindset-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .mindset-icon-box {
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .mindset-icon-item span {
+    font-size: 7px;
+    color: var(--dark-gray);
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .mindset-develop {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .develop-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.05);
+    padding: 4px 6px;
+    border-radius: 3px;
+  }
+
+  .develop-item::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 900;
+    font-size: 9px;
+    flex-shrink: 0;
+  }
+
+  .develop-item span {
+    font-size: 7.5px;
+    color: var(--dark-gray);
+    line-height: 1.3;
+  }
+
+  /* Learn build bar */
+  .learn-bar {
+    background: var(--orange);
+    margin: 0 10px 10px;
+    border-radius: 4px;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .learn-bar p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* ── COL 4: RIGHT ── */
+  .col-right {
+    grid-column: 4;
+    grid-row: 1;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid var(--mid-gray);
+  }
+
+  .ecosystem-header {
+    background: var(--navy);
+    padding: 10px 14px;
+    text-align: center;
+  }
+
+  .ecosystem-header h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ecosystem-header p {
+    font-size: 8px;
+    color: var(--dark-gray);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  .tech-stack {
+    padding: 8px 10px;
+    flex: 1;
+  }
+
+  .tech-category {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--mid-gray);
+    border-radius: 3px;
+    margin-bottom: 5px;
+    overflow: hidden;
+  }
+
+  .tech-cat-label {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 7px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    padding: 6px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .tech-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 5px 8px;
+    align-items: center;
+  }
+
+  .tech-chip {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--light-gray);
+    border: 1px solid var(--mid-gray);
+    border-radius: 3px;
+    padding: 3px 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 7.5px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .tech-chip .chip-icon { font-size: 11px; }
+
+  .tech-chip.highlight {
+    background: #fff3ee;
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  /* Graduate with */
+  .graduate-section {
+    background: var(--navy);
+    margin: 0 10px;
+    border-radius: 4px;
+    padding: 8px 10px;
+  }
+
+  .graduate-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .graduate-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .grad-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 7.5px;
+    color: var(--dark-gray);
+    line-height: 1.4;
+  }
+
+  .grad-item::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 900;
+    flex-shrink: 0;
+    font-size: 9px;
+  }
+
+  /* Program Details */
+  .program-section {
+    margin: 8px 10px 0;
+    border: 1.5px solid var(--orange);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .program-header {
+    background: var(--orange);
+    padding: 5px 10px;
+    text-align: center;
+  }
+
+  .program-header h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .program-body {
+    padding: 8px 10px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .program-details-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    flex: 1;
+  }
+
+  .prog-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 4px;
+    background: var(--light-gray);
+    border-radius: 3px;
+    gap: 2px;
+  }
+
+  .prog-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 6.5px;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .prog-icon { font-size: 16px; }
+
+  .prog-value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 900;
+    color: var(--navy);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .prog-value small {
+    display: block;
+    font-size: 7px;
+    font-weight: 600;
+    color: var(--dark-gray);
+  }
+
+  .qr-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--navy);
+    padding: 6px;
+    border-radius: 3px;
+    margin-left: 8px;
+    gap: 3px;
+  }
+
+  .qr-box {
+    width: 52px;
+    height: 52px;
+    background: var(--white);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qr-box svg { width: 44px; height: 44px; }
+
+  .qr-label {
+    font-size: 6px;
+    color: var(--dark-gray);
+    text-align: center;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .take-leap-bar {
+    background: var(--navy);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 10px 10px;
+    border-radius: 4px;
+  }
+
+  .take-leap-bar .small-text {
+    font-size: 7.5px;
+    color: var(--dark-gray);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .take-leap-bar .big-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 900;
+    color: var(--orange);
+    text-align: right;
+    line-height: 1.1;
+  }
+
+  /* helpers */
+  .orange { color: var(--orange); }
+  .text-white { color: var(--white); }
+  .fw-900 { font-weight: 900; }
+  .center { text-align: center; }
+
+  /* career flow with arrows between */
+  .career-grid-with-arrows {
+    padding: 8px 10px;
+    display: grid;
+    grid-template-columns: 1fr 12px 1fr 12px 1fr 12px 1fr;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .career-arrow-inline {
+    text-align: center;
+    color: var(--orange);
+    font-size: 10px;
+    font-weight: 900;
+    padding-bottom: 16px;
+  }
+
+  .career-grid-row2 {
+    padding: 2px 10px 8px;
+    display: grid;
+    grid-template-columns: 1fr 12px 1fr 12px 1fr 12px 1fr;
+    gap: 2px;
+    align-items: center;
+    border-top: 1px solid var(--mid-gray);
+    margin-top: 2px;
+    padding-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="brochure">
+
+  <!-- ════════════════ COL 1: LEFT ════════════════ -->
+  <div class="col-left">
+    <div class="logo-area">
+      <div class="logo-brand">
+        <div class="logo-icon">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="#f16232"/>
+            <path d="M10 28 L20 10 L30 28" stroke="white" stroke-width="3" fill="none" stroke-linejoin="round"/>
+            <path d="M13 23 L27 23" stroke="white" stroke-width="2.5"/>
+            <circle cx="20" cy="10" r="3" fill="#0a1628"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-text-big">BIG<span>LEAP</span></div>
+        </div>
+      </div>
+      <div class="logo-sub">Technologies</div>
+      <div class="logo-tagline">From Learning to Real Engineering</div>
+    </div>
+
+    <div class="hero-headline">
+      <span class="become">Become the</span>
+      <h1>ENGINEER<br><span class="orange">COMPANIES</span><br>WANT TO<br>HIRE.</h1>
+    </div>
+
+    <div class="hero-cta-box">
+      <p>Build Real Engineering Experience<br>Before Your First Job.</p>
+    </div>
+
+    <div class="hero-desc" style="margin-top:8px;">
+      A <strong>Data Engineering</strong> Industry Experience Program designed to bridge the gap between academic learning and industry expectations.
+    </div>
+
+    <div class="hero-img-placeholder">
+      <div class="engineer-silhouette">👨‍💻</div>
+    </div>
+
+    <div class="three-pillars">
+      <div class="pillar">
+        <span class="pillar-icon">🏭</span>
+        <span class="pillar-title">Industry<br>Simulation</span>
+        <div class="pillar-desc">Experience real engineering workflows.</div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">🚀</span>
+        <span class="pillar-title">Career<br>Acceleration</span>
+        <div class="pillar-desc">Prepare for every step of the hiring journey.</div>
+      </div>
+      <div class="pillar">
+        <span class="pillar-icon">🌐</span>
+        <span class="pillar-title">Complete<br>Ecosystem</span>
+        <div class="pillar-desc">Learn how modern data platforms are built end-to-end.</div>
+      </div>
+    </div>
+
+    <div class="quote-bar">
+      <p>Your first job shouldn't be your first engineering experience.</p>
+    </div>
+
+    <div class="contact-bar">
+      <div class="contact-item"><span>🌐</span> www.bigleaptech.in</div>
+      <div class="contact-item"><span>✉️</span> info@bigleaptech.in</div>
+      <div class="contact-item"><span>📞</span> +91 7075471611</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ COL 2: DOES THIS SOUND LIKE YOU ════════════════ -->
+  <div class="col-mid-left">
+    <div class="section-header-plain">
+      <h2>DOES THIS SOUND LIKE <span class="orange">YOU?</span></h2>
+    </div>
+
+    <div class="pain-list">
+      <div class="pain-item"><div class="pain-icon"></div><p>Learned SQL but don't know where it's used.</p></div>
+      <div class="pain-item"><div class="pain-icon"></div><p>Learned Python but never built a real application.</p></div>
+      <div class="pain-item"><div class="pain-icon"></div><p>Practiced trainer-led demo projects but never solved a business problem.</p></div>
+      <div class="pain-item"><div class="pain-icon"></div><p>Unsure what to learn next.</p></div>
+      <div class="pain-item"><div class="pain-icon"></div><p>No confidence in interviews.</p></div>
+      <div class="pain-item"><div class="pain-icon"></div><p>Resume isn't getting interview calls.</p></div>
+      <div class="pain-item"><div class="pain-icon"></div><p>Don't know how Data Engineers actually work.</p></div>
+      <div class="pain-item"><div class="pain-icon"></div><p>Worried about graduating without the right skills.</p></div>
+    </div>
+
+    <div class="not-talent-box">
+      <p>This isn't because you lack talent.</p>
+      <strong>It's because nobody taught you how <span class="orange">engineering teams actually work.</span></strong>
+    </div>
+
+    <div class="difference-section">
+      <div class="diff-title">THE DIFFERENCE THAT CHANGES YOUR FUTURE</div>
+      <div class="diff-grid">
+        <div class="diff-col-header students">MOST STUDENTS EXPERIENCE</div>
+        <div class="diff-col-header bigleap">AT BIG LEAP YOU'LL EXPERIENCE</div>
+
+        <div class="diff-cell left">Watch tutorials</div>
+        <div class="diff-cell right">Build complete solutions</div>
+
+        <div class="diff-cell left demo">Follow trainer demos</div>
+        <div class="diff-cell right solve">Solve real business problems</div>
+
+        <div class="diff-cell left tool">Practice isolated tools</div>
+        <div class="diff-cell right understand">Understand complete data platforms</div>
+
+        <div class="diff-cell left assign">Individual assignments</div>
+        <div class="diff-cell right collab">Engineering collaboration</div>
+
+        <div class="diff-cell left cert">Collect certificates</div>
+        <div class="diff-cell right practical">Gain practical experience</div>
+
+        <div class="diff-cell left finish">Finish the course</div>
+        <div class="diff-cell right mindset">Develop engineering mindset</div>
+
+        <div class="diff-cell left hope">Hope for interviews</div>
+        <div class="diff-cell right prep">Prepare for every stage of hiring</div>
+      </div>
+    </div>
+
+    <div class="journey-section">
+      <div class="journey-title">YOUR JOURNEY WITH BIG LEAP</div>
+      <div class="journey-flow">
+        <div class="journey-step">
+          <div class="journey-icon-box">🎓</div>
+          <div class="journey-label">College<br>Student</div>
+        </div>
+        <div class="journey-arrow">→</div>
+        <div class="journey-step">
+          <div class="journey-icon-box">📚</div>
+          <div class="journey-label">Learn<br>Fundamentals</div>
+        </div>
+        <div class="journey-arrow">→</div>
+        <div class="journey-step">
+          <div class="journey-icon-box">🔬</div>
+          <div class="journey-label">Practice in<br>Eng. Lab</div>
+        </div>
+        <div class="journey-arrow">→</div>
+        <div class="journey-step">
+          <div class="journey-icon-box">🏭</div>
+          <div class="journey-label">Industry<br>Simulation</div>
+        </div>
+        <div class="journey-arrow">→</div>
+        <div class="journey-step">
+          <div class="journey-icon-box">📈</div>
+          <div class="journey-label">Career<br>Acceleration</div>
+        </div>
+        <div class="journey-arrow">→</div>
+        <div class="journey-step">
+          <div class="journey-icon-box">💼</div>
+          <div class="journey-label">Interview<br>Ready</div>
+        </div>
+        <div class="journey-arrow">→</div>
+        <div class="journey-step">
+          <div class="journey-icon-box" style="background:var(--orange);">👨‍💻</div>
+          <div class="journey-label" style="font-weight:800;color:var(--orange);">Data<br>Engineer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="transform-bar" style="margin-top:auto;">
+      <p>WE DON'T JUST TEACH TECHNOLOGIES.<br>WE <span class="orange">TRANSFORM</span> YOU INTO ENGINEERS.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════ COL 3: CENTER ════════════════ -->
+  <div class="col-center">
+    <div class="center-top-header">
+      <h2>HERE'S HOW WE PREPARE YOU FOR<br>YOUR <span class="orange">FIRST DATA ENGINEERING ROLE</span></h2>
+    </div>
+
+    <!-- Industry Simulation -->
+    <div class="sim-section">
+      <div class="sim-header">
+        <span class="badge">🏭</span>
+        <h3>INDUSTRY SIMULATION — LEARN BY DOING REAL ENGINEERING</h3>
+      </div>
+      <div class="sim-body">
+        <div class="sim-steps-col">
+          <div class="sim-step">
+            <div class="step-num">01</div>
+            <div class="step-icon">📋</div>
+            <div class="step-label">Business Requirement</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">02</div>
+            <div class="step-icon">🔍</div>
+            <div class="step-label">Requirement Analysis</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">03</div>
+            <div class="step-icon">🏗️</div>
+            <div class="step-label">Solution / Architecture Design</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">04</div>
+            <div class="step-icon">🗄️</div>
+            <div class="step-label">SQL & Data Modeling</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">05</div>
+            <div class="step-icon">🐍</div>
+            <div class="step-label">Python Development</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">06</div>
+            <div class="step-icon">⚡</div>
+            <div class="step-label">Spark & ETL Development</div>
+          </div>
+        </div>
+
+        <div class="sim-center">
+          <div class="industry-ready-circle">
+            <div class="irc-num">12</div>
+            <div class="irc-label">INDUSTRY<br>READY</div>
+            <div class="irc-sub">Confident.<br>Capable.<br>Hireable.</div>
+          </div>
+        </div>
+
+        <div class="sim-steps-col">
+          <div class="sim-step">
+            <div class="step-num">07</div>
+            <div class="step-icon">🔀</div>
+            <div class="step-label">Git Collaboration</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">08</div>
+            <div class="step-icon">🐛</div>
+            <div class="step-label">Testing & Debugging</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">09</div>
+            <div class="step-icon">👁️</div>
+            <div class="step-label">Code Review</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">10</div>
+            <div class="step-icon">📝</div>
+            <div class="step-label">Documentation</div>
+          </div>
+          <div class="sim-step">
+            <div class="step-num">11</div>
+            <div class="step-icon">📊</div>
+            <div class="step-label">Presentation to Business / Stakeholders</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Career Acceleration -->
+    <div class="career-section">
+      <div class="career-header">
+        <h3>CAREER ACCELERATION PROGRAM — EVERYTHING YOU NEED TO CRACK THE HIRING PROCESS</h3>
+      </div>
+
+      <div class="career-grid-with-arrows">
+        <div class="career-item">
+          <div class="career-icon-box">🧮</div>
+          <div class="career-label">Aptitude &<br>Reasoning</div>
+        </div>
+        <div class="career-arrow-inline">→</div>
+        <div class="career-item">
+          <div class="career-icon-box">💬</div>
+          <div class="career-label">Communication<br>Skills</div>
+        </div>
+        <div class="career-arrow-inline">→</div>
+        <div class="career-item">
+          <div class="career-icon-box">💻</div>
+          <div class="career-label">Daily Coding<br>Challenges</div>
+        </div>
+        <div class="career-arrow-inline">→</div>
+        <div class="career-item">
+          <div class="career-icon-box">📄</div>
+          <div class="career-label">Resume<br>Building</div>
+        </div>
+      </div>
+
+      <div class="career-grid-row2">
+        <div class="career-item">
+          <div class="career-icon-box">💼</div>
+          <div class="career-label">LinkedIn<br>Optimization</div>
+        </div>
+        <div class="career-arrow-inline">→</div>
+        <div class="career-item">
+          <div class="career-icon-box">🎤</div>
+          <div class="career-label">Mock<br>Interviews</div>
+        </div>
+        <div class="career-arrow-inline">→</div>
+        <div class="career-item">
+          <div class="career-icon-box">🏢</div>
+          <div class="career-label">Company-Specific<br>Preparation</div>
+        </div>
+        <div class="career-arrow-inline">→</div>
+        <div class="career-item">
+          <div class="career-icon-box">🧭</div>
+          <div class="career-label">Career<br>Mentorship</div>
+        </div>
+      </div>
+
+      <div class="get-hired-btn">
+        <span class="icon">⚙️</span>
+        <span>GET HIRED</span>
+        <span class="icon">📋</span>
+      </div>
+    </div>
+
+    <!-- Engineering Mindset -->
+    <div class="mindset-section">
+      <div class="mindset-header">⚡ ENGINEERING MINDSET — THINK. DESIGN. BUILD. DELIVER.</div>
+      <div class="mindset-icons">
+        <div class="mindset-icon-item">
+          <div class="mindset-icon-box">🔎</div>
+          <span>Analyze<br>Requirements</span>
+        </div>
+        <div class="mindset-icon-item">
+          <div class="mindset-icon-box">📐</div>
+          <span>Design Scalable<br>Solutions</span>
+        </div>
+        <div class="mindset-icon-item">
+          <div class="mindset-icon-box">✍️</div>
+          <span>Write Clean &<br>Maintainable Code</span>
+        </div>
+        <div class="mindset-icon-item">
+          <div class="mindset-icon-box">🐛</div>
+          <span>Debug<br>Systematically</span>
+        </div>
+        <div class="mindset-icon-item">
+          <div class="mindset-icon-box">🤝</div>
+          <span>Collaborate<br>Like a Pro</span>
+        </div>
+        <div class="mindset-icon-item">
+          <div class="mindset-icon-box">💡</div>
+          <span>Communicate<br>Technical Ideas</span>
+        </div>
+      </div>
+      <div class="mindset-develop">
+        <div class="develop-item"><span>Engineering problem-solving approach</span></div>
+        <div class="develop-item"><span>Continuous learning mindset</span></div>
+        <div class="develop-item"><span>Ownership & accountability</span></div>
+        <div class="develop-item"><span>Professional work ethics</span></div>
+        <div class="develop-item"><span>Attention to detail</span></div>
+        <div class="develop-item"><span>Impact-driven thinking</span></div>
+      </div>
+    </div>
+
+    <div class="learn-bar">
+      <p>🚀 LEARN. BUILD. EXPERIENCE. GET HIRED.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════ COL 4: RIGHT ════════════════ -->
+  <div class="col-right">
+    <div class="ecosystem-header">
+      <h2>COMPLETE DATA ENGINEERING ECOSYSTEM</h2>
+      <p>Every technology is taught in the context of building real-world data pipelines — not as isolated topics.</p>
+    </div>
+
+    <div class="tech-stack">
+
+      <div class="tech-category">
+        <div class="tech-cat-label">Programming &amp; Basics</div>
+        <div class="tech-items">
+          <div class="tech-chip"><span class="chip-icon">🗄️</span> SQL</div>
+          <div class="tech-chip"><span class="chip-icon">🐍</span> Python</div>
+          <div class="tech-chip"><span class="chip-icon">🐧</span> Linux</div>
+          <div class="tech-chip"><span class="chip-icon">💻</span> Bash Scripting</div>
+        </div>
+      </div>
+
+      <div class="tech-category">
+        <div class="tech-cat-label">Data Engineering</div>
+        <div class="tech-items">
+          <div class="tech-chip"><span class="chip-icon">🐘</span> Apache Hadoop</div>
+          <div class="tech-chip"><span class="chip-icon">🐝</span> Apache Hive</div>
+          <div class="tech-chip highlight"><span class="chip-icon">⚡</span> Spark</div>
+          <div class="tech-chip"><span class="chip-icon">🔥</span> PySpark</div>
+        </div>
+      </div>
+
+      <div class="tech-category">
+        <div class="tech-cat-label">Streaming &amp; Real Time</div>
+        <div class="tech-items">
+          <div class="tech-chip highlight"><span class="chip-icon">⚡</span> Spark Streaming</div>
+          <div class="tech-chip highlight"><span class="chip-icon">📨</span> Kafka</div>
+        </div>
+      </div>
+
+      <div class="tech-category">
+        <div class="tech-cat-label">Orchestration &amp; Workflow</div>
+        <div class="tech-items">
+          <div class="tech-chip"><span class="chip-icon">🌬️</span> Apache Airflow</div>
+          <div class="tech-chip"><span class="chip-icon">🔷</span> dbt Core</div>
+        </div>
+      </div>
+
+      <div class="tech-category">
+        <div class="tech-cat-label">Data Platforms &amp; Storage</div>
+        <div class="tech-items">
+          <div class="tech-chip"><span class="chip-icon">🏞️</span> Delta Lake</div>
+          <div class="tech-chip"><span class="chip-icon">🍃</span> MongoDB</div>
+          <div class="tech-chip"><span class="chip-icon">🏛️</span> Data Warehousing</div>
+        </div>
+      </div>
+
+      <div class="tech-category">
+        <div class="tech-cat-label">Data Modeling</div>
+        <div class="tech-items">
+          <div class="tech-chip"><span class="chip-icon">📊</span> Dimensional Modeling</div>
+        </div>
+      </div>
+
+      <div class="tech-category">
+        <div class="tech-cat-label">Cloud Platforms</div>
+        <div class="tech-items">
+          <div class="tech-chip"><span class="chip-icon">☁️</span> Microsoft Azure</div>
+          <div class="tech-chip"><span class="chip-icon">🌐</span> Google Cloud Platform</div>
+        </div>
+      </div>
+
+      <div class="tech-category">
+        <div class="tech-cat-label">DevOps &amp; Engineering</div>
+        <div class="tech-items">
+          <div class="tech-chip"><span class="chip-icon">🔀</span> Git</div>
+          <div class="tech-chip"><span class="chip-icon">🐙</span> GitHub</div>
+          <div class="tech-chip"><span class="chip-icon">🐳</span> Docker</div>
+          <div class="tech-chip"><span class="chip-icon">☸️</span> Kubernetes</div>
+          <div class="tech-chip"><span class="chip-icon">🤖</span> Jenkins</div>
+          <div class="tech-chip"><span class="chip-icon">🔄</span> CI/CD</div>
+        </div>
+      </div>
+
+      <div class="tech-category">
+        <div class="tech-cat-label">Analytics &amp; Visualization</div>
+        <div class="tech-items">
+          <div class="tech-chip highlight"><span class="chip-icon">📊</span> Power BI</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Graduate with -->
+    <div class="graduate-section">
+      <div class="graduate-title">WHAT YOU'LL GRADUATE WITH</div>
+      <div class="graduate-grid">
+        <div class="grad-item">A structured learning roadmap</div>
+        <div class="grad-item">Confidence to ace interviews</div>
+        <div class="grad-item">Hands-on engineering experience</div>
+        <div class="grad-item">Understanding of modern data ecosystems</div>
+        <div class="grad-item">Industry simulation project</div>
+        <div class="grad-item">Career guidance beyond technical skills</div>
+        <div class="grad-item">Job-ready portfolio</div>
+      </div>
+    </div>
+
+    <!-- Program Details -->
+    <div class="program-section">
+      <div class="program-header">
+        <h3>PROGRAM DETAILS</h3>
+      </div>
+      <div class="program-body">
+        <div class="program-details-grid">
+          <div class="prog-detail">
+            <div class="prog-label">Duration</div>
+            <div class="prog-icon">📅</div>
+            <div class="prog-value">4–6<small>Months</small></div>
+          </div>
+          <div class="prog-detail">
+            <div class="prog-label">Mode</div>
+            <div class="prog-icon">🎥</div>
+            <div class="prog-value">LIVE<small>Online</small></div>
+          </div>
+          <div class="prog-detail">
+            <div class="prog-label">Investment</div>
+            <div class="prog-icon">💰</div>
+            <div class="prog-value" style="color:var(--orange);">₹24,999<small>Flexible EMI<br>Available</small></div>
+          </div>
+        </div>
+        <div class="qr-area">
+          <div class="qr-box">
+            <!-- QR code SVG approximation -->
+            <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+              <rect width="44" height="44" fill="white"/>
+              <!-- QR pattern blocks -->
+              <rect x="2" y="2" width="14" height="14" fill="none" stroke="#000" stroke-width="1.5"/>
+              <rect x="4" y="4" width="10" height="10" fill="#000"/>
+              <rect x="6" y="6" width="6" height="6" fill="white"/>
+              <rect x="7" y="7" width="4" height="4" fill="#000"/>
+              <rect x="28" y="2" width="14" height="14" fill="none" stroke="#000" stroke-width="1.5"/>
+              <rect x="30" y="4" width="10" height="10" fill="#000"/>
+              <rect x="32" y="6" width="6" height="6" fill="white"/>
+              <rect x="33" y="7" width="4" height="4" fill="#000"/>
+              <rect x="2" y="28" width="14" height="14" fill="none" stroke="#000" stroke-width="1.5"/>
+              <rect x="4" y="30" width="10" height="10" fill="#000"/>
+              <rect x="6" y="32" width="6" height="6" fill="white"/>
+              <rect x="7" y="33" width="4" height="4" fill="#000"/>
+              <rect x="18" y="2" width="2" height="2" fill="#000"/>
+              <rect x="22" y="2" width="4" height="2" fill="#000"/>
+              <rect x="18" y="6" width="4" height="2" fill="#000"/>
+              <rect x="24" y="4" width="2" height="4" fill="#000"/>
+              <rect x="18" y="10" width="2" height="6" fill="#000"/>
+              <rect x="22" y="10" width="4" height="2" fill="#000"/>
+              <rect x="18" y="18" width="6" height="2" fill="#000"/>
+              <rect x="26" y="18" width="6" height="2" fill="#000"/>
+              <rect x="18" y="22" width="4" height="4" fill="#000"/>
+              <rect x="24" y="22" width="2" height="6" fill="#000"/>
+              <rect x="28" y="18" width="2" height="6" fill="#000"/>
+              <rect x="32" y="18" width="4" height="2" fill="#000"/>
+              <rect x="34" y="22" width="6" height="4" fill="#000"/>
+              <rect x="38" y="28" width="4" height="2" fill="#000"/>
+              <rect x="18" y="28" width="6" height="2" fill="#000"/>
+              <rect x="22" y="32" width="4" height="2" fill="#000"/>
+              <rect x="18" y="34" width="8" height="2" fill="#000"/>
+              <rect x="28" y="32" width="2" height="8" fill="#000"/>
+              <rect x="32" y="30" width="6" height="2" fill="#000"/>
+              <rect x="34" y="34" width="4" height="2" fill="#000"/>
+              <rect x="32" y="36" width="2" height="4" fill="#000"/>
+              <rect x="36" y="38" width="4" height="2" fill="#000"/>
+            </svg>
+          </div>
+          <div class="qr-label">SCAN TO<br>DOWNLOAD<br>COMPLETE<br>CURRICULUM</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="take-leap-bar">
+      <div class="small-text">YOUR FUTURE IS BUILT BY THE<br>DECISIONS YOU MAKE TODAY.</div>
+      <div class="big-text">Take the<br>Leap.</div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOYD Quality Checker — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --forest: #0D6240;
+        --forest-deep: #073A26;
+        --forest-glow: #14875A;
+        --gold: #E7A93E;
+        --gold-bg: #FCEFD6;
+        --terracotta: #E07856;
+        --terracotta-bg: #FBE4DA;
+        --cream: #FBF7EE;
+        --card: #FFFFFF;
+        --ink: #16231C;
+        --ink-soft: #5F6E63;
+        --ink-faint: #96A395;
+        --line: #E9E2D0;
+        --pass: #1C9A5B; --pass-bg: #DFF5E7;
+        --flag: #E0473C; --flag-bg: #FCE3E0;
+        --skip: #6B7268; --skip-bg: #ECE8DC;
+        --crit: #B0223B; --crit-bg: #F8D9DE;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; background: #fff; font-family: 'Poppins', sans-serif; color: var(--ink);
+        padding: 60px 64px 100px;
+    }
+    .page-head { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+    .page-head img { width: 44px; height: 44px; }
+    .page-head .t1 { font-family: var(--mono, monospace); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+    .page-head .t2 { font-family: 'Cinzel', serif; font-size: 26px; font-weight: 700; color: var(--ink); margin-top: 2px; }
+    .page-sub { color: var(--ink-soft); font-size: 13.5px; margin: 6px 0 56px; max-width: 640px; line-height: 1.6; }
+
+    .section { margin-bottom: 64px; }
+    .section-head {
+        display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px;
+        border-bottom: 2px solid var(--ink); padding-bottom: 12px;
+    }
+    .section-num { font-family: monospace; font-size: 12px; font-weight: 800; color: var(--gold); background: var(--forest-deep); padding: 4px 9px; border-radius: 6px; }
+    .section-head h2 { font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -0.2px; }
+    .section-desc { font-size: 12.5px; color: var(--ink-soft); margin: -14px 0 24px; }
+
+    /* ---- color tokens ---- */
+    .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .color-card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+    .swatch { height: 74px; }
+    .color-meta { padding: 11px 13px; background: #fff; }
+    .color-name { font-family: monospace; font-size: 11.5px; font-weight: 800; color: var(--ink); }
+    .color-hex { font-family: monospace; font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+    .color-use { font-size: 10.5px; color: var(--ink-faint); margin-top: 6px; line-height: 1.4; font-weight: 500; }
+    .group-label { font-size: 10.5px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-faint); margin: 28px 0 14px; }
+    .group-label:first-child { margin-top: 0; }
+
+    /* ---- typography ---- */
+    .type-row { display: flex; align-items: baseline; gap: 28px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .type-row:last-child { border-bottom: none; }
+    .type-sample { flex: 1; }
+    .type-meta { width: 260px; flex-shrink: 0; font-family: monospace; font-size: 11px; color: var(--ink-soft); line-height: 1.7; }
+    .type-meta b { color: var(--ink); }
+    .cinzel-xl { font-family: 'Cinzel', serif; font-weight: 700; font-size: 42px; }
+    .cinzel-lg { font-family: 'Cinzel', serif; font-weight: 700; font-size: 30px; }
+    .cinzel-md { font-family: 'Cinzel', serif; font-weight: 600; font-size: 22px; }
+    .pop-h1 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 21px; }
+    .pop-h2 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 16px; }
+    .pop-h3 { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 13.5px; }
+    .pop-body { font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 13.5px; color: var(--ink-soft); }
+    .pop-caption { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--ink-faint); }
+    .mono-data { font-family: monospace; font-weight: 700; font-size: 12px; color: var(--forest); letter-spacing: 0.3px; }
+
+    /* ---- spacing ---- */
+    .space-row { display: flex; align-items: center; gap: 20px; padding: 10px 0; }
+    .space-bar { background: var(--forest); border-radius: 4px; height: 14px; }
+    .space-label { font-family: monospace; font-size: 11.5px; font-weight: 700; color: var(--ink); width: 110px; flex-shrink: 0; }
+    .space-use { font-size: 11.5px; color: var(--ink-faint); }
+
+    /* ---- radius ---- */
+    .radius-grid { display: flex; gap: 24px; flex-wrap: wrap; }
+    .radius-card { text-align: center; }
+    .radius-box { width: 84px; height: 84px; background: var(--forest); margin-bottom: 10px; }
+    .radius-name { font-family: monospace; font-size: 11px; font-weight: 800; color: var(--ink); }
+    .radius-val { font-family: monospace; font-size: 10.5px; color: var(--ink-faint); }
+
+    /* ---- elevation ---- */
+    .elev-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+    .elev-card { background: #fff; border-radius: 16px; padding: 20px; text-align: center; }
+    .elev-name { font-family: monospace; font-size: 11px; font-weight: 800; margin-top: 14px; }
+    .elev-val { font-size: 10px; color: var(--ink-faint); margin-top: 3px; }
+
+    /* ---- components ---- */
+    .comp-block { margin-bottom: 34px; }
+    .comp-label { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 14px; }
+    .comp-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+    /* buttons */
+    .btn-primary-demo {
+        background: linear-gradient(135deg, var(--forest), var(--forest-deep)); color: #fff; border: none;
+        border-radius: 16px; padding: 14px 26px; font-size: 14px; font-weight: 800; font-family: 'Poppins', sans-serif;
+        box-shadow: 0 8px 18px -8px rgba(13, 98, 64, 0.55);
+    }
+    .btn-ghost-demo {
+        background: transparent; border: 2px solid var(--line); color: var(--ink); border-radius: 16px;
+        padding: 13px 24px; font-size: 14px; font-weight: 800; font-family: 'Poppins', sans-serif;
+    }
+    .btn-danger-demo {
+        background: var(--flag-bg); color: var(--flag); border: none; border-radius: 16px;
+        padding: 14px 26px; font-size: 14px; font-weight: 800; font-family: 'Poppins', sans-serif;
+    }
+
+    /* filter chips */
+    .chip-demo { padding: 9px 17px; border-radius: 20px; font-size: 12px; font-weight: 700; background: #fff; border: 1.5px solid var(--line); color: var(--ink-soft); font-family: 'Poppins', sans-serif; }
+    .chip-demo.on { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+    /* status badges */
+    .badge-demo { font-size: 10.5px; font-weight: 800; letter-spacing: 0.3px; padding: 6px 12px; border-radius: 20px; font-family: 'Poppins', sans-serif; }
+    .badge-pass { background: var(--pass-bg); color: var(--pass); }
+    .badge-fail { background: var(--flag-bg); color: var(--flag); }
+    .badge-na { background: var(--skip-bg); color: var(--skip); }
+    .badge-pending { background: var(--terracotta-bg); color: var(--terracotta); }
+    .badge-progress { background: var(--gold-bg); color: #A5731E; }
+
+    /* severity chips */
+    .sev-chip { padding: 8px 15px; border-radius: 20px; font-size: 11.5px; font-weight: 700; font-family: 'Poppins', sans-serif; border: 1.5px solid transparent; }
+    .sev-low { background: var(--skip); color: #fff; }
+    .sev-medium { background: var(--gold); color: var(--forest-deep); }
+    .sev-high { background: var(--terracotta); color: #fff; }
+    .sev-critical { background: var(--crit); color: #fff; }
+
+    /* input + dropdown */
+    .field-demo-wrap { max-width: 300px; }
+    .field-demo-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink-faint); margin-bottom: 8px; display: block; font-family: 'Poppins', sans-serif; }
+    .field-demo-input, .field-demo-select {
+        width: 100%; border: 1.5px solid var(--line); border-radius: 13px; padding: 13px 14px;
+        font-size: 13.5px; font-family: 'Poppins', sans-serif; background: #fff; color: var(--ink); appearance: none;
+    }
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+        content: ''; position: absolute; right: 16px; top: 50%; width: 9px; height: 9px;
+        border-right: 2px solid var(--ink-faint); border-bottom: 2px solid var(--ink-faint);
+        transform: translateY(-70%) rotate(45deg); pointer-events: none;
+    }
+
+    /* card mini */
+    .card-mini {
+        width: 300px; background: #fff; border: 1.5px solid var(--line); border-radius: 20px;
+        box-shadow: 0 3px 0 var(--line); overflow: hidden;
+    }
+    .card-mini-accent { height: 6px; background: linear-gradient(90deg, var(--forest), var(--forest-glow)); }
+    .card-mini-body { padding: 16px 17px; }
+    .card-mini-id { font-family: monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 1px; font-weight: 700; margin-bottom: 4px; }
+    .card-mini-name { font-size: 15px; font-weight: 800; color: var(--ink); }
+    .card-mini-sub { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+    /* wall tile mini */
+    .wall-mini { width: 88px; padding: 16px 8px 12px; text-align: center; border: 2px solid var(--line); border-radius: 16px; position: relative; }
+    .wall-mini.completed { border-color: var(--pass); }
+    .wall-mini.selected { border-color: var(--gold); background: var(--gold-bg); }
+    .wall-mini-badge { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 800; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+    .wall-mini-badge.completed { background: var(--pass); color: #fff; }
+    .wall-mini-badge.selected { background: var(--gold); color: var(--forest-deep); }
+    .wall-mini-name { font-size: 12px; font-weight: 800; color: var(--ink); margin-top: 6px; }
+
+    /* tab bar mini */
+    .tabbar-mini { display: inline-flex; gap: 5px; padding: 7px; border-radius: 22px; background: rgba(255,255,255,0.9); border: 1px solid var(--line); box-shadow: 0 18px 34px -14px rgba(13,98,64,0.25); }
+    .tab-mini { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 9px 20px 8px; border-radius: 16px; color: var(--ink-faint); font-size: 9.5px; font-weight: 800; font-family: 'Poppins', sans-serif; }
+    .tab-mini.on { background: linear-gradient(135deg, var(--forest), var(--forest-deep)); color: #fff; }
+
+    footer { margin-top: 80px; font-size: 11px; color: var(--ink-faint); border-top: 1px solid var(--line); padding-top: 20px; font-family: monospace; }
+</style>
+</head>
+<body>
+
+    <div class="page-head">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAP4AAAD6CAMAAAC22Qp1AAABLFBMVEVMaXENYkALWzsNYT8OZ0MMXz4MYT8MYT8NY0AMYT8NY0AMYD4NYT8MYT8OZUINY0ANZUINY0ANYj8NYkALWzsNYT8MXDwOZkINY0ANY0ALWzsLWzsNZEEMXDsNYT8LWzsNZkILWzsOZkINY0AOZkIMXz4MXz0NYkAOZkIMWzsOZ0MNYkAMXz4NY0ALXDsLWjsOZkINZUEOZUIOZkIMXz4MXj0NZEANYT8OZUIOZ0MOZ0MOZ0MNYT8MXDsLWToMXz4MXDsMXz0OZkILWzsMYD4LWjoLWToOZ0MNYD4OZ0MLWjoLWToOZ0MNYT8NYkANZEEMWzsNY0AOZkINYD4LWjoOZUINYj8MXj0MXDwMXTwMXz4NYD8NY0EOZkMLWjsOZUEMXDsMXT0MXz0LWTqOg0kWAAAATHRSTlMA8EAgQEBwEDBg4KDwUECgYECQgKDgwKAg0DBg8IDQ4JBw8MBQIICwcPDAoOBwUNAgsNCA0PBQsOCAIODAsPCwIMDAkJDAgLDA0LAg9sd4KgAAAAlwSFlzAAALEgAACxIB0t1+/AAAGitJREFUeJzdnXlDGkkTxkEjM6CsgIqg4hGNqIgmWc3lmui6Od+IQfGMJjH5/t/hZYYZpq65G8ju81/CyMyP6qnqru6uTiT6rUcjSENDB31/hP5LH1ldfXN4+PPnz0ug+/v7a1M7xeJRZWloZtCPqV4jqX8+bN5YcsNv68rUenGysvUf+RX01OjOmaGbwPiGfvz4srBf2ToY9OPHkZ76MHZmKzS+qfXiv/M30NLPx46/fv0aE7/zG+wvDQ2aJ4yGU/PHhhThf/ny7du3t+/+HT+BZrErxm+19Wnpd/eI2efHjlTjt7UwOasNmtFNpYmpi+Pe4rdav369XfrfoEkF5WuNi4t+4Le1sDRoWqL0cqPRP/xf7wbNi5TONBr9xH/9OzkAC76P+JODRnaULzca/cb/bXxfabnZ7Dv+p0FTW9IKzeYA8J0OYHV8gF7gWbI5CPzt7gOUms3kxIB+AKPdDwR/tvsIdeP2g/kB6slmePydw9HV1a2RkZFHzhdpQ21VKpX94nYg/AXnTzOdB8ik+w1fWr5thsHfPFxNj/hbSRvaqkwW1z3xnR6f3n2E5XwvYZlyc7eB8TffpEZCfr02VJncdsEHXZ7xpvMMtf69Adr4yW0w/M3R9CP/73PR0NLkAsc/ci5IAvxGsq6ALIj08kkg/Oep4dj30raOtjG+0+VJN/EjLJdi3y6AcnMnAfCfp5W1Rm1rcqGLD/q7VfYEE6pu6a7xkxNf/Hl17JZmlrY7+E6Xp9TkT1DWFd+XSFs+8cMfK8Rv8+KtZz+1Wm+df9f5A7Q9QKon97ZkvPbe+PO9jMHa0pbzj4yEf3FR7V0I0OdOvPH/6l/81WX6i4uxXj1D7uTEE7+P8CDoNzB++/XrjQcE9BJ+n3tevM/dMb4ZdnrwAkB6jl/uL7wT9AX6duhRHgEWv3vgJ/s+6Kh64h+rdgDT3z3wC30fcpa86dtSapA2vSt+r/sakuqcnva5a+rutnbujt+HniZXxs/4Kvlz5674gzC9E/S96I+PP6h5J9v0bvgDSjWOB8L/Oq/i6VbO3fD77/AtJQPRf1XBrz90wx9Mw090g76H3+vQfz3bicv/2KSX8Hs4uPBRleFPifhnZ3H5tafnLvgFRSzhVeJNP6/PS8aPzf/k3AU/pwomvOqs6U+1/zc1Jhjf4I9xpz/PZfy5Z6pYIijDjG8mOYbnBeO3NRr5RivnMv7coJyeIZ37PauBT0j00fk7Tp/jD5TeCvqQvtu/y4/Rpm8qWnzWnp6K+IOl7wR9FPOy3c+0eW78s7ObrMfXuWr6VMQH9K8exNQfrsojAfedZk1/Cj50jdOf3exGMNjKqYgPba9/jqG7u7tToPNzeDPkaE8y4LGqzPh40JXixr+52Qwd/h4/FPFxy/8Yi/4uIP3JonPHEu/tksR6mtPf3LwJi//3qYiP0yhrPaAX8MH0VZ3hV+mTZ8dw0ze1Go5+7VTEJ70drS/GXwZ3zDDjc7+mjzH6m5tQ08z6qYjPchvve2J8TA9/c50NdaboI2H+7rqS3TCv/98i/ji7LhcdP6jfO5kDDz7OjC+OPdIcP8zrv0Yfy3ymsvADPlRsfE6PfvQkG+XLM4ppRn9zE7j3Y3p9hj8nTaBPq6UXmv4tiDVpZvy/XBBSDP/nbtClFu/ZgxlPJebOI4X+UMYvg7tVmfFdTTpK6X/+PAxGv8IfrP1ULindvR7T34JVKyWW4hlzp9jBTd9YUheo+Wt7Ev7fLle/jIQf2O+d3AKHU2fG90i6aGPE+D8vA3n/P+8E/Dm3v3zVY+NDx5dh2U2vpRQjlP7yMsDY9/FDCX/F9foNZfSS37sFiRWdZTfnPUlWGf6lf+dn+k7AX3S/noT+Dd8buEoT8OFoZ5wZ3+dl3qH0l77e78GdgP/C46XRSOh/FRCWKycYHzrcJDX+mM+7/GiXLSX2834bEv4fXn9BQv/LYKyCngr4oK+RZsb3ncZLEeNfXvoMfR98FvCnPf9kBePvBWPleizQw9FOldIf+2cxdgj95aX30G9DwH/o08ZI6I+aC1vj9DCfXqJN38fxmdIZvmfwe/BZwPfL6S9ifO+24q4XHH8OfFxnxg+yiO8fQu9t/g0B363D0xUJ/Q8DPJUgXTA+7NVkKP1xkE6Mtku3UHiY/8FnAd+/MZOcl3sfwUuLAj7MKzLjB1u/sEqM72X+DQE/QFsmOa/3gZ6Lao7Tw9FOjRk/4PKlTULvbv4Hnzm+n98zRHNeUaYVVzj9LQzSSYTfppfSPJLShP7y0m0L8HsB/88gtyA5r7WATwY1zfGbML3PjB949fImob/flK/ruDCMH8T4LPR/DPpkjrQ5bnw42qlS+kCOz1Sa0N/fz4rXLQr4AQ0Zu+Ob4/RN8HKXmPGfB//uXYpflK6yOu8I/0XAO5DQvxj82Sw94fhwtFNnxg8xb7dK6O+vD4SrrKEbwg+6ioHkvEJ3fEuC8eHmpAzEPw7h+AxplP76SLjqI8cPanzW8Q0b+uvc7zXBaEdnxg+1mnKU4u/ya2wDQvzgS1hI6A/b8S1z48PJqxql90zzMI0Q+uvrLXbNIscP0X2lHd9wob/E6Ztw/UyS4odwfIY2Ab65YXifXbLH8QPFfEsk9Idb+rTI8ZPg4zQzfsgFCyli/Otrap5u6HbwQ5kwVs4rw40PRztV4veOPfLboh5R+msa+qc5fqgXOE7OS+d+Dzq+EjN+6EWFOxSftv49jv841B1IzitMx3ecGx+OduqUPpzjM5Qi9LT1O4G7ix9y4PYA44cJ/XOMvglHO6w0jNvEnrseQb8ntP5Fjh82dkfOeT3jxk8C4+jM+BFWqu0Q41/j6jd7DD94l8cSme5aDPyHT7jx4WinQOnDOj5Dq4T+eh1+CsK2jR961Bo156Vxv9eETSdJ8aNsU5mh+Few/N0axw+fs4iY88px48PRTpbSB8hvC9ol9FcV8OEGw4+QsSKhP+g3LDN6NNqpEr8XJL8taB/Rt/HBqBdmqyz8CPnKaDmvEm/6MM2jMeNHW6K7RIx/deV8tsLwI2WrSegP1vGtc+PD0U6d0vtN7LlohtJfOaUQFhl+pLmKSDmvDKNHo50yxY+6P++a4jsv/0eGHy1XH6Hjq3PjQ8enU/pojq+tIqG/6vZ7Ucjq4Ee7RYSc1yI3PuzRF4jfC5XmQTqi+N3In2P40WYqouS8UNvvbFKCC+iS1PiRq3PMEvqrqwPrk0WGHyVTbwiH/rsHvn/wjBsfTmpnKX3w/DbVEKXv+r6PDD/cYM/RGv4mfwc6zujRaKdK8WNsTGb4lu/D8drAD93ft6Xhb/JPmMwxfJjm0ZjxY9QlWCD0tu97wPCjTtGjnJexhMsv9Oe48eFop078XnTHl7Bdv0N/ZRU+fMnwo29SzOEv8nOhT5jfQ6OdMjV+nLJERxT/R+f/Nxh+1Fc/AUL/XQAnonHjwzSPTunDp3mAKoT+6scBfmL7sSOuzzA1jeh9Qkid0aPRToE0/bD5bawtavwfpusn4/T2Y/suZ/EQmS156nlxmeNDZ5mkxo+0Ic/WEKX/YU70rzD8MPl9pj1o/NNTrz5qidNDx5el9HEcXyJxQJr+jx9m5HvJ8KN1+C29RPSnix6XTjC/Bye1jaCP8WOWSaHG/2Hm+94z/Biez3qXHHwvP5JhxoejHY3VpIhZCo/SfzEzHh8Zfry7bOBV2+5NSWf0qAxOndakiOX42toV8T9T/DieL2GGfjhL7N6FGmdNH412ytT4cSulFAn9F2PMR3fjBOmpe0ojS/ZdO75zzPgwzaNT+ij5bSSMbxSBTbDZmc8xHX/C3BEANyy4dSGfceND+xYofuxqIUVifBOfbsaJ6fjbWsH4bqF/nBkfjnYSSVqLJ3YN0CKl/6KxDE0b33+U7qM9vFtFDiQao0dpniytxRN+Yo+K4w/xvTh3d7EL8iyeInz5Zcqxpo9GO1Vq/PglooqUXsaPfZ/HiN5lddwTZnw42tEofcT8NlQR+70O/meKH3k7hqOnkF7eC1Ni9Mjx1Sm+gvpzRWp8ET9m2De0hvGlSFpn+HBSOzFPy1ApqJdSpPRtfLYJVwW+hujPpY5vmRkfjnZ0Sh9tYg9Lwqdh//PdooI7vUf4wuJQnfk9NNopUHwVtfGKlF7Ej9vrMbSC6M+fsAsWmfHhaMcI+ohegeNz8L8AfFZ9RAl+4iGkPz9nT5+h9CjNk6X155QU3ixS47fx2Q5sNfjTGJ/mvPLM+Gi0U6X4SuruFim9iB91hgdJR/TntOM7zujhaEej9PHSPLZo05fxY/d5Tb3Ae7NJ3Jqjfq8J03gpiq+m7D4zfhufdvlV4a/hjfmL6MMcMz4a7czTypNq6mIy+jY+236vCP8x3piPO75PKH0DjnZ0Sh+94iDUDMfXeobfrXPZKUvwHa7Y0FjTb0DHV6D4YQ/2kTXE6L8IxRdU4ecQPaq+k2PGh5PaiSShV+P4EluMvpf42kOA345z4P0tM+PDTl2WGj9kuTE3VfqKn5iGxoeVt0rM+Gi0UyX0XxUd9XLE6N/2Ev8PZHxQd61O6RuwU6dR+rj5bVvFYPhKuj2GXkDjg6p7Zdr0G7BXkKL4sSb2gLYp/bdJCV9Jp9fQIqJ3qt1NUOOj0Q6pt/xVkeNLJBj9t3c9xX8Mmv4JqLipEfoGHO3o1Pj/KHqaGRGflVxTh594igsxdZv4OMGHjq9A6FU5vsQQo/82JNTcijvJA5TDZai6ob+E6dFolpba/qDqYSocf0bCV5DssqRhfKcQyTjCh74tS42v7AiEfUb/LdFbfHqiS7fjW4L0yPE9J/SxJ/a62mb0xqmmHD/Oyh6iFVyJyMl5wdM14KS2Ro2vyvElEsz45vF2PNcXf5rD0Rwux9L1cSWAD0c7KUKvzPERz2cYv2VsYxfwYy3uwMKbc0+cCOfUWUejnXlCryK/3dESo28ZK5t4nl9ZrzdBt6eCupulLj70bTo1vrqzX/Y5vrmujeMr6/Um2MZ8p6HbFXdRmqdA6JXktztaYPQt8/85vrp+DynLAKtQ2WVHXYO+UWlcTZrH0AH1e61W5zhrPsOrMPLhwgSoHIlVexGOdrLE+F/VHYQwy43/yfyA4yuY4nX0BNLD0pudbelwUhsFfYM+zqkqRJOMvtUp3sQXt6iMfPQET5DzqlHHpxHjRzxUQ9QCx+9s5qCzXG18z9qUYYU3LIC8jml+6NtSxPhn6hzfDKfveD5hZZdS19/drsI35teI45sn9OocH4z6Nr11pDHdenoXe2EfVh40/SbaqNQ2P5y706nx1eS3Te1z49uli/YYfuStPLaQx85A46OpzBoa7RQIvUthtSjSOH3LLt2zwfAjbF5HGkYJqglEDyeyS2iJ9hjCPztTeJ72loBvM/IF7RG3sHZVQIsxyCKmjMsfZYnxFTo+J+w59Nv2Z3w7g+cifH9pY3hiZhlPaLr0ZZ4T+tBnyXhonfq9Vuud/RnfzOKzBcVP6WO88yCHp/TktbkaafpnqvLbCdD2HeO3nNoVeww/zlauRGLqGC/G0cgCNvGPUsT4Ch1ft+0D+tfOp9McP85pg3kTApp/HCf2RbvOE+Mrmtgztc6afgvUrclx/Ig7uE391aEAeZpn7utYbA0T458FPUckgGa58VugatErjh9x/74hGwT22TI4sS/49AKhV+n49jl9Cz7CHsePHvpqNgfotBWaCF8Yykzhpq/S8R0Ixv8EL5jm+JH7vVr3REQwQaEjejzKNZUlxleX3+7295HxUcWuFY4fOdudckCAkcuQHid3TdUw/Zm6/HZ3rAvpUdunu+6j1u0xBVrxlHOTOsanoV8jxlfp+IYE43/Cl7zn+BF9v9N1bYM4wUtD9A3a8U0TemUTewk76CP6FqnVmOP4EYc9f0H8MceIVYTfIItU552/iXF2qqgDwfivyTVC0apo1UvAmN1AccLXM0SP0xzdWGkbX6XjqwjGn6QXvef4kQb9NYwPMhb4/Fi0lskO+t1DNBU6Pm2d+73WEL0qx/FPI2T8YLLSZHFyteMIH4f+KYKv8KDfWcH4C/y5BfwIoX+C4jtvMTlGEnZ8s4ReYX67E/UwfUs4nmCa40cY9k0xfKf1Z/BxamBIUMN+T6Xjk4zfEpz6ioAferIrfUzxwbC1jg9VclJZGjG+wok90fjM8RkS6vSGLLQNo56NDwxJjhVypq7TmF5lfntW8Hvc8Rl6yfHDmh8vRDdwkCGXIf3FRde/zTu/lmrHJxl/W7xSE/BDmr/G8FEESyP67n70YWJ8hWmeWYH+l3wwByy4092DGarrM3zB8FHXXYNl5p1qBAVifIX57QWh6fOo15F0PEEo808wfJKzqEHjd4vwTGHjK8xvi8Z3O5THnu5AZ3OEefuTDJ/MUuWh8e29eVlCr87xdTp8xPivXX/dBwJ+CPOnLyg+W4ycgca3NijVcNNXOLFXkYz/zv36DY7vdQgnUZnhs+5LAdGbU0EaMb46x3cg0bsb3+74k0Opgnb98rTYhLAuqQSa/nFnV3Ya0yt0fPtC0/cyvlXAiOAHXehTY/jCuK2MCzENd4I+xFeW5hkKa3z5RDbvY0i7KtESS+IWnDQuRjNhBn1Iry6/vSDQextfPo/P6xBaRwWGLyWsNIw/ZQZ9QK8uvy36PW/ju5zGGCT4aUmGL5JU8UX5KWx8ZY5vRqL3M76Z9eFHkQbohKcbFF/egkM25hN6dRN7RcnvuXX4HL2S8ANMd2cYvuXCaXNL0j2KCF+V41sSje/S24d6KR1D7Nv88w2Kb0e9cRL8C170qhzfzLpE/zbAX2p70iHUfs2/yvCtVG6pmcQzOmyjFqBXlubZFo0/4/+HpN5Yt/iCt8ssNRi+FfUmmnRCb57SO/iq8tui1/8lJnm4/g55AH1CqCLfrS+WZDNaKVd6VfntISnF4xv0bD1+KOB/95ryswbyEN+Kep1D09GUzjDBd+gVOT5NSvH8ch/oUq1J+HMeff96g+LbUS8jzGk8dzO+oom9fZE+iN+z9LeA/93j9c8wfCvq2QN8tJol7WZ8NY6vIjb9YH6vo8cPBfzv426XZxsU34563XP04CZdZ/UmNr6a/Hb3xQ/Z34PKSfgndZerlxm+HfWc1C6MnHQpgyUlaZ4DaUqv9UvO7rrqvYR/IpdOgocF4qhXcPDLwLR5sekryW9r27LxQzR982teSPhz4hPWGL4V9TR4ajiMflOS8ZVM7O0raPqGdAn/JCO8niR9DaKec3Ky8RkYAE4I9Eoc36Swiid80ze0JuGflDn/RIPi46hnf5R0sh/DAv6uAsc3KyzkMDo8/4vwXdMS/skyu44dD21HvSyiv4CFZucZ/Y0Cx+dCH2Sgx6U9lfBPaPhLNym+HcDIlB5c5Ztmfu8mfn7bXrZN8QP29amM6M/xKf8yw7eink7pQeExjRk/fppnZl2m3476VukiPubXmwzfesdrDfoBaP2jhP4mdn57Rli1beh1yJgHlBPxEf84w7ejHjc+8O1Zih/X8UH6IPO5gfSniA/4tSbDtwLcBKNHyb8pTB/X8bnSH/n/rYemRXyHf4Lh25BJho/a9z/I78V1fDNwrw7EDzHOEzUt4nf5Mwzfgkwzejyi0RF9TMc360Yf2e3Z0p6K+Lcd/nST4tuQZdYbIKeq7AD6m3j5bbA3HdPHcHu2LH6Kf7tscJYZvhX18sz49HCBFMSPleapIHqIH5/e5mf4t+3+b77J8C3IKqOndYY1QB8rvy1szLcUx+mDB30q4jcz+jjDt6JeCf0kpthg8Y2DH2NiT4PFiHzXbka7xVMRv5lsMnwLpMCMz0+WSHfpYzi+GaEgiaWIfV1BbX4Jv8nwragnjIGFTMmYRX8TPb/tuHxmfHX0Bn8wfCvq1ZnxpfnOURs/suOb/PLFzfgq6dv8T4Lg2wntDKUXq+vrFv1hxGea4TXIekSfMGqv+eNb3j0LjG9lfsWv3OzgR0zzLKGGj5t+hPSOnxb98a2ot8yMLx8klzLpdyM9jUaq7yHjTypcEt5Vzg/f8u46o3fJ4D+6iez4Zte96CMjeio/541vRb0aw3c7WuEwouM74BV3AX6P6Nt2LXvhW3vzNEbvephWuk0fIb9dWR8IvREAPPCtF3zCwbfoXassa7sRHN/WAi+0LtWk6Ikm3PGtFzzJjO9+rsboTdj89lCRF9mHxlfTz3fXszkXfOsFTzN6j5PUsiHTPAeT/HgNSP9a3KeiVKWyjG+NacoM36t5b4aZ2DPhvYy/oGKE66sJCd+a/8gzes8S2yGSXDOT7EgpQv+2F+FeUD7D8S0b16jfU3SoyhY/S4/6vXhZzTDSqhTfinolZnwVixa0pQV2jiI1/uteOz2kZ3MY34p6BUof9+Dktrb28fG5Iv12X157R1oV4Xds7Czxgkv242hrcpednSw0/Z708r2Vzzj4KOpB+ql0dH7NYGfnZgvGf73l/2XqpU108a34laF+z/wFaukI61ZmKsVrU1eeTd/Afxtl/l6FSssdfCvqZZnxLX0d+7CaDTy20bZWLfTrAMZfV5XSjKL2G+BEvWU3ersgyehq1jPSayPp1eLu/f21SC/6vYGZ3lI6g6OeO72tw8PR1dXUCFRqdfXN4c6loXtE72P89b6GO1lpa8Ffzcf4TmLf1s+2LrHu792ML9APwOG7SgtNfxOGnjf9Yu8HOCE04Y5/1gPjL/wG7R6q1s+mv14ZNC5Tvurv97ybflC/t175jV56R8MF741aaoz/m8Ib0tJT0Y0fyO8t/L7wpvI1Wm45hPH9mv72b+bwJGnp+d40/cnfKtR5aDg1FbPpM/yFpd+71RPphXl1xl846nM+Q4WGUx8U0F8tHP1bGj2Tlh3djOX3tiv/QrsjPUqP7kQy/vbk1r/qfXeXNrL6ZjNEyF8vVv4r6F1pI6l/Djf9jF+crAwdDPpRe6hHI9nV1dHDw8NNh36nWCweVZaG+uzk/g+ur1Of9TzQDAAAAABJRU5ErkJggg==" alt="logo">
+        <div>
+            <div class="t1">VOYD · Quality Checker</div>
+            <div class="t2">Design System</div>
+        </div>
+    </div>
+    <div class="page-sub">Tokens and components used across the field inspection app — colors, type, spacing, and the recurring UI patterns (chips, badges, cards, tiles) built from them.</div>
+
+    <!-- 01 COLOR -->
+    <div class="section">
+        <div class="section-head"><span class="section-num">01</span><h2>Color tokens</h2></div>
+
+        <div class="group-label">Brand</div>
+        <div class="color-grid">
+            <div class="color-card"><div class="swatch" style="background:var(--forest)"></div><div class="color-meta"><div class="color-name">--forest</div><div class="color-hex">#0D6240</div><div class="color-use">Primary brand color. Headers, primary buttons, active states.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--forest-deep)"></div><div class="color-meta"><div class="color-name">--forest-deep</div><div class="color-hex">#073A26</div><div class="color-use">Gradient end for headers &amp; buttons, deep backgrounds.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--forest-glow)"></div><div class="color-meta"><div class="color-name">--forest-glow</div><div class="color-hex">#14875A</div><div class="color-use">Gradient highlight, progress fills.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--gold)"></div><div class="color-meta"><div class="color-name">--gold</div><div class="color-hex">#E7A93E</div><div class="color-use">Accent. Eyebrows, selected states, highlights.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--gold-bg)"></div><div class="color-meta"><div class="color-name">--gold-bg</div><div class="color-hex">#FCEFD6</div><div class="color-use">Gold tint background for banners &amp; selected chips.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--terracotta)"></div><div class="color-meta"><div class="color-name">--terracotta</div><div class="color-hex">#E07856</div><div class="color-use">Secondary accent. Pending states.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--terracotta-bg)"></div><div class="color-meta"><div class="color-name">--terracotta-bg</div><div class="color-hex">#FBE4DA</div><div class="color-use">Tint background for pending badges.</div></div></div>
+        </div>
+
+        <div class="group-label">Neutrals &amp; surfaces</div>
+        <div class="color-grid">
+            <div class="color-card"><div class="swatch" style="background:var(--cream)"></div><div class="color-meta"><div class="color-name">--cream</div><div class="color-hex">#FBF7EE</div><div class="color-use">App background surface.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--card); border-bottom:1px solid var(--line)"></div><div class="color-meta"><div class="color-name">--card</div><div class="color-hex">#FFFFFF</div><div class="color-use">Card / component surface.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--ink)"></div><div class="color-meta"><div class="color-name">--ink</div><div class="color-hex">#16231C</div><div class="color-use">Primary text color.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--ink-soft)"></div><div class="color-meta"><div class="color-name">--ink-soft</div><div class="color-hex">#5F6E63</div><div class="color-use">Secondary text, descriptions.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--ink-faint)"></div><div class="color-meta"><div class="color-name">--ink-faint</div><div class="color-hex">#96A395</div><div class="color-use">Placeholder text, disabled labels.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--line); border:1px solid #ddd"></div><div class="color-meta"><div class="color-name">--line</div><div class="color-hex">#E9E2D0</div><div class="color-use">Borders, dividers, dashed outlines.</div></div></div>
+        </div>
+
+        <div class="group-label">Semantic — inspection status</div>
+        <div class="color-grid">
+            <div class="color-card"><div class="swatch" style="background:var(--pass)"></div><div class="color-meta"><div class="color-name">--pass</div><div class="color-hex">#1C9A5B</div><div class="color-use">Checkpoint passed / verified.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--pass-bg)"></div><div class="color-meta"><div class="color-name">--pass-bg</div><div class="color-hex">#DFF5E7</div><div class="color-use">Pass badge / tint background.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--flag)"></div><div class="color-meta"><div class="color-name">--flag</div><div class="color-hex">#E0473C</div><div class="color-use">Checkpoint failed / flagged.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--flag-bg)"></div><div class="color-meta"><div class="color-name">--flag-bg</div><div class="color-hex">#FCE3E0</div><div class="color-use">Fail badge / drawer background.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--skip)"></div><div class="color-meta"><div class="color-name">--skip</div><div class="color-hex">#6B7268</div><div class="color-use">Checkpoint marked N/A.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--skip-bg)"></div><div class="color-meta"><div class="color-name">--skip-bg</div><div class="color-hex">#ECE8DC</div><div class="color-use">N/A badge tint background.</div></div></div>
+        </div>
+
+        <div class="group-label">Semantic — severity scale</div>
+        <div class="color-grid">
+            <div class="color-card"><div class="swatch" style="background:var(--skip)"></div><div class="color-meta"><div class="color-name">Severity: Low</div><div class="color-hex">#6B7268</div><div class="color-use">Minor cosmetic issues.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--gold)"></div><div class="color-meta"><div class="color-name">Severity: Medium</div><div class="color-hex">#E7A93E</div><div class="color-use">Needs rework, not urgent.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--terracotta)"></div><div class="color-meta"><div class="color-name">Severity: High</div><div class="color-hex">#E07856</div><div class="color-use">Significant defect.</div></div></div>
+            <div class="color-card"><div class="swatch" style="background:var(--crit)"></div><div class="color-meta"><div class="color-name">Severity: Critical</div><div class="color-hex">#B0223B</div><div class="color-use">Safety / structural concern.</div></div></div>
+        </div>
+    </div>
+
+    <!-- 02 TYPOGRAPHY -->
+    <div class="section">
+        <div class="section-head"><span class="section-num">02</span><h2>Typography</h2></div>
+        <div class="section-desc">Cinzel for display headings (portfolio / case-study title moments) · Poppins for all in-app UI · Monospace for data, tags &amp; timestamps.</div>
+
+        <div class="type-row"><div class="type-sample cinzel-xl">Complete prototype flow</div><div class="type-meta"><b>Display / XL</b><br>Cinzel · 700 · 42px<br>Case-study headings only</div></div>
+        <div class="type-row"><div class="type-sample cinzel-lg">Quality Checker</div><div class="type-meta"><b>Display / L</b><br>Cinzel · 700 · 30px</div></div>
+        <div class="type-row"><div class="type-sample cinzel-md">Sign in</div><div class="type-meta"><b>Display / M</b><br>Cinzel · 600 · 22px</div></div>
+        <div class="type-row"><div class="type-sample pop-h1">3 properties assigned</div><div class="type-meta"><b>Heading / H1</b><br>Poppins · 800 · 21px<br>Screen titles inside the band</div></div>
+        <div class="type-row"><div class="type-sample pop-h2">Select a room</div><div class="type-meta"><b>Heading / H2</b><br>Poppins · 800 · 16px<br>Compact band titles</div></div>
+        <div class="type-row"><div class="type-sample pop-h3">Cabinet Door Handles</div><div class="type-meta"><b>Heading / H3</b><br>Poppins · 800 · 13.5px<br>Card titles</div></div>
+        <div class="type-row"><div class="type-sample pop-body">Every checkpoint here comes from the approved plan.</div><div class="type-meta"><b>Body</b><br>Poppins · 500 · 13.5px<br>Descriptions, helper text</div></div>
+        <div class="type-row"><div class="type-sample pop-caption">To check · Section label</div><div class="type-meta"><b>Caption / Label</b><br>Poppins · 700 · 11px · uppercase<br>Section labels, field labels</div></div>
+        <div class="type-row"><div class="type-sample mono-data">TAG #B-1204 · 6/6</div><div class="type-meta"><b>Data / Mono</b><br>SF Mono · 700 · 12px<br>Tags, counters, dates, IDs</div></div>
+    </div>
+
+    <!-- 03 SPACING -->
+    <div class="section">
+        <div class="section-head"><span class="section-num">03</span><h2>Spacing scale</h2></div>
+        <div class="space-row"><div class="space-label">4 / xs</div><div class="space-bar" style="width:4px"></div><div class="space-use">Icon-to-label gaps</div></div>
+        <div class="space-row"><div class="space-label">8 / sm</div><div class="space-bar" style="width:8px"></div><div class="space-use">Chip gaps, tight groupings</div></div>
+        <div class="space-row"><div class="space-label">12 / base</div><div class="space-bar" style="width:12px"></div><div class="space-use">Internal card padding (min)</div></div>
+        <div class="space-row"><div class="space-label">16 / md</div><div class="space-bar" style="width:16px"></div><div class="space-use">Card padding, field gaps</div></div>
+        <div class="space-row"><div class="space-label">20 / lg</div><div class="space-bar" style="width:20px"></div><div class="space-use">Screen content padding</div></div>
+        <div class="space-row"><div class="space-label">24 / xl</div><div class="space-bar" style="width:24px"></div><div class="space-use">Section spacing</div></div>
+        <div class="space-row"><div class="space-label">32 / 2xl</div><div class="space-bar" style="width:32px"></div><div class="space-use">Hero band padding</div></div>
+        <div class="space-row"><div class="space-label">40 / 3xl</div><div class="space-bar" style="width:40px"></div><div class="space-use">Splash / success screen padding</div></div>
+    </div>
+
+    <!-- 04 RADIUS -->
+    <div class="section">
+        <div class="section-head"><span class="section-num">04</span><h2>Radius</h2></div>
+        <div class="radius-grid">
+            <div class="radius-card"><div class="radius-box" style="border-radius:8px"></div><div class="radius-name">Small</div><div class="radius-val">8px — fields, chips (inner)</div></div>
+            <div class="radius-card"><div class="radius-box" style="border-radius:13px"></div><div class="radius-name">Base</div><div class="radius-val">13px — inputs, small buttons</div></div>
+            <div class="radius-card"><div class="radius-box" style="border-radius:16px"></div><div class="radius-name">Medium</div><div class="radius-val">16px — buttons, tiles</div></div>
+            <div class="radius-card"><div class="radius-box" style="border-radius:20px"></div><div class="radius-name">Large</div><div class="radius-val">20px — cards</div></div>
+            <div class="radius-card"><div class="radius-box" style="border-radius:42px"></div><div class="radius-name">XL</div><div class="radius-val">42px — device frame</div></div>
+            <div class="radius-card"><div class="radius-box" style="border-radius:999px"></div><div class="radius-name">Pill</div><div class="radius-val">999px — chips, badges, tab bar</div></div>
+        </div>
+    </div>
+
+    <!-- 05 ELEVATION -->
+    <div class="section">
+        <div class="section-head"><span class="section-num">05</span><h2>Elevation</h2></div>
+        <div class="elev-grid">
+            <div><div class="elev-card" style="box-shadow:0 3px 0 var(--line)"></div><div class="elev-name">Flat</div><div class="elev-val">0 3px 0 line — resting cards</div></div>
+            <div><div class="elev-card" style="box-shadow:0 8px 18px -8px rgba(13,98,64,0.55)"></div><div class="elev-name">Raised</div><div class="elev-val">Primary buttons</div></div>
+            <div><div class="elev-card" style="box-shadow:0 18px 34px -14px rgba(13,98,64,0.4)"></div><div class="elev-name">Floating</div><div class="elev-val">Tab bar, sheets</div></div>
+            <div><div class="elev-card" style="box-shadow:0 45px 90px -26px rgba(0,0,0,0.5)"></div><div class="elev-name">Overlay</div><div class="elev-val">Device / modal shadow</div></div>
+        </div>
+    </div>
+
+    <!-- 06 COMPONENTS -->
+    <div class="section">
+        <div class="section-head"><span class="section-num">06</span><h2>Components</h2></div>
+
+        <div class="comp-block">
+            <div class="comp-label">Buttons</div>
+            <div class="comp-row">
+                <button class="btn-primary-demo">Submit wall</button>
+                <button class="btn-ghost-demo">Edit</button>
+                <button class="btn-danger-demo">Log out</button>
+            </div>
+        </div>
+
+        <div class="comp-block">
+            <div class="comp-label">Filter chips</div>
+            <div class="comp-row">
+                <div class="chip-demo on">All · 3</div>
+                <div class="chip-demo">Pending · 1</div>
+                <div class="chip-demo">Active · 1</div>
+                <div class="chip-demo">Done · 1</div>
+            </div>
+        </div>
+
+        <div class="comp-block">
+            <div class="comp-label">Status badges</div>
+            <div class="comp-row">
+                <div class="badge-demo badge-pass">PASS</div>
+                <div class="badge-demo badge-fail">FAIL</div>
+                <div class="badge-demo badge-na">N/A</div>
+                <div class="badge-demo badge-pending">PENDING</div>
+                <div class="badge-demo badge-progress">ACTIVE</div>
+            </div>
+        </div>
+
+        <div class="comp-block">
+            <div class="comp-label">Severity chips</div>
+            <div class="comp-row">
+                <div class="sev-chip sev-low">Low</div>
+                <div class="sev-chip sev-medium">Medium</div>
+                <div class="sev-chip sev-high">High</div>
+                <div class="sev-chip sev-critical">Critical</div>
+            </div>
+        </div>
+
+        <div class="comp-block">
+            <div class="comp-label">Input field &amp; dropdown</div>
+            <div class="comp-row">
+                <div class="field-demo-wrap">
+                    <label class="field-demo-label">Observed value</label>
+                    <input class="field-demo-input" placeholder="e.g. 2 mm">
+                </div>
+                <div class="field-demo-wrap select-wrap">
+                    <label class="field-demo-label">Location</label>
+                    <select class="field-demo-select">
+                        <option>West Wall</option>
+                        <option>North Wall</option>
+                        <option>Ceiling</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="comp-block">
+            <div class="comp-label">Property card</div>
+            <div class="card-mini">
+                <div class="card-mini-accent"></div>
+                <div class="card-mini-body">
+                    <div class="card-mini-id">TAG #B-1204</div>
+                    <div class="card-mini-name">Aparna Sarovar</div>
+                    <div class="card-mini-sub">Kondapur, Hyderabad</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="comp-block">
+            <div class="comp-label">Wall tile states</div>
+            <div class="comp-row">
+                <div class="wall-mini"><div class="wall-mini-name">North</div></div>
+                <div class="wall-mini selected"><div class="wall-mini-badge selected">Selected</div><div class="wall-mini-name">West</div></div>
+                <div class="wall-mini completed"><div class="wall-mini-badge completed">Completed</div><div class="wall-mini-name">East</div></div>
+            </div>
+        </div>
+
+        <div class="comp-block">
+            <div class="comp-label">Tab bar</div>
+            <div class="tabbar-mini">
+                <div class="tab-mini on">Home</div>
+                <div class="tab-mini">Reports</div>
+                <div class="tab-mini">Profile</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>VOYD Quality Checker — Design System · v1 · Generated for Figma capture</footer>
+
+</body>
+</html>

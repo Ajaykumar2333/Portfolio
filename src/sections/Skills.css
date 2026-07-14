@@ -1,207 +1,229 @@
 .skills {
-  background-color: #111111;
-  padding: 100px 80px;
+    background-color: #111111;
+    padding: 50px 80px 100px;
 }
 
 .skills-container {
-  max-width: 1120px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .skills-header {
-  text-align: center;
-  margin-bottom: 48px;
+    text-align: center;
+    margin-bottom: 48px;
 }
 
 .skills-tag {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #f05a28;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #f05a28;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 .skills-title {
-  font-family: 'Clash Display', 'Inter', sans-serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  color: #ffffff;
+    font-family: 'Clash Display', 'Inter', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #ffffff;
 }
 
-.accent { color: #f05a28; }
+.accent {
+    color: #f05a28;
+}
+
 
 /* GRID */
+
 .skills-grid-top {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr;
-  gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 20px;
 }
 
+
 /* CARD BASE */
+
 .skills-card {
-  background: #181818;
-  border: 1px solid #252525;
-  border-radius: 20px;
-  padding: 28px;
-  transition: border-color 0.3s, transform 0.2s;
+    background: #181818;
+    border: 1px solid #252525;
+    border-radius: 20px;
+    padding: 28px;
+    transition: border-color 0.3s, transform 0.2s;
 }
 
 .skills-card:hover {
-  border-color: rgba(240, 90, 40, 0.35);
-  transform: translateY(-3px);
+    border-color: rgba(240, 90, 40, 0.35);
+    transform: translateY(-3px);
 }
+
 
 /* Featured middle card */
+
 .skills-card--featured {
-  background: linear-gradient(135deg, #1c1c1c, #1a1218);
-  border-color: rgba(240, 90, 40, 0.2);
+    background: linear-gradient(135deg, #1c1c1c, #1a1218);
+    border-color: rgba(240, 90, 40, 0.2);
 }
 
+
 /* Dev card - full width */
+
 .skills-card--dev {
-  flex-direction: column;
+    flex-direction: column;
 }
 
 .skills-card-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 22px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid #252525;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #252525;
 }
 
 .skills-card-icon {
-  font-size: 1.1rem;
+    font-size: 1.1rem;
 }
 
 .skills-card-head h3 {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
 }
 
 .dev-inline-note {
-  margin-left: auto;
-  font-size: 0.75rem;
-  color: #555;
-  font-style: italic;
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: #555;
+    font-style: italic;
 }
 
+
 /* TOOL CHIPS */
+
 .tool-chips {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .tool-chip {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #222;
-  border: 1px solid #2e2e2e;
-  border-radius: 10px;
-  padding: 10px 14px;
-  transition: background 0.2s, border-color 0.2s;
-  cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #222;
+    border: 1px solid #2e2e2e;
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
 }
 
 .tool-chip:hover {
-  background: #282828;
-  border-color: rgba(240, 90, 40, 0.4);
+    background: #282828;
+    border-color: rgba(240, 90, 40, 0.4);
 }
 
 .tool-chip-img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .tool-chip span {
-  font-size: 0.85rem;
-  color: #bbb;
-  font-weight: 500;
+    font-size: 0.85rem;
+    color: #bbb;
+    font-weight: 500;
 }
 
 .process-emoji {
-  font-size: 1rem;
-  width: 20px;
-  text-align: center;
-  flex-shrink: 0;
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
 }
 
+
 /* UI KNOWLEDGE CHIPS — tag cloud style */
+
 .ui-chips-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .ui-chip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(240, 90, 40, 0.08);
-  border: 1px solid rgba(240, 90, 40, 0.18);
-  border-radius: 100px;
-  padding: 7px 14px;
-  transition: background 0.2s, border-color 0.2s;
-  cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(240, 90, 40, 0.08);
+    border: 1px solid rgba(240, 90, 40, 0.18);
+    border-radius: 100px;
+    padding: 7px 14px;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
 }
 
 .ui-chip:hover {
-  background: rgba(240, 90, 40, 0.16);
-  border-color: rgba(240, 90, 40, 0.4);
+    background: rgba(240, 90, 40, 0.16);
+    border-color: rgba(240, 90, 40, 0.4);
 }
 
 .ui-chip-emoji {
-  font-size: 0.85rem;
+    font-size: 0.85rem;
 }
 
 .ui-chip span:last-child {
-  font-size: 0.8rem;
-  color: #ddd;
-  font-weight: 500;
+    font-size: 0.8rem;
+    color: #ddd;
+    font-weight: 500;
 }
 
+
 /* DEV ROW */
+
 .dev-tools-row {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .dev-tool-chip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #222;
-  border: 1px solid #2e2e2e;
-  border-radius: 100px;
-  padding: 10px 20px;
-  transition: background 0.2s, border-color 0.2s;
-  cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #222;
+    border: 1px solid #2e2e2e;
+    border-radius: 100px;
+    padding: 10px 20px;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
 }
 
 .dev-tool-chip:hover {
-  background: #282828;
-  border-color: rgba(240, 90, 40, 0.4);
+    background: #282828;
+    border-color: rgba(240, 90, 40, 0.4);
 }
 
 .dev-tool-chip span {
-  font-size: 0.85rem;
-  color: #bbb;
-  font-weight: 500;
+    font-size: 0.85rem;
+    color: #bbb;
+    font-weight: 500;
 }
 
 @media (max-width: 960px) {
-  .skills { padding: 60px 24px; }
-  .skills-grid-top { grid-template-columns: 1fr; }
-  .dev-tools-row { gap: 8px; }
+    .skills {
+        padding: 60px 24px;
+    }
+    .skills-grid-top {
+        grid-template-columns: 1fr;
+    }
+    .dev-tools-row {
+        gap: 8px;
+    }
 }

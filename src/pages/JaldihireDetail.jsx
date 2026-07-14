@@ -1,8 +1,123 @@
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./JaldihireDetail.css";
 
+const landingPages = [
+  { key: "employer", label: "Employer", path: "employer", img: "Employer.jpg", color: "#F16232", tagline: "For companies hiring at scale" },
+  { key: "applicant", label: "Applicant", path: "applicant", img: "Applicant.jpg", video: "ApplicantPageScroll.mp4", color: "#22C55E", tagline: "For candidates seeking a role" },
+  { key: "interviewer", label: "Interviewer", path: "interviewer", img: "interviewer.jpg", color: "#F6B643", tagline: "For freelance panel members" },
+];
+
+const decisions = [
+  {
+    num: "01",
+    title: "Design system before screens",
+    desc: "I built the complete design system — color tokens, button library, form states, alert variants, data tables, icon system — before designing any product screens. With multiple panels and developers working in parallel, consistency needed a foundation first.",
+  },
+  {
+    num: "02",
+    title: "Website redesign to establish credibility",
+    desc: "I was asked to take ownership of the website and rebuild it, so I approached it as a full ground-up redesign — clear sections for each user type (Employer, Applicant, Interviewer), each with its own value proposition and CTA flow, built to match the product's positioning as a serious B2B SaaS tool.",
+  },
+  {
+    num: "03",
+    title: "Dark navy + orange = brand distinction",
+    desc: "The Jaldihire brand uses a dark navy and orange palette that stands out in a recruitment space dominated by blues and greens. I carried this consistently across the website and dashboard without making it feel heavy.",
+  },
+  {
+    num: "04",
+    title: "Job listing page built for quick scanning",
+    desc: "The All Jobs page was designed with density in mind — recruiters and employers need to scan many listings fast. Cards were structured to show the most critical info (title, company, location, salary) at a glance without opening.",
+  },
+];
+
+/* ─────────────────────────────────────────────
+   SHOT — shows a full design/screenshot scaled
+   to fit in one view (no scrolling required),
+   click to open full-size in the lightbox
+───────────────────────────────────────────── */
+const Shot = ({ src, alt, onOpen }) => (
+  <div className="jh-shot" onClick={() => onOpen(src, alt)} role="button" tabIndex={0}>
+    <img src={src} alt={alt} className="jh-screen-img" />
+    <span className="jh-shot-hint">⤢ Click to view full size</span>
+  </div>
+);
+
+/* ─────────────────────────────────────────────
+   IMAGE LIGHTBOX — full detail view on demand
+───────────────────────────────────────────── */
+const ImageLightbox = ({ src, alt, onClose }) => {
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <div className="jh-lightbox-overlay" onClick={onClose}>
+      <button className="jh-lightbox-close" onClick={onClose} aria-label="Close">✕</button>
+      <img src={src} alt={alt} className="jh-lightbox-img" onClick={(e) => e.stopPropagation()} />
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   SCROLL-TRIGGERED VIDEO — video only starts
+   playing once its container scrolls into view,
+   and pauses again once it scrolls out. Avoids
+   autoplaying off-screen content and gives a
+   "walk up to the laptop and it turns on" feel.
+───────────────────────────────────────────── */
+const ScrollPlayVideo = ({ src, className, onLoadedMetadata }) => {
+  const videoRef = useRef(null);
+  const wrapRef = useRef(null);
+
+  useEffect(() => {
+    const videoEl = videoRef.current;
+    const wrapEl = wrapRef.current;
+    if (!videoEl || !wrapEl) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoEl.play().catch(() => {});
+        } else {
+          videoEl.pause();
+        }
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(wrapEl);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={wrapRef} className="jh-motion-laptop-screen">
+      <video
+        ref={videoRef}
+        src={src}
+        className={className}
+        loop
+        muted
+        playsInline
+        onLoadedMetadata={onLoadedMetadata}
+      />
+    </div>
+  );
+};
+
 const JaldihireDetail = () => {
   const img = (name) => `/assets/${name}`;
+  const [lightbox, setLightbox] = useState(null);
+  const openLightbox = (src, alt) => setLightbox({ src, alt });
+  const closeLightbox = () => setLightbox(null);
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
     <div className="jh-page">
@@ -34,6 +149,10 @@ const JaldihireDetail = () => {
               <span className="jh-meta-value">Company Project</span>
             </div>
             <div className="jh-meta-item">
+              <span className="jh-meta-label">Duration</span>
+              <span className="jh-meta-value">Ongoing — joined mid-build</span>
+            </div>
+            <div className="jh-meta-item">
               <span className="jh-meta-label">Platform</span>
               <span className="jh-meta-value">Website + Web Application</span>
             </div>
@@ -51,11 +170,11 @@ const JaldihireDetail = () => {
 
       {/* ── HERO BANNER IMAGE ── */}
       <div className="jh-img-banner">
-        <img src={img("JHHomepage.jpg")} alt="Jaldihire Homepage" className="jh-banner-img" />
+        <img src={img("Halfhomepage.png")} alt="Jaldihire Homepage" className="jh-banner-img" />
       </div>
 
       {/* ── 01 OVERVIEW ── */}
-      <section className="jh-section jh-white">
+      <section className="jh-section jh-white jh-section-after-banner">
         <div className="jh-inner">
           <div className="jh-section-label">01 — Overview</div>
           <h2 className="jh-heading">What is <span className="jh-accent">Jaldihire?</span></h2>
@@ -85,7 +204,6 @@ const JaldihireDetail = () => {
                 <li>Redesigned the complete marketing website from scratch</li>
                 <li>Built the Design System — colors, typography, buttons, forms, dropdowns, alerts, tables, icons</li>
                 <li>Designed the Employer Dashboard UI</li>
-                <li>Designed the Admin Dashboard UI</li>
                 <li>Designed Post a Job form</li>
                 <li>Designed All Jobs listing page</li>
                 <li>Designed Job Description page</li>
@@ -103,81 +221,190 @@ const JaldihireDetail = () => {
               </ul>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="jh-stats">
-            <div className="jh-stat">
-              <span className="jh-stat-num">1</span>
-              <span className="jh-stat-label">Website Redesigned</span>
+      {/* ── 03 WEBSITE BRAND & TYPOGRAPHY ── */}
+      <section className="jh-section jh-white">
+        <div className="jh-inner">
+          <div className="jh-section-label">03 — Website Brand & Typography</div>
+          <h2 className="jh-heading">The website's <span className="jh-accent">look & feel</span></h2>
+          <p className="jh-body">The marketing website runs on its own, distinct visual language from the web application — a warm yellow-to-orange gradient for every button and CTA, a deep navy as the primary color, and Poppins set across the entire site.</p>
+
+          <div className="jh-brand-grid">
+            <div className="jh-brand-card">
+              <div className="jh-brand-swatch jh-brand-swatch-gradient"></div>
+              <div className="jh-brand-card-name">Accent Gradient</div>
+              <span className="jh-brand-card-hex">#F5E84C → #F6B643</span>
+              <p className="jh-brand-card-use">Used on every button and CTA across the website — Contact Sales, Hire Me, form submits.</p>
             </div>
-            <div className="jh-stat">
-              <span className="jh-stat-num">1</span>
-              <span className="jh-stat-label">Design System Built</span>
+            <div className="jh-brand-card">
+              <div className="jh-brand-swatch jh-brand-swatch-primary"></div>
+              <div className="jh-brand-card-name">Primary</div>
+              <span className="jh-brand-card-hex">#072C50</span>
+              <p className="jh-brand-card-use">Navigation bar, hero background, and body text — the anchor color of the site.</p>
             </div>
-            <div className="jh-stat">
-              <span className="jh-stat-num">2</span>
-              <span className="jh-stat-label">Dashboards Designed</span>
+          </div>
+
+          <div className="jh-font-showcase">
+            <div className="jh-font-hero">
+              <span className="jh-font-hero-aa">Aa</span>
+              <span className="jh-font-hero-name">Poppins</span>
+              <span className="jh-font-hero-sub">Used across the entire website — headings, body, labels, buttons</span>
             </div>
-            <div className="jh-stat">
-              <span className="jh-stat-num">5<span className="jh-stat-plus">+</span></span>
-              <span className="jh-stat-label">Key Screens</span>
+            <div className="jh-font-scale">
+              {[
+                { name: "H1 — Hero", size: "48–56px / 700", sample: "360° Hiring Solution", sampleSize: "26px", weight: "700" },
+                { name: "H2 — Section", size: "32–36px / 600", sample: "What is Jaldihire?", sampleSize: "20px", weight: "600" },
+                { name: "H3 — Card Title", size: "18–20px / 600", sample: "Achieve your hiring targets", sampleSize: "15px", weight: "600" },
+                { name: "Body", size: "14–16px / 400", sample: "Employers create job listings and manage candidates.", sampleSize: "14px", weight: "400", color: "#666" },
+                { name: "Button / Label", size: "14–15px / 600", sample: "Contact Sales", sampleSize: "13px", weight: "600", color: "#072C50" },
+              ].map((t, i) => (
+                <div key={i} className="jh-font-row">
+                  <span className="jh-font-row-name">{t.name}</span>
+                  <span className="jh-font-row-size">{t.size}</span>
+                  <span className="jh-font-row-demo" style={{ fontSize: t.sampleSize, fontWeight: t.weight, color: t.color || "#111" }}>{t.sample}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── 03 WEBSITE REDESIGN ── */}
+      {/* ── 04 WEBSITE REDESIGN ── */}
       <section className="jh-section jh-white">
         <div className="jh-inner-wide">
           <div className="jh-inner">
-            <div className="jh-section-label">03 — Website Redesign</div>
+            <div className="jh-section-label">04 — Website Redesign</div>
             <h2 className="jh-heading">Marketing website — <span className="jh-accent">full redesign</span></h2>
-            <p className="jh-body">The original website lacked visual hierarchy, consistency, and credibility for a B2B SaaS product. I redesigned it from scratch — homepage, all landing pages for each user type (Employer, Applicant, Interviewer), services pages, and the About / Mission-Vision pages.</p>
+            <p className="jh-body">I was asked to take ownership of the website and rebuild it — so I redesigned it from scratch: the homepage, dedicated landing pages for each user type (Employer, Applicant, Interviewer), the services pages, and the About / Mission-Vision pages.</p>
           </div>
 
-          {/* Homepage — full bleed */}
-          <div className="jh-screen-full">
-            <div className="jh-screen-header">
-              <span className="jh-screen-label">Homepage — Full View</span>
-            </div>
-            <div className="jh-screen-frame">
-              <img src={img("Homepagge.jpg")} alt="Jaldihire Homepage" className="jh-screen-img" />
-            </div>
-          </div>
-
-          {/* 3-col grid for landing pages */}
-          <div className="jh-screen-grid-3">
-            <div className="jh-screen-card">
-              <span className="jh-screen-label">Employer Page</span>
-              <div className="jh-screen-frame">
-                <img src={img("Employer.jpg")} alt="Employer Landing Page" className="jh-screen-img" />
+          {/* Homepage — browser window */}
+          <div className="jh-browser-block jh-browser-contained">
+            <span className="jh-screen-label">Homepage</span>
+            <div className="jh-browser-window">
+              <div className="jh-browser-bar">
+                <span className="jh-browser-dot jh-dot-red" />
+                <span className="jh-browser-dot jh-dot-yellow" />
+                <span className="jh-browser-dot jh-dot-green" />
+                <span className="jh-browser-url">jaldihire.com</span>
               </div>
-            </div>
-            <div className="jh-screen-card">
-              <span className="jh-screen-label">Applicant Page</span>
-              <div className="jh-screen-frame">
-                <img src={img("Applicant.jpg")} alt="Applicant Landing Page" className="jh-screen-img" />
-              </div>
-            </div>
-            <div className="jh-screen-card">
-              <span className="jh-screen-label">Interviewer Page</span>
-              <div className="jh-screen-frame">
-                <img src={img("interviewer.jpg")} alt="Interviewer Page" className="jh-screen-img" />
+              <div className="jh-browser-scroll">
+                <div className="jh-scroll-hint-track">
+                  <span className="jh-scroll-hint">↓ Scroll to see full page</span>
+                </div>
+                <Shot src={img("JHHomepage.png")} alt="Jaldihire Homepage" onOpen={openLightbox} />
               </div>
             </div>
           </div>
 
-          {/* 2-col for remaining pages */}
-          <div className="jh-screen-grid-2">
-            <div className="jh-screen-card">
+          {/* Landing pages — all three shown, stacked, no click required.
+              Applicant is heavy on scroll-triggered animation, so instead of a
+              static screenshot it shows a laptop mockup with the screen
+              recording — the video only starts playing once the laptop
+              scrolls into view. */}
+          <div className="jh-lp-heading-wrap">
+            <span className="jh-lp-eyebrow">One product — three audiences</span>
+            <h3 className="jh-lp-title">Landing Pages <span className="jh-accent">by user type</span></h3>
+          </div>
+
+          {landingPages.map((p) => (
+            <div key={p.key} className="jh-browser-block jh-browser-contained">
+              <div className="jh-browser-role-tag" style={{ "--lp-color": p.color }}>
+                <span className="jh-browser-role-dot" style={{ background: p.color }}></span>
+                {p.label} Page
+                <span className="jh-browser-role-tagline">— {p.tagline}</span>
+              </div>
+
+              {p.key === "applicant" ? (
+                <div className="jh-motion-showcase">
+                  <span className="jh-motion-watermark">APPLICANT</span>
+                  <div className="jh-motion-stack">
+                    <div className="jh-motion-laptop">
+                      <div className="jh-motion-laptop-cam"></div>
+                      <ScrollPlayVideo
+                        src={img("applicant-page-screen-recording.mp4")}
+                        className="jh-motion-video"
+                        onLoadedMetadata={(e) => { e.target.playbackRate = 1.6; }}
+                      />
+                    </div>
+                    <div className="jh-motion-laptop-base-top"></div>
+                    <div className="jh-motion-laptop-base-bottom"></div>
+                  </div>
+                  <span className="jh-motion-caption">Screen Recording</span>
+                  <p className="jh-motion-note">This page is built with scroll-triggered micro-interactions and prototype animations — captured here as a screen recording since a static screenshot can't show the motion.</p>
+                </div>
+              ) : (
+                <div className="jh-browser-window">
+                  <div className="jh-browser-bar">
+                    <span className="jh-browser-dot jh-dot-red" />
+                    <span className="jh-browser-dot jh-dot-yellow" />
+                    <span className="jh-browser-dot jh-dot-green" />
+                    <span className="jh-browser-url">jaldihire.com/{p.path}</span>
+                  </div>
+                  <div className="jh-browser-scroll">
+                    <div className="jh-scroll-hint-track">
+                      <span className="jh-scroll-hint">↓ Scroll to see full page</span>
+                    </div>
+                    <Shot src={img(p.img)} alt={`${p.label} Landing Page`} onOpen={openLightbox} />
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {/* Applicant Sign In — prototype in motion, full width, autoplay loop */}
+          <div className="jh-inner" style={{ marginTop: "64px" }}>
+            <h3 className="jh-subheading">Applicant Sign In — prototype in motion</h3>
+            <p className="jh-body">Beyond static screens, I built out the sign-in flow as an interactive Figma prototype. Here it is captured in motion — the full transition into the Applicant Sign In screen.</p>
+          </div>
+
+          <div className="jh-video-full">
+            <video
+              src={img("applicant-login-page-animation.mp4")}
+              className="jh-video-full-el"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          </div>
+
+          {/* Services + About — side by side browser windows */}
+          <div className="jh-browser-grid-2">
+            <div className="jh-browser-block">
               <span className="jh-screen-label">Services Page</span>
-              <div className="jh-screen-frame">
-                <img src={img("Services with content.jpg")} alt="Services Page" className="jh-screen-img" />
+              <div className="jh-browser-window">
+                <div className="jh-browser-bar">
+                  <span className="jh-browser-dot jh-dot-red" />
+                  <span className="jh-browser-dot jh-dot-yellow" />
+                  <span className="jh-browser-dot jh-dot-green" />
+                  <span className="jh-browser-url">jaldihire.com/services</span>
+                </div>
+                <div className="jh-browser-scroll">
+                  <div className="jh-scroll-hint-track">
+                    <span className="jh-scroll-hint">↓ Scroll to see full page</span>
+                  </div>
+                  <Shot src={img("Services with content.jpg")} alt="Services Page" onOpen={openLightbox} />
+                </div>
               </div>
             </div>
-            <div className="jh-screen-card">
+            <div className="jh-browser-block">
               <span className="jh-screen-label">About Us Page</span>
-              <div className="jh-screen-frame">
-                <img src={img("aboutus.jpg")} alt="About Us Page" className="jh-screen-img" />
+              <div className="jh-browser-window">
+                <div className="jh-browser-bar">
+                  <span className="jh-browser-dot jh-dot-red" />
+                  <span className="jh-browser-dot jh-dot-yellow" />
+                  <span className="jh-browser-dot jh-dot-green" />
+                  <span className="jh-browser-url">jaldihire.com/about</span>
+                </div>
+                <div className="jh-browser-scroll">
+                  <div className="jh-scroll-hint-track">
+                    <span className="jh-scroll-hint">↓ Scroll to see full page</span>
+                  </div>
+                  <Shot src={img("aboutus.jpg")} alt="About Us Page" onOpen={openLightbox} />
+                </div>
               </div>
             </div>
           </div>
@@ -188,21 +415,21 @@ const JaldihireDetail = () => {
       <section className="jh-section jh-gray">
         <div className="jh-inner-wide">
           <div className="jh-inner">
-            <div className="jh-section-label">04 — Design System</div>
+            <div className="jh-section-label">05 — Design System</div>
             <h2 className="jh-heading">Built the system <span className="jh-accent">from scratch</span></h2>
-            <p className="jh-body">Before touching any product screens, I built a comprehensive design system in Figma. The goal was to establish how the entire product should look — giving the development team a single source of truth for every UI element.</p>
+            <p className="jh-body">Before touching any product screens, I built a comprehensive design system in Figma for the web application — colors, buttons, forms, alerts, tables, dropdowns, and icons — giving the development team a single source of truth for every UI element.</p>
           </div>
 
-          {/* COLOR PALETTE */}
+          {/* COLOR PALETTE — web application tokens */}
           <div className="jh-inner">
             <h3 className="jh-subheading">Color Palette</h3>
             <div className="jh-colors">
               {[
-                { color: "#013262", name: "Primary Dark Navy", hex: "#013262", use: "Headers, navigation, ATS table headers" },
-                { color: "#0069C1", name: "Button Default Blue", hex: "#0069C1", use: "Primary CTA buttons — default state" },
-                { color: "#8C4A87", name: "Button Hover Purple", hex: "#8C4A87", use: "Primary buttons on hover" },
-                { color: "#FFFFFF", name: "White", hex: "#FFFFFF", use: "Card backgrounds, content areas", border: true },
-                { color: "#F5F5F5", name: "Light Gray", hex: "#F5F5F5", use: "Alternating table rows, secondary backgrounds" },
+                { color: "#000000", name: "Text / Icons", hex: "#000000", use: "Primary text and icon color" },
+                { color: "#072C50", name: "Primary", hex: "#072C50", use: "Primary surface color across the app" },
+                { color: "#013262", name: "Table Header", hex: "#013262", use: "Data table headers" },
+                { color: "#0E69C1", name: "Buttons — Default", hex: "#0E69C1", use: "Default button state" },
+                { color: "#0C4A87", name: "Buttons — Hover", hex: "#0C4A87", use: "Button hover state" },
               ].map((c, i) => (
                 <div key={i} className="jh-color-item">
                   <div className="jh-color-swatch" style={{ background: c.color, border: c.border ? "1px solid #ddd" : "none" }}></div>
@@ -212,39 +439,11 @@ const JaldihireDetail = () => {
                 </div>
               ))}
             </div>
-
-            {/* TYPOGRAPHY */}
-            <h3 className="jh-subheading" style={{ marginTop: "48px" }}>Typography</h3>
-            <div className="jh-type-scale">
-              {[
-                { name: "H1 — Hero", size: "48–56px / 800", sample: "Jaldihire", sampleSize: "32px", weight: "800" },
-                { name: "H2 — Section", size: "32–40px / 700", sample: "360° Hiring Solution", sampleSize: "22px", weight: "700" },
-                { name: "H3 — Card Title", size: "20–24px / 600", sample: "Pre-screened Profiles", sampleSize: "16px", weight: "600" },
-                { name: "Body", size: "14–16px / 400", sample: "Achieve your hiring targets efficiently.", sampleSize: "14px", weight: "400", color: "#666" },
-                { name: "Label / Tag", size: "11px / 700 / uppercase", sample: "UI/UX DESIGN", sampleSize: "11px", weight: "700", color: "#0069C1", spacing: "2px" },
-              ].map((t, i) => (
-                <div key={i} className="jh-type-row">
-                  <span className="jh-type-name">{t.name}</span>
-                  <span className="jh-type-size">{t.size}</span>
-                  <span className="jh-type-demo" style={{ fontSize: t.sampleSize, fontWeight: t.weight, color: t.color || "#111", letterSpacing: t.spacing || "normal", textTransform: t.spacing ? "uppercase" : "none" }}>{t.sample}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* ── STYLE GUIDE — full bleed ── */}
           <div className="jh-inner">
             <h3 className="jh-subheading" style={{ marginTop: "56px" }}>Design System Components</h3>
-          </div>
-
-          <div className="jh-screen-full">
-            <div className="jh-screen-header">
-              <span className="jh-screen-label">Full Style Guide — Figma Export</span>
-              <span className="jh-screen-badge">Figma</span>
-            </div>
-            <div className="jh-screen-frame jh-frame-ds">
-              <img src={img("Style Guide.jpg")} alt="Style Guide" className="jh-screen-img" />
-            </div>
           </div>
 
           {/* ── DS COMPONENTS — each one full-width, stacked ── */}
@@ -258,7 +457,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Buttons.jpg")} alt="Button Components" className="jh-screen-img" />
+                  <Shot src={img("Buttons.jpg")} alt="Button Components" onOpen={openLightbox} />
                 </div>
               </div>
             </div>
@@ -273,7 +472,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Forminputs.jpg")} alt="Form Input Components" className="jh-screen-img" />
+                  <Shot src={img("Forminputs.jpg")} alt="Form Input Components" onOpen={openLightbox} />
                 </div>
               </div>
             </div>
@@ -288,7 +487,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Alerts.jpg")} alt="Alert Components" className="jh-screen-img" />
+                  <Shot src={img("Alerts.jpg")} alt="Alert Components" onOpen={openLightbox} />
                 </div>
               </div>
             </div>
@@ -303,7 +502,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Table.jpg")} alt="Table Components" className="jh-screen-img" />
+                  <Shot src={img("Table.jpg")} alt="Table Components" onOpen={openLightbox} />
                 </div>
               </div>
             </div>
@@ -318,7 +517,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Dropdowns.jpg")} alt="Dropdown Components" className="jh-screen-img" />
+                  <Shot src={img("Dropdowns.jpg")} alt="Dropdown Components" onOpen={openLightbox} />
                 </div>
               </div>
             </div>
@@ -333,7 +532,7 @@ const JaldihireDetail = () => {
               </div>
               <div className="jh-ds-screen">
                 <div className="jh-screen-frame jh-frame-ds">
-                  <img src={img("Icons.jpg")} alt="Icon Library" className="jh-screen-img" />
+                  <Shot src={img("Icons.jpg")} alt="Icon Library" onOpen={openLightbox} />
                 </div>
               </div>
             </div>
@@ -346,9 +545,9 @@ const JaldihireDetail = () => {
       <section className="jh-section jh-dark">
         <div className="jh-inner-wide">
           <div className="jh-inner">
-            <div className="jh-section-label jh-label-dark">05 — Product Screens</div>
+            <div className="jh-section-label jh-label-dark">06 — Product Screens</div>
             <h2 className="jh-heading jh-heading-white">Dashboard & app screens — <span className="jh-accent">key deliverables</span></h2>
-            <p className="jh-body jh-body-muted">I designed the Employer Dashboard and Admin Dashboard UI, along with core screens: Post a Job form, All Jobs listing, and Job Description page. These screens were built on top of the design system I created.</p>
+            <p className="jh-body jh-body-muted">I designed the Employer Dashboard, along with core screens: Post a Job form, All Jobs listing, and Job Description page. These screens were built on top of the design system I created.</p>
           </div>
 
           {/* Employer Dashboard — full bleed */}
@@ -361,7 +560,7 @@ const JaldihireDetail = () => {
               <span className="jh-screen-badge jh-badge-dark">Figma → Dev Handoff</span>
             </div>
             <div className="jh-screen-frame jh-frame-dark">
-              <img src={img("EmployerDashboard.jpg")} alt="Employer Dashboard" className="jh-screen-img" />
+              <Shot src={img("EmployerDashboard.jpg")} alt="Employer Dashboard" onOpen={openLightbox} />
             </div>
           </div>
 
@@ -406,7 +605,7 @@ const JaldihireDetail = () => {
             </div>
             <div className="jh-job-spotlight-screen">
               <div className="jh-screen-frame jh-frame-dark">
-                <img src={img("joblistingspage.jpg")} alt="Job Listings Page" className="jh-screen-img" />
+                <Shot src={img("joblistingspage.jpg")} alt="Job Listings Page" onOpen={openLightbox} />
               </div>
             </div>
           </div>
@@ -427,7 +626,7 @@ const JaldihireDetail = () => {
             </div>
             <div className="jh-job-spotlight-screen">
               <div className="jh-screen-frame jh-frame-dark">
-                <img src={img("jobdescription.jpg")} alt="Job Description Page" className="jh-screen-img" />
+                <Shot src={img("jobdescription.jpg")} alt="Job Description Page" onOpen={openLightbox} />
               </div>
             </div>
           </div>
@@ -448,39 +647,8 @@ const JaldihireDetail = () => {
             </div>
             <div className="jh-job-spotlight-screen">
               <div className="jh-screen-frame jh-frame-dark">
-                <img src={img("jobappplication.jpg")} alt="Job Application Form" className="jh-screen-img" />
+                <Shot src={img("jobappplication.jpg")} alt="Job Application Form" onOpen={openLightbox} />
               </div>
-            </div>
-          </div>
-
-          <div className="jh-job-divider" />
-
-          {/* Admin — locked */}
-          <div className="jh-job-spotlight jh-job-spotlight-rev">
-            <div className="jh-job-spotlight-meta">
-              <div className="jh-job-tag">Screen 04</div>
-              <h4 className="jh-job-spotlight-title">Admin Dashboard</h4>
-              <p className="jh-job-spotlight-desc">Full admin panel UI designed for platform operations — user management, employer overview, recruiter activity, and system-level controls. Available for walkthrough during an interview session.</p>
-              <div className="jh-job-pills">
-                <span>Platform overview</span>
-                <span>User management</span>
-                <span>Activity tracking</span>
-              </div>
-            </div>
-            <div className="jh-job-spotlight-screen">
-              <div className="jh-screen-frame jh-frame-dark jh-frame-locked">
-                <div className="jh-locked-content">
-                  <span className="jh-lock-icon">🔒</span>
-                  <p>Admin Dashboard</p>
-                  <span>Available during interview walkthrough</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="jh-inner">
-            <div className="jh-nda-box" style={{ marginTop: "40px" }}>
-              ℹ️ I also understand the Recruiter panel flows and overall platform architecture — available for walkthrough during interview.
             </div>
           </div>
         </div>
@@ -489,37 +657,16 @@ const JaldihireDetail = () => {
       {/* ── 06 KEY DECISIONS ── */}
       <section className="jh-section jh-white">
         <div className="jh-inner">
-          <div className="jh-section-label">06 — Key Design Decisions</div>
+          <div className="jh-section-label">07 — Key Design Decisions</div>
           <h2 className="jh-heading">Why I designed <span className="jh-accent">it this way</span></h2>
 
           <div className="jh-decisions" style={{ marginTop: "32px" }}>
-            {[
-              {
-                num: "01",
-                title: "Design system before screens",
-                desc: "I built the complete design system — color tokens, button library, form states, alert variants, data tables, icon system — before designing any product screens. With multiple panels and developers working in parallel, consistency needed a foundation.",
-              },
-              {
-                num: "02",
-                title: "Website redesign to establish credibility",
-                desc: "The original site didn't convey the sophistication of the product. I redesigned it with clear sections for each user type — Employer, Applicant, and Interviewer — each with their own value proposition and CTA flow.",
-              },
-              {
-                num: "03",
-                title: "Dark navy + yellow = brand distinction",
-                desc: "The Jaldihire brand uses a dark navy and yellow palette that stands out in the recruitment space dominated by blues and greens. I carried this consistently across the website and dashboard without making it feel heavy.",
-              },
-              {
-                num: "04",
-                title: "Job listing page built for quick scanning",
-                desc: "The All Jobs page was designed with density in mind — recruiters and employers need to scan many listings fast. Cards were structured to show the most critical info (title, company, location, salary) at a glance without opening.",
-              },
-            ].map((d, i) => (
-              <div key={i} className="jh-decision-card" style={{ background: "rgba(13,27,42,0.04)", border: "1px solid #eee" }}>
+            {decisions.map((d, i) => (
+              <div key={i} className="jh-decision-card">
                 <span className="jh-decision-num">{d.num}</span>
                 <div className="jh-decision-content">
-                  <h4 style={{ color: "#111" }}>{d.title}</h4>
-                  <p style={{ color: "#666" }}>{d.desc}</p>
+                  <h4>{d.title}</h4>
+                  <p>{d.desc}</p>
                 </div>
               </div>
             ))}
@@ -530,7 +677,7 @@ const JaldihireDetail = () => {
       {/* ── 07 OUTCOME ── */}
       <section className="jh-section jh-gray">
         <div className="jh-inner">
-          <div className="jh-section-label">07 — Outcome</div>
+          <div className="jh-section-label">08 — Outcome</div>
           <h2 className="jh-heading">Delivered and <span className="jh-accent">shipped.</span></h2>
 
           <div className="jh-outcome-list">
@@ -538,7 +685,6 @@ const JaldihireDetail = () => {
               "Complete marketing website redesign — all user landing pages + services + about pages",
               "1 unified design system — colors, typography, buttons, forms, dropdowns, alerts, tables, icons",
               "Employer Dashboard UI — designed and handed off",
-              "Admin Dashboard UI — designed and handed off",
               "Post a Job form, All Jobs listing, and Job Description page",
               "Applicant & Interviewer landing pages designed",
               "All deliverables successfully handed to development and shipped live",
@@ -556,6 +702,10 @@ const JaldihireDetail = () => {
           </div>
         </div>
       </section>
+
+      {lightbox && (
+        <ImageLightbox src={lightbox.src} alt={lightbox.alt} onClose={closeLightbox} />
+      )}
 
     </div>
   );

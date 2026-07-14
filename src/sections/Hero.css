@@ -21,38 +21,126 @@
     text-align: center;
     z-index: 1;
     padding: 0 24px;
-    margin-bottom: 80px;
+    margin-bottom: 100px;
+    max-width: 780px;
 }
 
-.hero-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+
+/* Badge */
+
+.hero-badge {
+    display: inline-block;
+    font-size: 0.78rem;
     font-weight: 600;
-    color: #1a1a1a;
-    line-height: 1.25;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #f05a28;
+    background: rgba(240, 90, 40, 0.08);
+    border: 1px solid rgba(240, 90, 40, 0.25);
+    padding: 9px 20px;
+    border-radius: 999px;
     margin-bottom: 40px;
+}
+
+
+/* Headline */
+
+.hero-title {
+    font-family: 'Clash Display', sans-serif;
+    margin-bottom: 32px;
+}
+
+.hero-line {
+    display: block;
+    line-height: 1.18;
     letter-spacing: -0.5px;
 }
 
-.accent {
+.hero-line-1 {
+    font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+    font-weight: 500;
+    color: #6b6b6b;
+}
+
+.hero-line-2 {
+    font-size: clamp(2.4rem, 5.6vw, 4rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 4px 0;
+}
+
+.hero-line-3 {
+    font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+    font-weight: 500;
     color: #f05a28;
 }
 
-.hero-btn {
-    display: inline-block;
-    background-color: #f05a28;
-    color: #ffffff;
-    padding: 16px 36px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: background 0.2s, transform 0.2s;
+
+/* Skills line */
+
+.hero-skills {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #6b6b6b;
+    letter-spacing: 0.2px;
+    margin-bottom: 40px;
 }
 
-.hero-btn:hover {
+.hero-skills .dot {
+    color: #f05a28;
+    margin: 0 2px;
+}
+
+
+/* CTA row */
+
+.hero-cta-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.96rem;
+    font-weight: 600;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.hero-btn-primary {
+    background-color: #f05a28;
+    color: #ffffff;
+    border-color: #f05a28;
+}
+
+.hero-btn-primary:hover {
     background-color: #d44e20;
+    border-color: #d44e20;
     transform: translateY(-2px);
 }
+
+.hero-btn-secondary {
+    background-color: transparent;
+    color: #1a1a1a;
+    border-color: rgba(26, 26, 26, 0.2);
+}
+
+.hero-btn-secondary:hover {
+    border-color: #1a1a1a;
+    transform: translateY(-2px);
+}
+
+
+/* Ticker */
 
 .ticker-wrapper {
     position: absolute;
@@ -63,6 +151,7 @@
     transform: rotate(-2deg) scaleX(1.1);
     overflow: hidden;
     padding: 14px 0;
+    z-index: 1;
 }
 
 .ticker-track {
@@ -91,5 +180,15 @@
     }
     100% {
         transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 560px) {
+    .hero-cta-row {
+        flex-direction: column;
+        width: 100%;
+    }
+    .hero-btn {
+        width: 100%;
     }
 }

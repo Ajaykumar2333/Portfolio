@@ -1,134 +1,136 @@
 .work {
-  background: #f2f2f0;
-  padding: 100px 80px;
+    background: #f2f2f0;
+    padding: 100px 80px;
 }
 
 .work-container {
-  max-width: 900px;
-  margin: 0 auto;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .work-header {
-  margin-bottom: 56px;
+    margin-bottom: 48px;
 }
 
 .work-tag {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #f05a28;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #f05a28;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 .work-title-main {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
-  color: #111;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: #111;
 }
 
-.accent { color: #f05a28; }
-
-/* List layout */
-.work-list {
-  display: flex;
-  flex-direction: column;
+.accent {
+    color: #f05a28;
 }
 
-.work-item {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  padding: 28px 0;
-  border-bottom: 1px solid #e0e0dd;
-  text-decoration: none;
-  transition: all 0.2s;
-  cursor: pointer;
+
+/* Simple restrained card grid */
+
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
-.work-item:first-child {
-  border-top: 1px solid #e0e0dd;
+.work-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #e2e2df;
+    border-radius: 12px;
+    padding: 24px;
+    text-decoration: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.work-item:hover .work-item-name {
-  color: #f05a28;
+.work-card:hover {
+    border-color: #d9d9d5;
+    box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.12);
 }
 
-.work-item:hover .work-item-arrow {
-  transform: translateX(6px);
-  color: #f05a28;
+.work-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
 }
 
-.work-item-num {
-  font-size: 1rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  min-width: 32px;
-  color: #bbb;
+.work-card-num {
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: #ccc;
 }
 
-.work-item-body {
-  flex: 1;
+.work-card-arrow {
+    font-size: 1rem;
+    color: #ccc;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.work-item-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
+.work-card:hover .work-card-arrow {
+    color: #f05a28;
+    transform: translateX(4px);
 }
 
-.work-item-cat {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #aaa;
-  margin-bottom: 2px;
+.work-card-cat {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 6px;
 }
 
-.work-item-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #111;
-  transition: color 0.2s;
+.work-card-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 10px;
+    transition: color 0.2s ease;
 }
 
-.work-item-desc {
-  font-size: 0.85rem;
-  color: #777;
-  line-height: 1.65;
-  max-width: 520px;
-  margin-top: 6px;
+.work-card:hover .work-card-name {
+    color: #f05a28;
 }
 
-.work-item-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  align-items: center;
+.work-card-desc {
+    font-size: 0.85rem;
+    color: #777;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.work-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
 }
 
 .work-tag-chip {
-  font-size: 0.68rem;
-  color: #999;
-  background: #e8e8e5;
-  padding: 3px 10px;
-  border-radius: 100px;
-  white-space: nowrap;
-}
-
-.work-item-arrow {
-  font-size: 1.1rem;
-  color: #ccc;
-  transition: transform 0.2s, color 0.2s;
-  flex-shrink: 0;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: #999;
+    background: #f2f2f0;
+    padding: 4px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
 }
 
 @media (max-width: 768px) {
-  .work { padding: 60px 24px; }
-  .work-item { gap: 16px; }
-  .work-item-top { flex-direction: column; align-items: flex-start; }
-  .work-item-arrow { display: none; }
+    .work {
+        padding: 60px 24px;
+    }
+    .work-grid {
+        grid-template-columns: 1fr;
+    }
 }

@@ -12,33 +12,31 @@ const Award = () => {
           </h2>
           <p className="award-year">Allyted Solutions · 2024</p>
           <p className="award-desc">
-            Recognised as the Best Employee of 2024 at Allyted Solutions — for
-            self-initiating and designing the internal HRMS system from scratch,
-            without being asked. Identified the problem, proposed the solution,
-            designed it end-to-end, and delivered a live product that the team
-            uses daily.
+            Recognised as the Best Employee of 2024 at Allyted Solutions —
+            awarded for consistently high-quality work and strong overall
+            performance across every project taken on through the year.
           </p>
 
           <div className="award-highlights">
             <div className="award-hl">
-              <span className="award-hl-icon">💡</span>
+              <span className="award-hl-icon">⭐</span>
               <div>
-                <h4>Self-initiated</h4>
-                <p>Nobody asked for it — I saw the gap and built it.</p>
+                <h4>Consistent quality</h4>
+                <p>High standards maintained across every project, every time.</p>
               </div>
             </div>
             <div className="award-hl">
-              <span className="award-hl-icon">🎨</span>
+              <span className="award-hl-icon">📈</span>
               <div>
-                <h4>Designed end-to-end</h4>
-                <p>Research, wireframes, UI, and final design — all me.</p>
+                <h4>Strong performance</h4>
+                <p>Reliable output and steady growth throughout the year.</p>
               </div>
             </div>
             <div className="award-hl">
-              <span className="award-hl-icon">🚀</span>
+              <span className="award-hl-icon">🤝</span>
               <div>
-                <h4>Live & in use</h4>
-                <p>The HRMS is actively used by the team today.</p>
+                <h4>Trusted by the team</h4>
+                <p>Dependable work that the team could count on.</p>
               </div>
             </div>
           </div>

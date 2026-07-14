@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOYD Quality Checker — Field App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --forest: #0F5C3D;
+            --forest-deep: #0A3E2A;
+            --forest-glow: #1C7A52;
+            --gold: #E7A93E;
+            --gold-bg: #FCEFD6;
+            --terracotta: #E07856;
+            --terracotta-bg: #FBE4DA;
+            --cream: #FBF7EE;
+            --card: #FFFFFF;
+            --ink: #16231C;
+            --ink-soft: #5F6E63;
+            --ink-faint: #96A395;
+            --line: #E9E2D0;
+            --pass: #1C9A5B;
+            --pass-bg: #DFF5E7;
+            --flag: #E0473C;
+            --flag-bg: #FCE3E0;
+            --skip: #6B7268;
+            --skip-bg: #ECE8DC;
+            --crit: #B0223B;
+            --crit-bg: #F8D9DE;
+            --font: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono: "SF Mono", "Cascadia Code", ui-monospace, Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font);
+            background: #D8D2BE;
+        }
+
+        .stage {
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 32px 12px;
+        }
+
+        .device {
+            width: 392px;
+            height: 848px;
+            background: var(--cream);
+            border-radius: 42px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 45px 90px -26px rgba(10, 62, 42, 0.5), 0 0 0 11px #0d0d0d, 0 0 0 13px #2a2a2a;
+        }
+
+        .notch {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 126px; height: 27px;
+            background: #0d0d0d;
+            border-radius: 0 0 18px 18px;
+            z-index: 60;
+        }
+
+        .statusbar {
+            height: 44px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 0 26px 7px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--ink);
+            font-family: var(--mono);
+        }
+
+        /* ---------- session strip (persistent context, set once) ---------- */
+        .session-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px 9px;
+            flex-shrink: 0;
+        }
+        .session-who {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+        .session-avatar {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--forest);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .session-date {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-faint);
+            font-family: var(--mono);
+        }
+
+        .screen {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            background: var(--cream);
+        }
+        .screen.active {
+            display: flex;
+            animation: riseIn .3s cubic-bezier(.22, 1, .36, 1);
+        }
+        @keyframes riseIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scroll {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .scroll::-webkit-scrollbar { display: none; }
+
+        .icon { width: 19px; height: 19px; display: block; flex-shrink: 0; }
+        .icon-sm { width: 15px; height: 15px; }
+        .icon-lg { width: 30px; height: 30px; }
+
+        /* ---------- Hero band ---------- */
+        .band {
+            position: relative;
+            overflow: hidden;
+            padding: 18px 22px 24px;
+            flex-shrink: 0;
+            color: #fff;
+            background: linear-gradient(135deg, var(--forest) 0%, var(--forest-deep) 100%);
+        }
+        .band.compact { padding: 16px 22px 17px; }
+        .blob { position: absolute; border-radius: 50%; filter: blur(2px); opacity: 0.5; }
+        .blob1 { width: 150px; height: 150px; background: radial-gradient(circle, var(--gold) 0%, transparent 70%); top: -70px; right: -50px; opacity: 0.35; }
+        .blob2 { width: 120px; height: 120px; background: radial-gradient(circle, var(--terracotta) 0%, transparent 70%); bottom: -60px; left: -40px; opacity: 0.3; }
+        .band-inner { position: relative; z-index: 2; }
+        .band-row { display: flex; align-items: center; gap: 12px; }
+        .back-btn {
+            width: 36px; height: 36px; border-radius: 12px;
+            background: rgba(255,255,255,0.15); border: none;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; cursor: pointer; flex-shrink: 0;
+        }
+        .eyebrow {
+            font-size: 10.5px; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--gold); font-weight: 700; font-family: var(--mono);
+        }
+        .band h1 { font-size: 21px; margin: 5px 0 0; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
+        .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-mark {
+            width: 36px; height: 36px; border-radius: 12px; background: var(--gold);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 16px; color: var(--forest-deep);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .brand-name { font-weight: 800; font-size: 15.5px; letter-spacing: 0.1px; }
+        .brand-sub { font-size: 9.5px; color: rgba(255,255,255,0.65); letter-spacing: 1.2px; text-transform: uppercase; font-weight: 700; margin-top: 1px; }
+        .crew-pill {
+            font-family: var(--mono); font-size: 11px; color: #fff;
+            background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 20px;
+            font-weight: 700; letter-spacing: 0.5px;
+        }
+
+        .content { padding: 20px 22px 112px; }
+
+        .search-pill {
+            display: flex; align-items: center; gap: 9px; background: var(--card);
+            border: 1.5px solid var(--line); border-radius: 16px; padding: 12px 15px;
+            margin-bottom: 16px; font-size: 13.5px; color: var(--ink-faint);
+        }
+        .filter-row { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; }
+        .filter-chip {
+            flex-shrink: 0; padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700;
+            background: var(--card); border: 1.5px solid var(--line); color: var(--ink-soft); white-space: nowrap;
+        }
+        .filter-chip.on { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+        .section-label {
+            font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+            color: var(--ink-faint); margin: 24px 0 11px; display: flex; align-items: center; gap: 8px;
+        }
+        .section-label:first-child { margin-top: 0; }
+        .section-label .n { color: var(--forest); font-family: var(--mono); }
+
+        /* ---------- Property cards ---------- */
+        .tag {
+            background: var(--card); border-radius: 20px; margin-bottom: 14px; cursor: pointer;
+            position: relative; box-shadow: 0 3px 0 var(--line); border: 1.5px solid var(--line);
+            transition: transform .15s ease;
+        }
+        .tag:active { transform: scale(0.97) translateY(2px); box-shadow: 0 1px 0 var(--line); }
+        .tag-accent { height: 6px; border-radius: 20px 20px 0 0; }
+        .tag-accent.g { background: linear-gradient(90deg, var(--forest), var(--forest-glow)); }
+        .tag-accent.a { background: linear-gradient(90deg, var(--gold), #F0C264); }
+        .tag-accent.t { background: linear-gradient(90deg, var(--terracotta), #EDA184); }
+        .tag-body { padding: 16px 17px; }
+        .tag-id { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 1px; margin-bottom: 4px; font-weight: 700; }
+        .tag-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+        .tag-name { font-size: 16px; font-weight: 800; color: var(--ink); letter-spacing: -0.2px; }
+        .tag-addr { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+        .status-tag { font-size: 10px; font-weight: 800; letter-spacing: 0.3px; padding: 5px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+        .status-tag.pending { background: var(--terracotta-bg); color: var(--terracotta); }
+        .status-tag.progress { background: var(--gold-bg); color: #A5731E; }
+        .status-tag.done { background: var(--pass-bg); color: var(--pass); }
+        .tag-meta { display: flex; align-items: center; gap: 10px; margin-top: 11px; font-size: 11.5px; color: var(--ink-soft); flex-wrap: wrap; font-weight: 600; }
+        .tag-meta span { display: flex; align-items: center; gap: 4px; }
+        .tag-meta .sep { color: var(--line); }
+        .ruler { height: 8px; background: var(--line); border-radius: 20px; margin-top: 12px; overflow: hidden; }
+        .ruler-fill { height: 100%; border-radius: 20px; }
+        .ruler-fill.g { background: linear-gradient(90deg, var(--forest), var(--forest-glow)); }
+        .ruler-fill.a { background: linear-gradient(90deg, var(--gold), #F0C264); }
+
+        .tag.room .tag-body { display: flex; align-items: center; gap: 13px; padding: 15px 16px; }
+        .room-ic { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; }
+        .room-ic.g { background: linear-gradient(135deg, var(--forest), var(--forest-glow)); }
+        .room-ic.done-ic { background: var(--pass-bg); color: var(--pass); }
+        .room-info { flex: 1; min-width: 0; }
+        .room-name { font-size: 14.5px; font-weight: 800; color: var(--ink); }
+        .room-sub { font-size: 11.5px; color: var(--ink-soft); margin-top: 2px; font-weight: 600; }
+        .room-flag { font-family: var(--mono); font-weight: 800; font-size: 12px; flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .room-flag.pend { background: var(--gold-bg); color: #A5731E; }
+        .room-flag.ok { background: var(--pass-bg); color: var(--pass); }
+        .tag.muted { opacity: 0.6; }
+
+        .strip {
+            background: var(--gold-bg); border-radius: 16px; padding: 13px 15px; display: flex; gap: 10px;
+            align-items: flex-start; margin-bottom: 20px; font-size: 12.5px; color: #8A611A; line-height: 1.5; font-weight: 600;
+        }
+        .strip.ok { background: var(--pass-bg); color: var(--pass); }
+
+        /* ---------- verify meter (signature element) ---------- */
+        .meter-card {
+            background: var(--card); border: 1.5px solid var(--line); border-radius: 18px;
+            padding: 14px 16px; margin-bottom: 16px;
+        }
+        .meter-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .meter-title { font-size: 12px; font-weight: 800; color: var(--ink); }
+        .meter-count { font-size: 12px; font-weight: 800; color: var(--forest); font-family: var(--mono); }
+        .meter-track { display: flex; gap: 4px; }
+        .meter-seg { flex: 1; height: 9px; border-radius: 6px; background: var(--line); transition: background .25s ease; }
+        .meter-seg.pass { background: var(--pass); }
+        .meter-seg.fail { background: var(--flag); }
+        .meter-seg.na { background: var(--skip); }
+        .meter-legend { display: flex; gap: 14px; margin-top: 10px; }
+        .meter-legend span { display: flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 700; color: var(--ink-soft); }
+        .meter-legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        /* ---------- sweep bar ---------- */
+        .sweep-bar {
+            display: flex; align-items: center; justify-content: space-between; border-radius: 18px;
+            padding: 15px 17px; margin-bottom: 20px; cursor: pointer; color: #fff;
+            background: linear-gradient(135deg, var(--forest), var(--forest-deep));
+            box-shadow: 0 8px 20px -8px rgba(15, 92, 61, 0.6);
+        }
+        .sweep-bar .txt { font-size: 13.5px; font-weight: 800; }
+        .sweep-bar .txt small { display: block; font-weight: 500; opacity: 0.72; font-size: 11px; margin-top: 2px; }
+        .sweep-btn {
+            background: var(--gold); color: var(--forest-deep); border: none; border-radius: 20px;
+            padding: 9px 15px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); flex-shrink: 0;
+        }
+
+        /* ---------- checkpoint card ---------- */
+        .ptag {
+            background: var(--card); border-radius: 20px; margin-bottom: 14px; overflow: hidden;
+            border: 1.5px solid var(--line); box-shadow: 0 3px 0 var(--line);
+        }
+        .ptag.pass { border-color: var(--pass); }
+        .ptag.fail { border-color: var(--flag); }
+        .ptag.na { border-color: var(--skip); }
+        .ptag-top { display: flex; gap: 12px; padding: 15px 16px 12px; }
+        .ptag-ic {
+            width: 42px; height: 42px; border-radius: 13px; background: var(--gold-bg); color: #A5731E;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .ptag-info { flex: 1; min-width: 0; padding-top: 1px; }
+        .ptag-trade {
+            font-size: 9.5px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase;
+            color: var(--forest); font-family: var(--mono); margin-bottom: 2px;
+        }
+        .ptag-name { font-size: 14px; font-weight: 800; color: var(--ink); line-height: 1.3; }
+        .ptag-spec { font-size: 11px; color: var(--ink-soft); margin-top: 3px; font-weight: 600; }
+
+        .ptag-question {
+            margin: 0 16px 12px; background: var(--cream); border: 1.5px dashed var(--line);
+            border-radius: 13px; padding: 10px 12px;
+        }
+        .ptag-question .q { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+        .ptag-question .a { font-size: 11px; color: var(--ink-soft); margin-top: 3px; font-weight: 600; }
+        .ptag-question .a b { color: var(--forest); font-weight: 800; }
+
+        .obs-row { display: flex; gap: 8px; padding: 0 16px 12px; align-items: center; }
+        .obs-row input {
+            flex: 1; border: 1.5px solid var(--line); border-radius: 12px; padding: 9px 12px;
+            font-size: 13px; font-family: var(--font); color: var(--ink); background: var(--cream);
+        }
+        .obs-row input:focus { outline: none; border-color: var(--forest); background: #fff; }
+        .obs-unit {
+            font-size: 11px; font-weight: 800; color: var(--ink-faint); background: var(--line);
+            padding: 9px 11px; border-radius: 12px; font-family: var(--mono); flex-shrink: 0;
+        }
+
+        .status-seg { display: flex; margin: 0 16px 0; border-radius: 14px; overflow: hidden; border: 1.5px solid var(--line); }
+        .status-seg button {
+            flex: 1; padding: 12px 0; font-size: 12px; font-weight: 800; letter-spacing: 0.3px;
+            background: var(--card); color: var(--ink-soft); border: none; cursor: pointer;
+            border-right: 1.5px solid var(--line); display: flex; align-items: center; justify-content: center; gap: 5px;
+            font-family: var(--font);
+        }
+        .status-seg button:last-child { border-right: none; }
+        .status-seg button.on.pass { background: var(--pass); color: #fff; }
+        .status-seg button.on.fail { background: var(--flag); color: #fff; }
+        .status-seg button.on.na { background: var(--skip); color: #fff; }
+
+        .fail-drawer { background: var(--flag-bg); padding: 0; max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+        .fail-drawer.show { max-height: 900px; padding: 16px; margin-top: 14px; }
+        .fail-drawer label {
+            font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--flag); display: block; margin-bottom: 7px;
+        }
+        .chip-group { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 13px; }
+        .chip {
+            padding: 7px 13px; border-radius: 20px; border: 1.5px solid #F0BFB6; font-size: 11.5px;
+            font-weight: 700; color: var(--ink-soft); background: #fff; cursor: pointer;
+        }
+        .chip.on.sev-low { background: var(--skip); border-color: var(--skip); color: #fff; }
+        .chip.on.sev-medium { background: var(--gold); border-color: var(--gold); color: var(--forest-deep); }
+        .chip.on.sev-high { background: var(--terracotta); border-color: var(--terracotta); color: #fff; }
+        .chip.on.sev-critical { background: var(--crit); border-color: var(--crit); color: #fff; }
+        .chip.on.defect { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+        textarea.mini {
+            width: 100%; border: 1.5px solid #F0BFB6; border-radius: 12px; padding: 10px 12px;
+            font-size: 13px; font-family: var(--font); background: #fff; margin-bottom: 12px; color: var(--ink);
+            resize: none; height: 50px;
+        }
+        .photo-add {
+            display: flex; align-items: center; justify-content: center; gap: 7px; border: 2px dashed #F0BFB6;
+            border-radius: 12px; padding: 11px; font-size: 12px; font-weight: 700; color: var(--flag);
+            background: #fff; cursor: pointer; margin-bottom: 4px;
+        }
+        .photo-add.on { background: var(--pass-bg); border-color: var(--pass); color: var(--pass); border-style: solid; }
+
+        .more-toggle {
+            display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 13px;
+            font-size: 11px; font-weight: 800; color: #8A2F26; cursor: pointer; padding: 9px 0;
+            border-top: 1.5px dashed #F0BFB6;
+        }
+        .more-toggle .chevron { transition: transform .2s ease; }
+        .more-toggle.open .chevron { transform: rotate(180deg); }
+        .more-fields { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+        .more-fields.show { max-height: 400px; margin-top: 12px; }
+        .more-fields input, .more-fields select {
+            width: 100%; border: 1.5px solid #F0BFB6; border-radius: 12px; padding: 9px 12px;
+            font-size: 12.5px; font-family: var(--font); background: #fff; margin-bottom: 10px; color: var(--ink);
+        }
+
+        .fab-add {
+            width: 100%; border: 2px dashed var(--forest); border-radius: 16px; padding: 13px; text-align: center;
+            font-size: 13px; font-weight: 800; color: var(--forest); background: var(--pass-bg); cursor: pointer;
+            margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 7px;
+        }
+
+        .bottombar {
+            position: absolute; bottom: 0; left: 0; right: 0; background: var(--cream);
+            border-top: 1.5px solid var(--line); padding: 15px 22px 24px; display: flex; gap: 11px; align-items: center;
+        }
+        .bottombar .count { font-size: 12px; color: var(--ink-soft); flex-shrink: 0; font-weight: 800; font-family: var(--mono); }
+        .btn-primary {
+            flex: 1; background: linear-gradient(135deg, var(--forest), var(--forest-deep)); color: #fff; border: none;
+            border-radius: 16px; padding: 15px 0; font-size: 14.5px; font-weight: 800; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 7px; box-shadow: 0 8px 18px -8px rgba(15, 92, 61, 0.55);
+        }
+        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+        .btn-ghost {
+            background: transparent; border: 2px solid var(--line); color: var(--ink); border-radius: 16px;
+            padding: 15px 19px; font-size: 14px; font-weight: 800; cursor: pointer;
+        }
+
+        /* ---------- gauge ---------- */
+        .gauge-wrap { display: flex; flex-direction: column; align-items: center; padding: 24px 0 8px; }
+        .gauge { position: relative; width: 160px; height: 160px; }
+        .gauge svg { transform: rotate(-90deg); }
+        .gauge-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .gauge-num { font-size: 36px; font-weight: 800; color: var(--forest); line-height: 1; letter-spacing: -1px; }
+        .gauge-sub { font-size: 11px; color: var(--ink-soft); font-weight: 700; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+        .tally {
+            display: flex; justify-content: space-between; align-items: center; padding: 13px 16px;
+            background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; margin-bottom: 9px; font-size: 13.5px;
+        }
+        .tally .lbl { display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--ink); }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.g { background: var(--pass); }
+        .dot.f { background: var(--flag); }
+        .dot.s { background: var(--skip); }
+        .tally .val { font-weight: 800; color: var(--ink); }
+
+        /* ---------- success + confetti ---------- */
+        .success-screen {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 40px; position: relative; overflow: hidden;
+        }
+        .confetti { position: absolute; border-radius: 2px; animation: fall 2.6s ease-in infinite; }
+        @keyframes fall {
+            0% { transform: translateY(-40px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+        }
+        .stamp-big {
+            padding: 16px 34px; border: 4px solid var(--pass); border-radius: 16px; color: var(--pass);
+            font-weight: 900; font-size: 19px; letter-spacing: 2px; transform: rotate(-6deg); margin-bottom: 26px;
+            background: #fff; box-shadow: 0 0 0 6px var(--pass-bg); position: relative; z-index: 2;
+        }
+        .success-title { font-size: 20px; font-weight: 800; color: var(--ink); margin-bottom: 9px; position: relative; z-index: 2; }
+        .success-sub { font-size: 13.5px; color: var(--ink-soft); line-height: 1.55; max-width: 265px; position: relative; z-index: 2; }
+        .pdf-card {
+            display: flex; align-items: center; gap: 13px; background: var(--card); border: 1.5px solid var(--line);
+            border-radius: 16px; padding: 14px; margin-top: 28px; width: 100%; text-align: left; position: relative; z-index: 2;
+        }
+        .pdf-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--gold-bg); color: #A5731E; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .pdf-name { font-size: 12.5px; font-weight: 800; color: var(--ink); }
+        .pdf-meta { font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+
+        /* ---------- splash / session start ---------- */
+        .splash {
+            flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden;
+            background: linear-gradient(160deg, var(--forest) 0%, var(--forest-deep) 65%);
+            color: #fff; padding: 46px 26px 26px;
+        }
+        .splash .blob1 { width: 220px; height: 220px; top: -90px; right: -70px; opacity: 0.3; }
+        .splash .blob2 { width: 180px; height: 180px; bottom: 120px; left: -70px; opacity: 0.22; }
+        .splash-mark {
+            width: 56px; height: 56px; border-radius: 16px; background: var(--gold); color: var(--forest-deep);
+            display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25); position: relative; z-index: 2; margin-bottom: 18px;
+        }
+        .splash-eyebrow { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); font-weight: 700; font-family: var(--mono); position: relative; z-index: 2; }
+        .splash h1 { font-size: 26px; font-weight: 800; margin: 8px 0 6px; position: relative; z-index: 2; letter-spacing: -0.4px; }
+        .splash p { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.55; max-width: 280px; position: relative; z-index: 2; margin: 0; }
+        .splash-form {
+            background: var(--cream); border-radius: 24px 24px 0 0; margin: 28px -26px -26px; padding: 26px 26px 24px;
+            flex: 1; display: flex; flex-direction: column; position: relative; z-index: 3;
+        }
+        .splash-label { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 12px; }
+        .inspector-opt {
+            display: flex; align-items: center; gap: 12px; background: var(--card); border: 2px solid var(--line);
+            border-radius: 16px; padding: 13px 15px; margin-bottom: 10px; cursor: pointer; transition: border-color .15s ease;
+        }
+        .inspector-opt.on { border-color: var(--forest); background: var(--pass-bg); }
+        .insp-av {
+            width: 38px; height: 38px; border-radius: 50%; background: var(--forest); color: #fff; font-weight: 800;
+            font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .inspector-opt.on .insp-av { background: var(--pass); }
+        .insp-name { font-size: 14px; font-weight: 800; color: var(--ink); }
+        .insp-sub { font-size: 11px; color: var(--ink-soft); font-weight: 600; }
+        .insp-check {
+            margin-left: auto; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: transparent;
+        }
+        .inspector-opt.on .insp-check { background: var(--forest); border-color: var(--forest); color: #fff; }
+        .splash-date-row {
+            display: flex; align-items: center; gap: 8px; margin: 6px 0 20px; font-size: 11.5px;
+            color: var(--ink-soft); font-weight: 700;
+        }
+
+        /* ---------- bottom sheet modal ---------- */
+        .modal-overlay {
+            position: absolute; inset: 0; background: rgba(10, 20, 15, 0.5); display: none;
+            align-items: flex-end; z-index: 90;
+        }
+        .modal-overlay.show { display: flex; animation: fadeIn .2s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-sheet {
+            background: var(--cream); border-radius: 24px 24px 0 0; padding: 8px 22px 24px; width: 100%;
+            max-height: 82%; overflow-y: auto; animation: sheetUp .28s cubic-bezier(.22,1,.36,1);
+        }
+        @keyframes sheetUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .sheet-handle { width: 36px; height: 4px; background: var(--line); border-radius: 4px; margin: 10px auto 14px; }
+        .sheet-title { font-size: 16px; font-weight: 800; color: var(--ink); margin-bottom: 3px; }
+        .sheet-sub { font-size: 12px; color: var(--ink-soft); margin-bottom: 18px; font-weight: 600; }
+        .field-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink-faint); margin-bottom: 7px; display: block; }
+        .field-block { margin-bottom: 15px; }
+        select.full, input.full {
+            width: 100%; border: 1.5px solid var(--line); border-radius: 13px; padding: 12px 13px;
+            font-size: 13.5px; font-family: var(--font); background: var(--card); color: var(--ink);
+        }
+        select.full:focus, input.full:focus { outline: none; border-color: var(--forest); }
+        .auto-hint { font-size: 11px; color: var(--forest); font-weight: 700; margin-top: 6px; }
+
+        .proto-nav { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; justify-content: center; max-width: 392px; }
+        .proto-nav button {
+            font-size: 11px; padding: 7px 12px; border-radius: 20px; border: 1.5px solid #b5ad91; background: #fff;
+            color: #333; cursor: pointer; font-family: var(--font); font-weight: 600;
+        }
+        .proto-nav button.active { background: var(--forest); color: #fff; border-color: var(--forest); }
+        .proto-label { font-size: 12px; color: #5b5644; margin-top: 20px; text-align: center; max-width: 392px; line-height: 1.55; }
+    </style>
+</head>
+
+<body>
+
+    <div class="stage">
+        <div>
+            <div class="device" id="device">
+                <div class="notch"></div>
+
+                <!-- SCREEN 0: Session start -->
+                <div class="screen active" data-screen="start">
+                    <div class="splash">
+                        <div class="blob blob1"></div>
+                        <div class="blob blob2"></div>
+                        <div class="splash-mark">V</div>
+                        <div class="splash-eyebrow">Quality Checker</div>
+                        <h1>Ready to inspect?</h1>
+                        <p>Pick your name once — we'll carry it through every entry today so you don't have to type it twice.</p>
+                        <div class="splash-form">
+                            <div class="splash-label">Who's inspecting today</div>
+                            <div id="inspectorList"></div>
+                            <div class="splash-date-row">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 3v4M16 3v4M3 10h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                <span id="splashDate">Today</span>
+                            </div>
+                            <div style="flex:1"></div>
+                            <button class="btn-primary" id="startBtn" disabled onclick="startSession()">Start inspection round <svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCREEN 1: Route -->
+                <div class="screen" data-screen="properties">
+                    <div class="statusbar"><span>9:41</span><span>VOYD FIELD</span></div>
+                    <div class="session-strip">
+                        <div class="session-who"><span class="session-avatar" id="avatarProps">?</span><span id="whoProps">—</span></div>
+                        <div class="session-date" id="dateProps">—</div>
+                    </div>
+                    <div class="band">
+                        <div class="blob blob1"></div>
+                        <div class="blob blob2"></div>
+                        <div class="band-inner">
+                            <div class="brand-row">
+                                <div class="brand">
+                                    <div class="brand-mark">V</div>
+                                    <div>
+                                        <div class="brand-name">Quality Checker</div>
+                                        <div class="brand-sub">Inspection Crew</div>
+                                    </div>
+                                </div>
+                                <div class="crew-pill">CREW 04</div>
+                            </div>
+                            <div class="eyebrow">Today's route</div>
+                            <h1>3 properties assigned</h1>
+                        </div>
+                    </div>
+                    <div class="scroll">
+                        <div class="content" style="padding-top:20px;">
+                            <div class="search-pill"><svg class="icon" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Search property or address</div>
+                            <div class="filter-row">
+                                <div class="filter-chip on">All · 3</div>
+                                <div class="filter-chip">Pending · 1</div>
+                                <div class="filter-chip">Active · 1</div>
+                                <div class="filter-chip">Done · 1</div>
+                            </div>
+
+                            <div class="section-label">In progress</div>
+                            <div class="tag" onclick="go('rooms')">
+                                <div class="tag-accent g"></div>
+                                <div class="tag-body">
+                                    <div class="tag-id">TAG #B-1204</div>
+                                    <div class="tag-top">
+                                        <div><div class="tag-name">Aparna Sarovar</div><div class="tag-addr">Kondapur, Hyderabad</div></div>
+                                        <div class="status-tag progress">ACTIVE</div>
+                                    </div>
+                                    <div class="tag-meta">
+                                        <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 5l8 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke="currentColor" stroke-width="2"/></svg>3/6 rooms</span>
+                                        <span class="sep">•</span>
+                                        <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M3 8l9-5 9 5-9 5-9-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 13v8" stroke="currentColor" stroke-width="2"/></svg>36 checkpoints</span>
+                                        <span class="sep">•</span><span>Priya Designs</span>
+                                    </div>
+                                    <div class="ruler"><div class="ruler-fill g" style="width:50%"></div></div>
+                                </div>
+                            </div>
+
+                            <div class="section-label">Not started</div>
+                            <div class="tag">
+                                <div class="tag-accent t"></div>
+                                <div class="tag-body">
+                                    <div class="tag-id">TAG #V-09</div>
+                                    <div class="tag-top">
+                                        <div><div class="tag-name">Prestige Lakeside</div><div class="tag-addr">Gachibowli, Hyderabad</div></div>
+                                        <div class="status-tag pending">3:30 PM</div>
+                                    </div>
+                                    <div class="tag-meta">
+                                        <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 5l8 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke="currentColor" stroke-width="2"/></svg>0/8 rooms</span>
+                                        <span class="sep">•</span>
+                                        <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M3 8l9-5 9 5-9 5-9-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 13v8" stroke="currentColor" stroke-width="2"/></svg>58 checkpoints</span>
+                                        <span class="sep">•</span><span>Studio Elm</span>
+                                    </div>
+                                    <div class="ruler"><div class="ruler-fill a" style="width:2%"></div></div>
+                                </div>
+                            </div>
+
+                            <div class="section-label">Completed this week</div>
+                            <div class="tag muted">
+                                <div class="tag-accent g"></div>
+                                <div class="tag-body">
+                                    <div class="tag-id">TAG #A-802</div>
+                                    <div class="tag-top">
+                                        <div><div class="tag-name">My Home Bhooja</div><div class="tag-addr">Kokapet, Hyderabad</div></div>
+                                        <div class="status-tag done">SENT</div>
+                                    </div>
+                                    <div class="tag-meta">
+                                        <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M4 11.5L12 5l8 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke="currentColor" stroke-width="2"/></svg>5/5 rooms</span>
+                                        <span class="sep">•</span>
+                                        <span><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M3 8l9-5 9 5-9 5-9-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 13v8" stroke="currentColor" stroke-width="2"/></svg>29 checkpoints</span>
+                                    </div>
+                                    <div class="ruler"><div class="ruler-fill g" style="width:100%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCREEN 2: Rooms -->
+                <div class="screen" data-screen="rooms">
+                    <div class="statusbar"><span>9:41</span><span>VOYD FIELD</span></div>
+                    <div class="session-strip">
+                        <div class="session-who"><span class="session-avatar" id="avatarRooms">?</span><span id="whoRooms">—</span></div>
+                        <div class="session-date" id="dateRooms">—</div>
+                    </div>
+                    <div class="band compact">
+                        <div class="blob blob1" style="width:100px;height:100px;top:-50px;right:-30px;"></div>
+                        <div class="band-inner band-row">
+                            <button class="back-btn" onclick="go('properties')"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <div><div class="eyebrow">TAG #B-1204 · APARNA SAROVAR</div><h1 style="font-size:18px;">Select a room</h1></div>
+                        </div>
+                    </div>
+                    <div class="scroll">
+                        <div class="content" style="padding-top:20px;">
+                            <div class="strip"><svg class="icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="8" r="0.9" fill="currentColor"/></svg>
+                                <div>Every product and checkpoint here comes from the approved plan — you're verifying against spec, not choosing from scratch.</div>
+                            </div>
+
+                            <div class="section-label">To check <span class="n">· 3</span></div>
+                            <div class="tag room" onclick="openRoom('Living Room')">
+                                <div class="tag-body">
+                                    <div class="room-ic g"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M5 12V8a2 2 0 012-2h10a2 2 0 012 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 12h18v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 18v2M19 18v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Living Room</div><div class="room-sub" id="livingRoomSub">6 checkpoints</div></div>
+                                    <div class="room-flag pend" id="livingRoomFlag">6</div>
+                                </div>
+                            </div>
+                            <div class="tag room" onclick="openRoom('Kitchen')">
+                                <div class="tag-body">
+                                    <div class="room-ic g"><svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="1.5" stroke="currentColor" stroke-width="2"/><path d="M4 12h16" stroke="currentColor" stroke-width="2"/><path d="M9 4v8M9 16v4" stroke="currentColor" stroke-width="2"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Kitchen</div><div class="room-sub">9 checkpoints</div></div>
+                                    <div class="room-flag pend">9</div>
+                                </div>
+                            </div>
+                            <div class="tag room" onclick="openRoom('Master Bedroom')">
+                                <div class="tag-body">
+                                    <div class="room-ic g"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 18v-6a2 2 0 012-2h14a2 2 0 012 2v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 15h18" stroke="currentColor" stroke-width="2"/><path d="M3 18v2M21 18v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="5" y="8" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.6"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Master Bedroom</div><div class="room-sub">6 checkpoints</div></div>
+                                    <div class="room-flag pend">6</div>
+                                </div>
+                            </div>
+
+                            <div class="section-label">Checked <span class="n">· 3</span></div>
+                            <div class="tag room muted">
+                                <div class="tag-body">
+                                    <div class="room-ic done-ic"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 18v-6a2 2 0 012-2h14a2 2 0 012 2v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 15h18" stroke="currentColor" stroke-width="2"/><path d="M3 18v2M21 18v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="5" y="8" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.6"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Bedroom 2</div><div class="room-sub">5/5 verified</div></div>
+                                    <div class="room-flag ok"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                </div>
+                            </div>
+                            <div class="tag room muted">
+                                <div class="tag-body">
+                                    <div class="room-ic done-ic"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4v-3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 12V6.5A2.5 2.5 0 018.5 4c1 0 1.8.55 2.2 1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Bathroom 1</div><div class="room-sub">4/4 verified</div></div>
+                                    <div class="room-flag ok"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                </div>
+                            </div>
+                            <div class="tag room muted">
+                                <div class="tag-body">
+                                    <div class="room-ic done-ic"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 3l4 6h-2.5l4 6H14v6h-4v-6H6.5l4-6H8l4-6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Balcony</div><div class="room-sub">3/3 verified</div></div>
+                                    <div class="room-flag ok"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCREEN 3: Checklist -->
+                <div class="screen" data-screen="checklist">
+                    <div class="statusbar"><span>9:41</span><span>VOYD FIELD</span></div>
+                    <div class="session-strip">
+                        <div class="session-who"><span class="session-avatar" id="avatarCheck">?</span><span id="whoCheck">—</span></div>
+                        <div class="session-date" id="dateCheck">—</div>
+                    </div>
+                    <div class="band compact">
+                        <div class="blob blob1" style="width:100px;height:100px;top:-50px;right:-30px;"></div>
+                        <div class="band-inner band-row">
+                            <button class="back-btn" onclick="go('rooms')"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <div><div class="eyebrow" id="checklistEyebrow">LIVING ROOM · 0/6</div><h1 style="font-size:18px;">Verify checkpoints</h1></div>
+                        </div>
+                    </div>
+                    <div class="scroll">
+                        <div class="content" style="padding-top:20px; padding-bottom:114px;">
+
+                            <div class="meter-card">
+                                <div class="meter-top"><div class="meter-title">Room verify meter</div><div class="meter-count" id="meterCount">0/6</div></div>
+                                <div class="meter-track" id="meterTrack"></div>
+                                <div class="meter-legend">
+                                    <span><span class="dot" style="background:var(--pass)"></span>Pass</span>
+                                    <span><span class="dot" style="background:var(--flag)"></span>Fail</span>
+                                    <span><span class="dot" style="background:var(--skip)"></span>N/A</span>
+                                </div>
+                            </div>
+
+                            <div class="sweep-bar" onclick="markAllGood()">
+                                <div class="txt">Everything matches spec?<small id="sweepSub">Stamp all 6 checkpoints pass at once</small></div>
+                                <button class="sweep-btn">Stamp all</button>
+                            </div>
+
+                            <div id="checklistList"></div>
+
+                            <div class="fab-add" onclick="openAddItem()">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                                Add checkpoint not on the plan
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottombar">
+                        <div class="count" id="doneCount">0/6 done</div>
+                        <button class="btn-primary" onclick="goSummary()">Review room <svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    </div>
+
+                    <!-- Add checkpoint bottom sheet -->
+                    <div class="modal-overlay" id="addItemOverlay">
+                        <div class="modal-sheet">
+                            <div class="sheet-handle"></div>
+                            <div class="sheet-title">Add a checkpoint</div>
+                            <div class="sheet-sub">Not on the approved plan? Log it here — pulled from the master checklist library.</div>
+
+                            <div class="field-block">
+                                <label class="field-label">Trade</label>
+                                <select class="full" id="addTrade"></select>
+                            </div>
+                            <div class="field-block">
+                                <label class="field-label">Category</label>
+                                <select class="full" id="addCategory"></select>
+                            </div>
+                            <div class="field-block">
+                                <label class="field-label">Component</label>
+                                <input class="full" id="addComponent" placeholder="e.g. Tall Unit, Base Unit">
+                            </div>
+                            <div class="field-block">
+                                <label class="field-label">Material</label>
+                                <select class="full" id="addMaterial"></select>
+                            </div>
+                            <div class="field-block">
+                                <label class="field-label">Inspection checkpoint</label>
+                                <select class="full" id="addCheckpoint"></select>
+                                <div class="auto-hint" id="addCriteriaHint">Acceptance criteria auto-fills from the checkpoint</div>
+                            </div>
+                            <div class="field-block">
+                                <label class="field-label">Unit</label>
+                                <select class="full" id="addUnit"></select>
+                            </div>
+                            <button class="btn-primary" style="width:100%" onclick="addCustomItem()">Add to checklist</button>
+                            <div style="height:6px"></div>
+                            <button class="btn-ghost" style="width:100%" onclick="closeAddItem()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCREEN 4: Summary -->
+                <div class="screen" data-screen="summary">
+                    <div class="statusbar"><span>9:41</span><span>VOYD FIELD</span></div>
+                    <div class="session-strip">
+                        <div class="session-who"><span class="session-avatar" id="avatarSum">?</span><span id="whoSum">—</span></div>
+                        <div class="session-date" id="dateSum">—</div>
+                    </div>
+                    <div class="band compact">
+                        <div class="blob blob1" style="width:100px;height:100px;top:-50px;right:-30px;"></div>
+                        <div class="band-inner band-row">
+                            <button class="back-btn" onclick="go('checklist')"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <div><div class="eyebrow" id="summaryEyebrow">LIVING ROOM</div><h1 style="font-size:18px;">Room summary</h1></div>
+                        </div>
+                    </div>
+                    <div class="scroll">
+                        <div class="content" style="padding-top:20px;">
+                            <div class="gauge-wrap">
+                                <div class="gauge">
+                                    <svg width="160" height="160">
+                                        <circle cx="80" cy="80" r="68" stroke="#EEE8D6" stroke-width="13" fill="none"/>
+                                        <circle id="gaugeCircle" cx="80" cy="80" r="68" stroke="#1C9A5B" stroke-width="13" fill="none" stroke-dasharray="427" stroke-dashoffset="427" stroke-linecap="round"/>
+                                    </svg>
+                                    <div class="gauge-label"><div class="gauge-num" id="gaugeNum">0/0</div><div class="gauge-sub">Passed</div></div>
+                                </div>
+                            </div>
+                            <div class="tally"><div class="lbl"><span class="dot g"></span>Matches spec</div><div class="val" id="tallyPass">0</div></div>
+                            <div class="tally"><div class="lbl"><span class="dot f"></span>Flagged</div><div class="val" id="tallyFail">0</div></div>
+                            <div class="tally"><div class="lbl"><span class="dot s"></span>N/A</div><div class="val" id="tallyNa">0</div></div>
+
+                            <div id="flaggedSection"></div>
+                        </div>
+                    </div>
+                    <div class="bottombar">
+                        <button class="btn-ghost" onclick="go('checklist')">Edit</button>
+                        <button class="btn-primary" onclick="submitRoom()">Submit room <svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    </div>
+                </div>
+
+                <!-- SCREEN 5: Rooms updated -->
+                <div class="screen" data-screen="rooms2">
+                    <div class="statusbar"><span>9:41</span><span>VOYD FIELD</span></div>
+                    <div class="session-strip">
+                        <div class="session-who"><span class="session-avatar" id="avatarRooms2">?</span><span id="whoRooms2">—</span></div>
+                        <div class="session-date" id="dateRooms2">—</div>
+                    </div>
+                    <div class="band compact">
+                        <div class="blob blob1" style="width:100px;height:100px;top:-50px;right:-30px;"></div>
+                        <div class="band-inner band-row">
+                            <button class="back-btn" onclick="go('properties')"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <div><div class="eyebrow">TAG #B-1204</div><h1 style="font-size:18px;">Select a room</h1></div>
+                        </div>
+                    </div>
+                    <div class="scroll">
+                        <div class="content" style="padding-top:20px;">
+                            <div class="strip ok" id="rooms2Strip"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <div>Living Room submitted. 2 rooms left — Kitchen and Master Bedroom.</div>
+                            </div>
+                            <div class="section-label">To check <span class="n">· 2</span></div>
+                            <div class="tag room" onclick="openRoom('Kitchen')">
+                                <div class="tag-body">
+                                    <div class="room-ic g"><svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="1.5" stroke="currentColor" stroke-width="2"/><path d="M4 12h16" stroke="currentColor" stroke-width="2"/><path d="M9 4v8M9 16v4" stroke="currentColor" stroke-width="2"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Kitchen</div><div class="room-sub">9 checkpoints</div></div>
+                                    <div class="room-flag pend">9</div>
+                                </div>
+                            </div>
+                            <div class="tag room" onclick="openRoom('Master Bedroom')">
+                                <div class="tag-body">
+                                    <div class="room-ic g"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 18v-6a2 2 0 012-2h14a2 2 0 012 2v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 15h18" stroke="currentColor" stroke-width="2"/><path d="M3 18v2M21 18v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="5" y="8" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.6"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Master Bedroom</div><div class="room-sub">6 checkpoints</div></div>
+                                    <div class="room-flag pend">6</div>
+                                </div>
+                            </div>
+                            <div class="section-label">Checked <span class="n">· 4</span></div>
+                            <div class="tag room muted">
+                                <div class="tag-body">
+                                    <div class="room-ic done-ic"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M5 12V8a2 2 0 012-2h10a2 2 0 012 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 12h18v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M5 18v2M19 18v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+                                    <div class="room-info"><div class="room-name">Living Room</div><div class="room-sub" id="livingRoomResultSub">6/6 verified</div></div>
+                                    <div class="room-flag ok"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottombar"><button class="btn-primary" onclick="go('done')">Finish later</button></div>
+                </div>
+
+                <!-- SCREEN 6: Done -->
+                <div class="screen" data-screen="done">
+                    <div class="statusbar"><span>9:41</span><span>VOYD FIELD</span></div>
+                    <div class="success-screen" id="confettiZone">
+                        <div class="stamp-big">VERIFIED</div>
+                        <div class="success-title">Property fully checked</div>
+                        <div class="success-sub">All 6 rooms verified. The quality report has been generated and sent to the customer.</div>
+                        <div class="pdf-card">
+                            <div class="pdf-icon"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l5 5v13H7V3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+                            <div style="flex:1;">
+                                <div class="pdf-name">Aparna_Sarovar_B1204_Report.pdf</div>
+                                <div class="pdf-meta">Sent to customer · Just now</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottombar" style="position:relative; border-top:none; background:transparent; padding-top:0;">
+                        <button class="btn-primary" onclick="go('properties')">Back to route</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="proto-nav">
+                <button data-nav="start" onclick="go('start')">0. Start</button>
+                <button data-nav="properties" onclick="go('properties')">1. Route</button>
+                <button data-nav="rooms" onclick="go('rooms')">2. Rooms</button>
+                <button data-nav="checklist" onclick="go('checklist')">3. Checklist</button>
+                <button data-nav="summary" onclick="go('summary')">4. Summary</button>
+                <button data-nav="rooms2" onclick="go('rooms2')">5. Updated</button>
+                <button data-nav="done" onclick="go('done')">6. Done</button>
+            </div>
+            <div class="proto-label">Tap through inside the phone, or jump to any screen using the buttons above — for screenshotting into Figma.</div>
+        </div>
+    </div>
+
+    <script>
+        /* ================= MASTER DATA (dropdown source) ================= */
+        const masterData = {
+            trade: ["Carpentry", "Electrical", "Painting", "Glass", "Flooring", "False Ceiling", "Plumbing", "Wall Finish", "Hardware", "Stone"],
+            category: ["Wardrobe", "Kitchen", "TV Unit", "Loft", "Doors", "Windows", "Lighting", "Wallpaper", "Mirror", "Storage"],
+            material: ["BWP Plywood", "BWR Plywood", "MR Plywood", "HDHMR", "MDF", "Particle Board", "Laminate", "Acrylic", "Veneer", "PU Paint", "Glass", "Aluminium Profile", "Quartz", "Granite", "Engineered Stone", "LED", "Wallpaper", "Edge Band", "Hinges", "Drawer Channels", "Locks", "PVC", "UPVC", "Wall Paints"],
+            unit: ["Nos", "Sq.ft", "Sq.m", "Running ft", "mm", "cm", "Piece", "Set", "Point"],
+            severity: ["Low", "Medium", "High", "Critical"],
+            defectType: ["Material", "Installation", "Alignment", "Finish", "Damage", "Safety", "Functional", "Aesthetic", "Measurement"],
+            closureStatus: ["Open", "In Progress", "Closed", "Verified"],
+            signoff: ["Pending", "Agree", "Disagree"],
+            inspectors: [
+                { id: "insp1", name: "Inspector 1", initials: "I1" },
+                { id: "insp2", name: "Inspector 2", initials: "I2" },
+                { id: "insp3", name: "Inspector 3", initials: "I3" }
+            ],
+            // paired checkpoint -> acceptance criteria + suggested method + unit
+            checkpointBank: [
+                { checkpoint: "Material brand matches approved BOQ", criteria: "Matches approved brand", method: "Visual", unit: "Nos" },
+                { checkpoint: "Material thickness verified", criteria: "Within tolerance", method: "Measurement", unit: "mm" },
+                { checkpoint: "Surface free from scratches", criteria: "No visible scratches", method: "Visual", unit: "Nos" },
+                { checkpoint: "Surface free from dents/chips", criteria: "No dents or chips", method: "Visual", unit: "Nos" },
+                { checkpoint: "Proper alignment", criteria: "Within 2 mm", method: "Measurement", unit: "mm" },
+                { checkpoint: "Level verified", criteria: "Level", method: "Level Check", unit: "mm" },
+                { checkpoint: "Verticality verified", criteria: "Plumb", method: "Level Check", unit: "mm" },
+                { checkpoint: "Soft-close functioning", criteria: "Smooth operation", method: "Functional Test", unit: "Piece" },
+                { checkpoint: "Door gap uniform", criteria: "Within 2 mm", method: "Measurement", unit: "mm" },
+                { checkpoint: "Edge band intact", criteria: "No separation", method: "Visual", unit: "Running ft" },
+                { checkpoint: "No delamination", criteria: "No delamination", method: "Visual", unit: "Sq.ft" },
+                { checkpoint: "Proper silicone finish", criteria: "Continuous bead", method: "Visual", unit: "Running ft" },
+                { checkpoint: "No water leakage", criteria: "No leakage", method: "Water Test", unit: "Point" },
+                { checkpoint: "Hardware securely fixed", criteria: "No looseness", method: "Functional Test", unit: "Piece" },
+                { checkpoint: "Drawer movement smooth", criteria: "No rubbing", method: "Functional Test", unit: "Piece" },
+                { checkpoint: "Door opens/closes freely", criteria: "Smooth operation", method: "Functional Test", unit: "Nos" },
+                { checkpoint: "Correct color/shade", criteria: "Matches approved sample", method: "Visual", unit: "Sq.ft" },
+                { checkpoint: "Lighting operational", criteria: "Stable output, no flickering", method: "Electrical Test", unit: "Point" },
+                { checkpoint: "Final cleaning complete", criteria: "Clean finish", method: "Visual", unit: "Nos" }
+            ]
+        };
+
+        /* ================= SESSION STATE ================= */
+        let session = { inspector: null };
+
+        function fmtDate(d) {
+            const opts = { day: '2-digit', month: 'short', year: 'numeric' };
+            return d.toLocaleDateString('en-GB', opts);
+        }
+        const todayStr = fmtDate(new Date());
+
+        function renderInspectorList() {
+            const el = document.getElementById('inspectorList');
+            el.innerHTML = masterData.inspectors.map(i => `
+                <div class="inspector-opt" id="opt-${i.id}" onclick="pickInspector('${i.id}')">
+                    <div class="insp-av">${i.initials}</div>
+                    <div><div class="insp-name">${i.name}</div><div class="insp-sub">Field Quality Crew</div></div>
+                    <div class="insp-check"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                </div>`).join('');
+            document.getElementById('splashDate').textContent = todayStr;
+        }
+
+        function pickInspector(id) {
+            session.inspector = masterData.inspectors.find(i => i.id === id);
+            document.querySelectorAll('.inspector-opt').forEach(o => o.classList.remove('on'));
+            document.getElementById('opt-' + id).classList.add('on');
+            document.getElementById('startBtn').disabled = false;
+        }
+
+        function startSession() {
+            if (!session.inspector) return;
+            ['Props', 'Rooms', 'Check', 'Sum', 'Rooms2'].forEach(suffix => {
+                const av = document.getElementById('avatar' + suffix);
+                const who = document.getElementById('who' + suffix);
+                const dt = document.getElementById('date' + suffix);
+                if (av) av.textContent = session.inspector.initials;
+                if (who) who.textContent = session.inspector.name;
+                if (dt) dt.textContent = todayStr;
+            });
+            go('properties');
+        }
+
+        /* ================= NAVIGATION ================= */
+        function go(name) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelector('.screen[data-screen="' + name + '"]').classList.add('active');
+            document.querySelectorAll('.proto-nav button').forEach(b => b.classList.remove('active'));
+            const nb = document.querySelector('.proto-nav button[data-nav="' + name + '"]');
+            if (nb) nb.classList.add('active');
+            const sc = document.querySelector('.screen[data-screen="' + name + '"] .scroll');
+            if (sc) sc.scrollTop = 0;
+            if (name === 'done') spawnConfetti();
+        }
+
+        /* ================= PLAN ITEMS (approved plan for Living Room demo) ================= */
+        let planItems = [];
+        function seedLivingRoom() {
+            planItems = [
+                mkItem("Carpentry", "TV Unit", "Tall Unit", "Aluminium Profile", "AS PER SOW", "Proper alignment"),
+                mkItem("Carpentry", "TV Unit", "Base Unit", "BWR Plywood", "AS PER SOW", "Surface free from scratches"),
+                mkItem("Hardware", "Storage", "Wardrobe Shutter", "Hinges", "AS PER BOQ", "Soft-close functioning"),
+                mkItem("Electrical", "Lighting", "Cove Light", "LED", "AS PER DRAWING", "Lighting operational"),
+                mkItem("Carpentry", "Doors", "Main Door", "MDF", "AS PER SOW", "Door opens/closes freely"),
+                mkItem("Painting", "Wallpaper", "Feature Wall", "PU Paint", "AS PER APPROVED SAMPLE", "Correct color/shade")
+            ];
+        }
+        let idCounter = 0;
+        function mkItem(trade, category, component, material, spec, checkpointName) {
+            const bank = masterData.checkpointBank.find(b => b.checkpoint === checkpointName) || masterData.checkpointBank[0];
+            idCounter++;
+            return {
+                id: 'it' + idCounter,
+                trade, category, component, material, spec,
+                checkpoint: bank.checkpoint, criteria: bank.criteria, method: bank.method, unit: bank.unit,
+                observed: "", status: null,
+                severity: null, defectType: null, remarks: "", photo: false,
+                rectOwner: "", targetClosure: "", closureStatus: null, signoff: null,
+                moreOpen: false
+            };
+        }
+        seedLivingRoom();
+        let currentRoom = "Living Room";
+
+        function openRoom(roomName) {
+            currentRoom = roomName;
+            if (roomName === "Living Room" && planItems.length === 0) seedLivingRoom();
+            document.getElementById('checklistEyebrow').textContent = roomName.toUpperCase() + ' · 0/' + planItems.length;
+            renderChecklist();
+            go('checklist');
+        }
+
+        /* ================= CHECKLIST RENDER ================= */
+        const icons = {
+            Carpentry: '<path d="M5 12V8a2 2 0 012-2h10a2 2 0 012 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 12h18v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+            Electrical: '<path d="M9 3h6l1 6-3 4v4h-2v-4l-3-4 1-6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+            Hardware: '<rect x="6" y="3" width="12" height="18" rx="1" stroke="currentColor" stroke-width="2"/><circle cx="14.5" cy="12" r="1" fill="currentColor"/>',
+            Painting: '<path d="M12 3l4 6h-2.5l4 6H14v6h-4v-6H6.5l4-6H8l4-6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+            default: '<path d="M5 12V8a2 2 0 012-2h10a2 2 0 012 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 12h18v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>'
+        };
+
+        function renderChecklist() {
+            const list = document.getElementById('checklistList');
+            list.innerHTML = planItems.map(it => cardHtml(it)).join('');
+            updateProgress();
+        }
+
+        function cardHtml(it) {
+            const iconPath = icons[it.trade] || icons.default;
+            const statusCls = it.status ? it.status : '';
+            return `
+            <div class="ptag ${statusCls}" id="card-${it.id}">
+                <div class="ptag-top">
+                    <div class="ptag-ic"><svg class="icon" viewBox="0 0 24 24" fill="none">${iconPath}</svg></div>
+                    <div class="ptag-info">
+                        <div class="ptag-trade">${it.trade} · ${it.category}</div>
+                        <div class="ptag-name">${it.component}</div>
+                        <div class="ptag-spec">${it.material} · Spec: ${it.spec}</div>
+                    </div>
+                </div>
+                <div class="ptag-question">
+                    <div class="q">${it.checkpoint}</div>
+                    <div class="a">Acceptance: <b>${it.criteria}</b> · ${it.method}</div>
+                </div>
+                <div class="obs-row">
+                    <input type="text" placeholder="Observed value" value="${it.observed}" oninput="setObserved('${it.id}', this.value)">
+                    <div class="obs-unit">${it.unit}</div>
+                </div>
+                <div class="status-seg">
+                    <button class="${it.status === 'pass' ? 'on pass' : ''}" onclick="setStatus('${it.id}','pass')"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PASS</button>
+                    <button class="${it.status === 'fail' ? 'on fail' : ''}" onclick="setStatus('${it.id}','fail')"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>FAIL</button>
+                    <button class="${it.status === 'na' ? 'on na' : ''}" onclick="setStatus('${it.id}','na')"><svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>N/A</button>
+                </div>
+                <div class="fail-drawer ${it.status === 'fail' ? 'show' : ''}" id="drawer-${it.id}">
+                    <label>Severity</label>
+                    <div class="chip-group">
+                        ${masterData.severity.map(s => `<div class="chip ${it.severity === s ? 'on sev-' + s.toLowerCase() : ''}" onclick="setSeverity('${it.id}','${s}')">${s}</div>`).join('')}
+                    </div>
+                    <label>Defect type</label>
+                    <div class="chip-group">
+                        ${masterData.defectType.map(d => `<div class="chip ${it.defectType === d ? 'on defect' : ''}" onclick="setDefect('${it.id}','${d}')">${d}</div>`).join('')}
+                    </div>
+                    <label>Remarks</label>
+                    <textarea class="mini" placeholder="Describe the mismatch" oninput="setRemarks('${it.id}', this.value)">${it.remarks}</textarea>
+                    <div class="photo-add ${it.photo ? 'on' : ''}" onclick="togglePhoto('${it.id}')">
+                        <svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M4 8h3l1.5-2h7L17 8h3v11H4V8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13.5" r="3" stroke="currentColor" stroke-width="2"/></svg>
+                        ${it.photo ? 'Photo attached' : 'Attach photo'}
+                    </div>
+                    <div class="more-toggle ${it.moreOpen ? 'open' : ''}" onclick="toggleMore('${it.id}')">
+                        Assign for rectification
+                        <svg class="icon-sm chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="more-fields ${it.moreOpen ? 'show' : ''}">
+                        <label class="field-label" style="margin-top:2px;">Rectification owner</label>
+                        <input placeholder="e.g. Vendor name / crew" value="${it.rectOwner}" oninput="setOwner('${it.id}', this.value)">
+                        <label class="field-label">Target closure date</label>
+                        <input type="date" value="${it.targetClosure}" oninput="setTarget('${it.id}', this.value)">
+                        <label class="field-label">Closure status</label>
+                        <select onchange="setClosure('${it.id}', this.value)">
+                            <option value="">Select status</option>
+                            ${masterData.closureStatus.map(c => `<option value="${c}" ${it.closureStatus === c ? 'selected' : ''}>${c}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function findItem(id) { return planItems.find(i => i.id === id); }
+
+        function setStatus(id, status) {
+            const it = findItem(id);
+            it.status = (it.status === status) ? null : status;
+            renderChecklist();
+        }
+        function setObserved(id, val) { findItem(id).observed = val; }
+        function setSeverity(id, val) {
+            const it = findItem(id);
+            it.severity = (it.severity === val) ? null : val;
+            renderChecklist();
+        }
+        function setDefect(id, val) {
+            const it = findItem(id);
+            it.defectType = (it.defectType === val) ? null : val;
+            renderChecklist();
+        }
+        function setRemarks(id, val) { findItem(id).remarks = val; }
+        function togglePhoto(id) { findItem(id).photo = !findItem(id).photo; renderChecklist(); }
+        function toggleMore(id) { findItem(id).moreOpen = !findItem(id).moreOpen; renderChecklist(); }
+        function setOwner(id, val) { findItem(id).rectOwner = val; }
+        function setTarget(id, val) { findItem(id).targetClosure = val; }
+        function setClosure(id, val) { findItem(id).closureStatus = val; }
+
+        function markAllGood() {
+            planItems.forEach(it => { it.status = 'pass'; });
+            renderChecklist();
+        }
+
+        function updateProgress() {
+            const total = planItems.length;
+            const done = planItems.filter(i => i.status).length;
+            document.getElementById('doneCount').textContent = done + '/' + total + ' done';
+            document.getElementById('checklistEyebrow').textContent = currentRoom.toUpperCase() + ' · ' + done + '/' + total;
+            document.getElementById('meterCount').textContent = done + '/' + total;
+            document.getElementById('sweepSub').textContent = 'Stamp all ' + total + ' checkpoints pass at once';
+
+            const track = document.getElementById('meterTrack');
+            track.innerHTML = planItems.map(it => `<div class="meter-seg ${it.status || ''}"></div>`).join('');
+        }
+
+        /* ================= ADD CUSTOM ITEM ================= */
+        function populateSelect(id, list, placeholder) {
+            const el = document.getElementById(id);
+            el.innerHTML = `<option value="">${placeholder}</option>` + list.map(v => `<option value="${v}">${v}</option>`).join('');
+        }
+        function initAddItemForm() {
+            populateSelect('addTrade', masterData.trade, 'Select trade');
+            populateSelect('addCategory', masterData.category, 'Select category');
+            populateSelect('addMaterial', masterData.material, 'Select material');
+            populateSelect('addUnit', masterData.unit, 'Select unit');
+            const cpSel = document.getElementById('addCheckpoint');
+            cpSel.innerHTML = '<option value="">Select checkpoint</option>' + masterData.checkpointBank.map(b => `<option value="${b.checkpoint}">${b.checkpoint}</option>`).join('');
+            cpSel.onchange = () => {
+                const bank = masterData.checkpointBank.find(b => b.checkpoint === cpSel.value);
+                document.getElementById('addCriteriaHint').textContent = bank ? `Acceptance: ${bank.criteria} · Method: ${bank.method}` : 'Acceptance criteria auto-fills from the checkpoint';
+                if (bank) document.getElementById('addUnit').value = bank.unit;
+            };
+        }
+        function openAddItem() {
+            document.getElementById('addItemOverlay').classList.add('show');
+        }
+        function closeAddItem() {
+            document.getElementById('addItemOverlay').classList.remove('show');
+        }
+        function addCustomItem() {
+            const trade = document.getElementById('addTrade').value;
+            const category = document.getElementById('addCategory').value;
+            const component = document.getElementById('addComponent').value || 'Unnamed item';
+            const material = document.getElementById('addMaterial').value;
+            const checkpoint = document.getElementById('addCheckpoint').value;
+            const unit = document.getElementById('addUnit').value;
+            if (!trade || !category || !checkpoint) { return; }
+            const bank = masterData.checkpointBank.find(b => b.checkpoint === checkpoint);
+            idCounter++;
+            planItems.push({
+                id: 'it' + idCounter, trade, category, component, material: material || '—', spec: 'FIELD ADDED',
+                checkpoint, criteria: bank ? bank.criteria : '—', method: bank ? bank.method : '—', unit: unit || (bank ? bank.unit : ''),
+                observed: "", status: null, severity: null, defectType: null, remarks: "", photo: false,
+                rectOwner: "", targetClosure: "", closureStatus: null, signoff: null, moreOpen: false
+            });
+            closeAddItem();
+            renderChecklist();
+        }
+
+        /* ================= SUMMARY ================= */
+        function goSummary() {
+            const total = planItems.length;
+            const passN = planItems.filter(i => i.status === 'pass').length;
+            const failN = planItems.filter(i => i.status === 'fail').length;
+            const naN = planItems.filter(i => i.status === 'na').length;
+
+            document.getElementById('summaryEyebrow').textContent = currentRoom.toUpperCase();
+            document.getElementById('gaugeNum').textContent = passN + '/' + total;
+            document.getElementById('tallyPass').textContent = passN;
+            document.getElementById('tallyFail').textContent = failN;
+            document.getElementById('tallyNa').textContent = naN;
+
+            const circumference = 427;
+            const frac = total ? passN / total : 0;
+            document.getElementById('gaugeCircle').setAttribute('stroke-dashoffset', Math.round(circumference * (1 - frac)));
+
+            const flagged = planItems.filter(i => i.status === 'fail');
+            const section = document.getElementById('flaggedSection');
+            if (flagged.length === 0) {
+                section.innerHTML = '';
+            } else {
+                section.innerHTML = `<div class="section-label">Flagged checkpoints <span class="n">· ${flagged.length}</span></div>` +
+                    flagged.map(it => `
+                    <div class="ptag fail" style="box-shadow:none;">
+                        <div class="ptag-top">
+                            <div class="ptag-ic"><svg class="icon" viewBox="0 0 24 24" fill="none">${icons[it.trade] || icons.default}</svg></div>
+                            <div class="ptag-info">
+                                <div class="ptag-trade">${it.trade} · ${it.category}</div>
+                                <div class="ptag-name">${it.component}</div>
+                                <div class="ptag-spec">${it.checkpoint} — ${it.severity || 'Severity not set'}${it.defectType ? ' · ' + it.defectType : ''}</div>
+                            </div>
+                        </div>
+                    </div>`).join('');
+            }
+            go('summary');
+        }
+
+        function submitRoom() {
+            const total = planItems.length;
+            const passN = planItems.filter(i => i.status === 'pass').length;
+            const failN = planItems.filter(i => i.status === 'fail').length;
+            document.getElementById('rooms2Strip').innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div>${currentRoom} submitted. 2 rooms left — Kitchen and Master Bedroom.</div>`;
+            document.getElementById('livingRoomResultSub').textContent = `${passN}/${total} verified${failN ? ' · ' + failN + ' flagged' : ''}`;
+            document.getElementById('livingRoomSub').textContent = `${passN}/${total} verified`;
+            document.getElementById('livingRoomFlag').innerHTML = '<svg class="icon-sm" viewBox="0 0 24 24" fill="none"><path d="M5 13l4.5 4.5L19 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            document.getElementById('livingRoomFlag').className = 'room-flag ok';
+            go('rooms2');
+        }
+
+        /* ================= CONFETTI ================= */
+        function spawnConfetti() {
+            const zone = document.getElementById('confettiZone');
+            zone.querySelectorAll('.confetti').forEach(c => c.remove());
+            const colors = ['#0F5C3D', '#E7A93E', '#E07856', '#1C9A5B'];
+            for (let i = 0; i < 24; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                const size = 6 + Math.random() * 6;
+                c.style.width = size + 'px';
+                c.style.height = size + 'px';
+                c.style.left = Math.random() * 100 + '%';
+                c.style.top = '-20px';
+                c.style.background = colors[i % colors.length];
+                c.style.animationDelay = (Math.random() * 0.6) + 's';
+                c.style.animationDuration = (2 + Math.random() * 1.2) + 's';
+                zone.appendChild(c);
+            }
+        }
+
+        /* ================= INIT ================= */
+        renderInspectorList();
+        initAddItemForm();
+        renderChecklist();
+    </script>
+
+</body>
+</html>

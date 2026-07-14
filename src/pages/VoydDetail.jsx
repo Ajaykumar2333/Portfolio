@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./VoydDetail.css";
 
 /* ─────────────────────────────────────────────
-   IMAGE LIGHTBOX (same pattern as Trainex)
+   IMAGE LIGHTBOX
 ───────────────────────────────────────────── */
 const ImageLightbox = ({ src, alt, onClose }) => {
   useEffect(() => {
@@ -27,20 +27,140 @@ const ImageLightbox = ({ src, alt, onClose }) => {
 /* ─────────────────────────────────────────────
    SCREEN IMAGE WITH PLACEHOLDER FALLBACK
 ───────────────────────────────────────────── */
-const Screen = ({ src, alt, label, sub, onOpen, full = true }) => (
+const Screen = ({ src, alt, label, sub, story, onOpen, index, full = true, crop = false }) => (
   <figure className={full ? "vd-screen-full" : "vd-screen-card"}>
-    {full && <p className="vd-screen-label-full">{label}{sub && <span> — {sub}</span>}</p>}
+    {full && label && (
+      <div className="vd-screen-header">
+        {index && <span className="vd-screen-index">{index}</span>}
+        <div className="vd-screen-header-text">
+          <p className="vd-screen-label-full">{label}</p>
+          {sub && <span className="vd-screen-sub-chip">{sub}</span>}
+        </div>
+      </div>
+    )}
     <img
       src={src}
       alt={alt}
-      className={full ? "vd-screen-img vd-clickable" : "vd-screen-img-sm vd-clickable"}
+      className={crop ? "vd-hero-crop vd-clickable" : full ? "vd-screen-img vd-clickable" : "vd-screen-img-sm vd-clickable"}
       onClick={() => onOpen(src, alt)}
       onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
     />
     <div className={`vd-img-placeholder ${full ? "vd-img-banner" : "vd-img-sm"}`} style={{ display: "none" }}>
       📸 Add screenshot<br /><span>{src}</span>
     </div>
+    {full && story && <p className="vd-screen-story">{story}</p>}
     {!full && <figcaption className="vd-screen-caption">{label}</figcaption>}
+  </figure>
+);
+
+/* ─────────────────────────────────────────────
+   VIDEO WITH PLACEHOLDER FALLBACK — AUTOPLAYS
+   ON SCROLL INTO VIEW, FULL WIDTH, MUTED LOOP
+───────────────────────────────────────────── */
+const VideoBlock = ({ src, poster, label, sub }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {
+            // Autoplay blocked by browser — controls remain available as fallback
+          });
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <figure className="vd-screen-full">
+      <div className="vd-screen-header">
+        <div className="vd-screen-header-text">
+          <p className="vd-screen-label-full">{label}</p>
+          {sub && <span className="vd-screen-sub-chip">{sub}</span>}
+        </div>
+      </div>
+      <div className="vd-logo-video-wrap">
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}
+          muted
+          loop
+          playsInline
+          controls
+          onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
+        />
+        <div className="vd-img-placeholder vd-img-banner" style={{ display: "none" }}>
+          🎬 Add video<br /><span>{src}</span>
+        </div>
+      </div>
+    </figure>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   YOUTUBE VIDEO — THUMBNAIL, CLICK TO PLAY
+───────────────────────────────────────────── */
+const YouTubeBlock = ({ videoId, label, sub }) => {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <figure className="vd-screen-full">
+      <div className="vd-screen-header">
+        <div className="vd-screen-header-text">
+          <p className="vd-screen-label-full">{label}</p>
+          {sub && <span className="vd-screen-sub-chip">{sub}</span>}
+        </div>
+      </div>
+      <div className="vd-yt-wrap">
+        {playing ? (
+          <iframe
+            className="vd-yt-frame"
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+            title={label}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <button className="vd-yt-thumb" onClick={() => setPlaying(true)} aria-label={`Play ${label}`}>
+            <img src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`} alt={label} />
+            <span className="vd-yt-play">▶</span>
+          </button>
+        )}
+      </div>
+    </figure>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   GOOGLE DRIVE VIDEO — FULL WIDTH, AUTOPLAY,
+   WITH HEADER (aligned like every other screen)
+───────────────────────────────────────────── */
+const DriveVideoBlock = ({ fileId, label, sub }) => (
+  <figure className="vd-screen-full">
+    <div className="vd-screen-header">
+      <div className="vd-screen-header-text">
+        <p className="vd-screen-label-full">{label}</p>
+        {sub && <span className="vd-screen-sub-chip">{sub}</span>}
+      </div>
+    </div>
+    <div className="vd-drive-video-wrap">
+      <iframe
+        src={`https://drive.google.com/file/d/${fileId}/preview?autoplay=1&mute=1`}
+        allow="autoplay; fullscreen"
+        allowFullScreen
+        frameBorder="0"
+      />
+    </div>
   </figure>
 );
 
@@ -69,19 +189,18 @@ const VoydDetail = () => {
             <span className="vd-tag vd-tag-accent">UI/UX Design</span>
             <span className="vd-tag">Web App</span>
             <span className="vd-tag">E-commerce</span>
-            <span className="vd-tag">Team Project</span>
-            <span className="vd-tag">Figma</span>
+            <span className="vd-tag">Mobile Web</span>
           </div>
           <h1 className="vd-hero-title">
             Voyd <span className="vd-accent">Interiors</span>
           </h1>
           <p className="vd-hero-tagline">Your Interior Execution Partner — From Dream to Delivery</p>
           <p className="vd-hero-sub">
-            Voyd is not just a furniture store — it's an end-to-end platform that takes a homeowner from
-            "I want to redo my home" to a fully executed, quality-checked interior project, while also
-            giving interior designers and vendors a marketplace to find leads, manage projects, and get
-            paid on time. I worked as part of a 2-person UI/UX team, designing the customer, vendor, and
-            shopping experiences across the entire platform.
+            Voyd is a two-sided platform that connects homeowners who want their interiors designed and
+            executed without the usual chaos, with interior designers and vendors who want reliable leads
+            and on-time payments. I designed the customer-facing journey, the full shopping experience,
+            and the trust &amp; quality tools (Quality Checker, Verify Designer, Project Progress
+            dashboard) that hold the platform together.
           </p>
           <div className="vd-meta-grid">
             <div className="vd-meta-item">
@@ -90,7 +209,7 @@ const VoydDetail = () => {
             </div>
             <div className="vd-meta-item">
               <span className="vd-meta-label">Team</span>
-              <span className="vd-meta-value">2 UI/UX Designers + 1 Researcher</span>
+              <span className="vd-meta-value">2 UI Designers, PMO, Manager (Research)</span>
             </div>
             <div className="vd-meta-item">
               <span className="vd-meta-label">Type</span>
@@ -98,11 +217,11 @@ const VoydDetail = () => {
             </div>
             <div className="vd-meta-item">
               <span className="vd-meta-label">Platform</span>
-              <span className="vd-meta-value">Web App — Customer · Vendor · E-commerce</span>
+              <span className="vd-meta-value">Web App + Mobile Web (Quality Checker)</span>
             </div>
             <div className="vd-meta-item">
               <span className="vd-meta-label">Tools</span>
-              <span className="vd-meta-value">Figma · FigJam</span>
+              <span className="vd-meta-value">Figma</span>
             </div>
             <div className="vd-meta-item">
               <span className="vd-meta-label">Live</span>
@@ -112,8 +231,8 @@ const VoydDetail = () => {
         </div>
       </section>
 
-      {/* ── HERO IMAGE ── */}
-      <Screen src="/voyd/hero.jpg" alt="Voyd Interiors Homepage" label="" full sub={null} onOpen={openImage} />
+      {/* ── HERO IMAGE (cropped teaser — full homepage shown later in Screens) ── */}
+      <Screen src="/voydimages/banner-img.png" alt="Voyd Interiors Homepage" label="" full crop sub={null} onOpen={openImage} />
 
       {/* ── 01 OVERVIEW ── */}
       <section className="vd-section vd-white">
@@ -122,29 +241,29 @@ const VoydDetail = () => {
           <h2 className="vd-heading">What is <span className="vd-accent">Voyd Interiors?</span></h2>
           <p className="vd-body">
             Voyd positions itself as an <strong>"Interior Execution Partner"</strong> — a platform that
-            connects three groups: <strong>homeowners</strong> who want their interiors designed and
-            executed without the usual chaos, <strong>interior designers / vendors</strong> who want
-            reliable leads and on-time payments, and Voyd's own <strong>execution &amp; quality team</strong>
-            who keep everything on track.
+            connects <strong>homeowners</strong> who want their interiors designed and executed without
+            the usual chaos with <strong>interior designers / vendors</strong> who want reliable leads and
+            on-time payments. Customers want their interior completed; vendors want quality profile
+            visibility — Voyd connects both.
           </p>
           <p className="vd-body">
-            Instead of being "just another furniture website," Voyd combines a full shopping experience
-            (browse, cart, checkout) with project-management tools (get a quote, track budget room-by-room,
-            request quality checks) and a vendor-growth program (leads, payments, marketing).
+            Beyond matching, Voyd builds trust into every step: customers can verify a designer's track
+            record before signing anything, track their project's quality room-by-room, and shop
+            furniture/décor directly on the platform.
           </p>
 
           <div className="vd-stats">
             <div className="vd-stat">
-              <span className="vd-stat-num">15<span className="vd-stat-plus">+</span></span>
+              <span className="vd-stat-num">19<span className="vd-stat-plus">+</span></span>
               <span className="vd-stat-label">Screens Designed</span>
             </div>
             <div className="vd-stat">
-              <span className="vd-stat-num">3</span>
-              <span className="vd-stat-label">User Roles</span>
+              <span className="vd-stat-num">2</span>
+              <span className="vd-stat-label">Platforms — Web &amp; Mobile Web</span>
             </div>
             <div className="vd-stat">
               <span className="vd-stat-num">2</span>
-              <span className="vd-stat-label">UI/UX Designers</span>
+              <span className="vd-stat-label">UI Designers</span>
             </div>
             <div className="vd-stat">
               <span className="vd-stat-num">1</span>
@@ -153,26 +272,32 @@ const VoydDetail = () => {
           </div>
 
           {/* PAGES TABLE */}
-          <h3 className="vd-subheading">Core Areas I Worked On</h3>
+          <h3 className="vd-subheading">Core Areas I Designed</h3>
           <div className="vd-table">
             <div className="vd-table-head">
               <span>Area</span>
               <span>Description</span>
             </div>
             {[
-              ["Homepage & Customer Journey", "Hero, trust-building sections (\"Why Choose Voyd\"), step-by-step journey from inspiration to handover"],
-              ["Get a Quote Flow", "Request a Quote popup — Self/Others, property details, project type, budget input"],
-              ["My Quotations / Drafts", "Quotation tracking table — status (Draft, Finalized, Delivered), 30-day auto-expiry logic"],
-              ["Project Dashboard", "Budget tracker (Total / Utilized / Balance), room-wise Interior Elements Add-Ons, vendor list by tier"],
-              ["Quality Checker", "Product / Product Type / Sub Type based quality reporting tool with image upload"],
-              ["Shop, PDP, Cart & Checkout", "Shop by Room / Category, product detail page, cart, multi-payment checkout"],
-              ["Designer / Vendor Growth Page", "B2B landing page — leads, guaranteed payments, material sourcing, studio access"],
+              ["Homepage & Customer Services", "Hero, trust-building sections, journey overview from inspiration to handover"],
+              ["Get a Quote Flow", "Lead capture popup — name, mobile, email, city, project details"],
+              ["Shop, Category Pages & PDP", "Shop by Room / Category, category landing pages (Pooja Units, Sanitary, Wardrobes), product detail page, cart"],
+              ["Contact Us, Login/Signup, 404", "Supporting pages across the platform"],
+              ["Verify Your Interior Designer", "OTP-gated flow for customers to check if a designer is a defaulter or trusted, before signing anything"],
+              ["Quality Checker", "Mobile-web field inspection tool — admin creates an inspector profile, the team logs in, checks each room on-site, and a PDF quality report is generated for the customer"],
+              ["Project Progress Dashboard", "Logged-in customer workspace showing project completion by category — pie chart + gauges"],
             ].map(([page, desc], i) => (
               <div key={i} className={`vd-table-row ${i % 2 !== 0 ? "vd-row-alt" : ""}`}>
                 <span className="vd-table-key">{page}</span>
                 <span className="vd-table-val">{desc}</span>
               </div>
             ))}
+          </div>
+
+          <div className="vd-highlight-box" style={{ marginTop: "24px" }}>
+            🚫 Not designed by me: the Vendor/Designer page, product checkout flow, About Us page, Admin
+            panels, the Budget Quote Vendor Profile screens, and the Project Manager panel — all of these
+            were designed by my teammate Surya.
           </div>
         </div>
       </section>
@@ -183,8 +308,8 @@ const VoydDetail = () => {
           <div className="vd-section-label">02 — The Team</div>
           <h2 className="vd-heading">Who <span className="vd-accent">built this</span></h2>
           <p className="vd-body">
-            Voyd was designed by a small, focused team — two UI/UX designers working closely with a
-            manager who led research and requirement-gathering with stakeholders.
+            Voyd was designed by a small, focused team working closely with a PMO and a manager who led
+            research and stakeholder requirement-gathering.
           </p>
 
           <div className="vd-role-cards">
@@ -193,23 +318,32 @@ const VoydDetail = () => {
               <div className="vd-role-content">
                 <h4>Me — UI/UX Designer</h4>
                 <p>
-                  Designed the customer-facing journey end to end — homepage, "Get a Quote" flow, My
-                  Quotations, the Project Dashboard (budget tracker + room-wise Interior Elements
-                  Add-Ons), and the e-commerce experience (Shop, Product Detail, Cart, Checkout).
-                  Owned the core design system — colors, typography (Cinzel + Inter), components,
-                  spacing and states used across the platform.
+                  Designed the customer-facing journey — homepage, Customer Services page, Get a Quote
+                  popup, Contact, Login/Signup, 404, and the full shopping experience (Shop by Room/Category,
+                  category pages, Product Detail, Cart). Also designed the platform's trust &amp; quality
+                  tools: Verify Your Interior Designer (defaulter/trust check) and the mobile-web Quality
+                  Checker used by the field inspection team, plus the customer's Project Progress dashboard.
                 </p>
               </div>
             </div>
             <div className="vd-role-card">
               <div className="vd-role-icon">🧩</div>
               <div className="vd-role-content">
-                <h4>Surya — UI/UX Designer</h4>
+                <h4>Surya — UI Designer</h4>
                 <p>
-                  Designed the vendor/designer-facing side of the platform — the Designer Growth page
-                  (lead generation, guaranteed payments, material sourcing, studio access) and the
-                  Quality Checker tool, working within the shared design system to keep both sides of
-                  the platform visually consistent.
+                  Designed the vendor/designer-facing side of the platform — the product checkout flow,
+                  the About Us page, Admin panels, the Budget Quote Vendor Profile screens, and the
+                  Project Manager panel.
+                </p>
+              </div>
+            </div>
+            <div className="vd-role-card">
+              <div className="vd-role-icon">📋</div>
+              <div className="vd-role-content">
+                <h4>Sripriya — PMO</h4>
+                <p>
+                  Coordinated the project across design, development, and stakeholders — keeping timelines
+                  and deliverables on track.
                 </p>
               </div>
             </div>
@@ -218,19 +352,11 @@ const VoydDetail = () => {
               <div className="vd-role-content">
                 <h4>Manager — Research &amp; Requirements</h4>
                 <p>
-                  Led user research, stakeholder interviews, and competitor analysis of existing
-                  interior-design platforms. Translated business requirements (budget tracking,
-                  vendor tiers, quality assurance) into a structured brief that shaped the
-                  information architecture for both of us to design against.
+                  Led research and translated business requirements into briefs that shaped the
+                  information architecture for the team to design against.
                 </p>
               </div>
             </div>
-          </div>
-
-          <div className="vd-highlight-box">
-            🤝 Working as a 2-designer team meant splitting the platform by user type (customer vs.
-            vendor) while sharing one component library — so every screen, regardless of who designed
-            it, feels like part of the same product.
           </div>
         </div>
       </section>
@@ -241,19 +367,18 @@ const VoydDetail = () => {
           <div className="vd-section-label vd-label-accent">03 — The Problem</div>
           <h2 className="vd-heading vd-heading-white">What needed to <span className="vd-accent">be solved</span></h2>
           <p className="vd-body vd-body-muted">
-            Interior renovation is stressful, expensive, and full of unknowns. Homeowners don't trust
-            vendors, can't track budgets, and have no idea what's happening on-site. Designers, on the
-            other hand, struggle to find consistent clients and get paid reliably.
+            Interior renovation is stressful and full of unknowns. Homeowners don't know if they can trust
+            a vendor, can't track quality once work is underway, and have no visibility into project
+            progress. Vendors, on the other hand, struggle to find consistent, quality leads.
           </p>
 
           <div className="vd-problem-grid">
             {[
-              { icon: "💸", title: "No budget visibility", desc: "Customers had no way to see how their total budget was being split across rooms and elements — leading to overspending fears and lack of trust." },
-              { icon: "🧱", title: "Project tracking ends at the quote", desc: "Once a quote was accepted, customers lost visibility into what was actually happening — no room-by-room breakdown, no progress tracking." },
-              { icon: "🛠️", title: "No quality assurance loop", desc: "There was no structured way for customers (or Voyd's team) to flag or verify product/material quality once work was underway." },
-              { icon: "📉", title: "Inconsistent vendor leads & payments", desc: "Interior designers/vendors had no reliable channel for leads, and payments were often delayed — making it hard for good vendors to stay on the platform." },
-              { icon: "🔀", title: "Two disconnected experiences", desc: "Shopping for furniture/decor and managing a renovation project felt like two separate products glued together, instead of one connected journey." },
-              { icon: "🏷️", title: "Vendor trust & classification", desc: "Customers had no way to know which vendors were verified/premium — there was no visible tiering (e.g. Platinum) to set expectations." },
+              { icon: "🕵️", title: "No way to verify a designer", desc: "Customers had no way to check a designer's track record — whether they had past defaults — before committing to a contract." },
+              { icon: "🧱", title: "No quality assurance loop", desc: "There was no structured way to check product/material quality on-site once work was underway, or share that with the customer." },
+              { icon: "📊", title: "No project visibility", desc: "Once a project started, customers had no clear view of progress across categories like false ceiling, electrical, sanitary, and wardrobes." },
+              { icon: "🔀", title: "Two disconnected experiences", desc: "Shopping for furniture/décor and managing a renovation project felt like separate products instead of one connected journey." },
+              { icon: "📉", title: "Inconsistent vendor leads", desc: "Interior designers/vendors had no reliable channel for qualified leads or a way to market their profile to customers." },
             ].map((p, i) => (
               <div key={i} className="vd-problem-card">
                 <div className="vd-problem-icon">{p.icon}</div>
@@ -265,111 +390,27 @@ const VoydDetail = () => {
         </div>
       </section>
 
-      {/* ── 04 RESEARCH & PROCESS ── */}
+      {/* ── 04 INFORMATION ARCHITECTURE ── */}
       <section className="vd-section vd-white">
         <div className="vd-inner">
-          <div className="vd-section-label">04 — Research &amp; Design Process</div>
-          <h2 className="vd-heading">How we <span className="vd-accent">approached it</span></h2>
+          <div className="vd-section-label">04 — Information Architecture</div>
+          <h2 className="vd-heading">One platform, <span className="vd-accent">two sides</span></h2>
           <p className="vd-body">
-            Our manager kicked off the project with research and stakeholder interviews, which gave the
-            two of us a clear brief to design against. From there, we split ownership by user type and
-            worked through five phases.
-          </p>
-
-          <div className="vd-process-flow">
-            {[
-              { num: "01", icon: "🔍", title: "Research", desc: "Stakeholder interviews, competitor audit of interior-design platforms — led by our manager" },
-              { num: "02", icon: "🗂️", title: "Define IA", desc: "Sitemap split by user type — Customer, Vendor/Designer, Shop — before any screens" },
-              { num: "03", icon: "✏️", title: "Wireframe", desc: "Low-fi layouts for quotation flow, project dashboard, and shop pages — hierarchy first" },
-              { num: "04", icon: "🎨", title: "Visual Design", desc: "Green + gold system, Cinzel headings + Inter body, applied across all screens" },
-              { num: "05", icon: "🧪", title: "Review & Iterate", desc: "Internal reviews between the 2 designers + manager to keep both sides consistent" },
-            ].map((step) => (
-              <div key={step.num} className="vd-flow-node">
-                <div className="vd-flow-node-icon">{step.icon}</div>
-                <span className="vd-flow-node-num">{step.num}</span>
-                <h4 className="vd-flow-node-title">{step.title}</h4>
-                <p className="vd-flow-node-desc">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 05 USER PERSONAS ── */}
-      <section className="vd-section vd-gray">
-        <div className="vd-inner">
-          <div className="vd-section-label">05 — User Personas</div>
-          <h2 className="vd-heading">Two users. <span className="vd-accent">Two very different needs.</span></h2>
-          <p className="vd-body">
-            Before designing screens, we mapped two core personas — a homeowner planning a renovation,
-            and an independent interior designer looking for steady work.
-          </p>
-
-          <div className="vd-persona-grid">
-            <div className="vd-persona-card">
-              <div className="vd-persona-top">
-                <div className="vd-persona-avatar" style={{ background: "rgba(31,110,77,0.12)", borderColor: "rgba(31,110,77,0.3)", color: "#1F6E4D" }}>AR</div>
-                <div>
-                  <span className="vd-persona-tag" style={{ color: "#1F6E4D", borderColor: "rgba(31,110,77,0.3)" }}>Homeowner</span>
-                  <h3>Ananya Rao</h3>
-                  <p className="vd-persona-meta">First-time Homeowner · 32 · Hyderabad</p>
-                </div>
-              </div>
-              <blockquote className="vd-persona-quote">
-                "I have a ₹20 lakh budget for my new flat — I just want to know exactly where it's going,
-                room by room, without calling my designer every other day."
-              </blockquote>
-              <div className="vd-persona-rows">
-                <div className="vd-persona-row"><span className="vd-persona-label">Goal</span><p>Get her 2BHK designed and executed within budget, with full visibility</p></div>
-                <div className="vd-persona-row"><span className="vd-persona-label">Pain</span><p>No idea how the quote breaks down per room, or how much budget is left</p></div>
-                <div className="vd-persona-row"><span className="vd-persona-label">Design Impact</span><p>Project Dashboard with Total/Utilized/Balance + room-wise Add-Ons panel</p></div>
-              </div>
-            </div>
-
-            <div className="vd-persona-card">
-              <div className="vd-persona-top">
-                <div className="vd-persona-avatar" style={{ background: "rgba(182,144,92,0.15)", borderColor: "rgba(182,144,92,0.35)", color: "#B6905C" }}>VS</div>
-                <div>
-                  <span className="vd-persona-tag" style={{ color: "#B6905C", borderColor: "rgba(182,144,92,0.35)" }}>Interior Designer</span>
-                  <h3>Vikram Shah</h3>
-                  <p className="vd-persona-meta">Independent Designer · 35 · Bangalore</p>
-                </div>
-              </div>
-              <blockquote className="vd-persona-quote">
-                "I have the skills, but I spend half my time chasing leads and the other half chasing
-                payments. I need a platform that handles both."
-              </blockquote>
-              <div className="vd-persona-rows">
-                <div className="vd-persona-row"><span className="vd-persona-label">Goal</span><p>Get consistent, qualified leads and get paid on milestones without delay</p></div>
-                <div className="vd-persona-row"><span className="vd-persona-label">Pain</span><p>Inconsistent leads, payment delays, no visibility/marketing for his portfolio</p></div>
-                <div className="vd-persona-row"><span className="vd-persona-label">Design Impact</span><p>Designer Growth page — leads, escrow-protected payments, profile &amp; portfolio marketing</p></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 06 INFORMATION ARCHITECTURE ── */}
-      <section className="vd-section vd-white">
-        <div className="vd-inner">
-          <div className="vd-section-label">06 — Information Architecture</div>
-          <h2 className="vd-heading">One platform, <span className="vd-accent">three experiences</span></h2>
-          <p className="vd-body">
-            We split the sitemap by user type early on — a customer-facing experience focused on trust
-            and project tracking, a vendor-facing experience focused on growth, and a shared shopping
-            experience used by everyone.
+            Voyd connects two audiences — customers who want their interior completed, and vendors who
+            want quality profile visibility. I focused on the customer-facing experience and the trust
+            tools that sit between both sides.
           </p>
           <div className="vd-ia-grid">
             <div className="vd-ia-card">
-              <h3>🏠 Customer Experience</h3>
+              <h3>🏠 Customer Experience — designed by me</h3>
               <div className="vd-ia-items">
                 {[
-                  ["Home", "Trust building + journey overview"],
-                  ["Get a Quote (popup)", "Property + project details capture"],
-                  ["My Quotations / Drafts", "Track status — Draft / Finalized / Delivered"],
-                  ["Project Dashboard", "Budget tracker + room-wise Add-Ons"],
-                  ["Quality Checker", "Flag product/material quality issues"],
-                  ["Shop / Cart / Checkout", "Browse & purchase decor and furniture"],
+                  ["Home & Customer Services", "Trust building + journey overview"],
+                  ["Get a Quote (popup)", "Lead capture — name, mobile, email, city, project details"],
+                  ["Verify Your Interior Designer", "OTP-gated defaulter/trust check before signing"],
+                  ["Quality Checker (mobile web)", "Field inspection tool, room-by-room, PDF report"],
+                  ["Project Progress Dashboard", "Completion breakdown by category"],
+                  ["Shop / Category / PDP / Cart", "Browse & purchase decor and furniture"],
                 ].map(([page, goal], i) => (
                   <div key={i} className="vd-ia-item">
                     <span className="vd-ia-page">{page}</span>
@@ -379,15 +420,15 @@ const VoydDetail = () => {
               </div>
             </div>
             <div className="vd-ia-card">
-              <h3>🧰 Vendor / Designer Experience</h3>
+              <h3>🧰 Vendor Experience — designed by Surya</h3>
               <div className="vd-ia-items">
                 {[
-                  ["Designer Growth (landing)", "B2B pitch — why join Voyd"],
-                  ["Qualified Leads", "AI-matched leads by expertise & budget"],
-                  ["Payments & Escrow", "Milestone-based, secure payouts"],
-                  ["Material Sourcing", "Verified suppliers, bulk pricing"],
-                  ["Profile & Marketing", "Designer directory listing, portfolio"],
-                  ["Project / Vendor List", "Tiered classification (e.g. Platinum)"],
+                  ["Designer/Vendor Growth page", "B2B pitch — leads, payments, material sourcing"],
+                  ["Checkout Flow", "Product checkout — not part of my scope"],
+                  ["About Us", "Company page — not part of my scope"],
+                  ["Admin Panels", "Internal ops tools — not part of my scope"],
+                  ["Budget Quote Vendor Profile", "Vendor-side budget/quote screens — not part of my scope"],
+                  ["Project Manager Panel", "Internal PM workspace — not part of my scope"],
                 ].map(([page, goal], i) => (
                   <div key={i} className="vd-ia-item">
                     <span className="vd-ia-page">{page}</span>
@@ -400,26 +441,25 @@ const VoydDetail = () => {
         </div>
       </section>
 
-      {/* ── 07 KEY USER FLOWS ── */}
+      {/* ── 05 KEY USER FLOW ── */}
       <section className="vd-section vd-gray">
         <div className="vd-inner">
-          <div className="vd-section-label">07 — Key User Flows</div>
-          <h2 className="vd-heading">From <span className="vd-accent">quote to handover</span></h2>
+          <div className="vd-section-label">05 — Key User Flow</div>
+          <h2 className="vd-heading">From <span className="vd-accent">quote to vendor</span></h2>
           <p className="vd-body">
-            The most important flow on Voyd isn't a purchase — it's the journey from "I'd like a quote"
-            to "my project is being executed and quality-checked." This flow ties almost every screen I
-            designed together.
+            The core flow on Voyd takes a customer from "Get a Quote" to choosing a vendor they trust —
+            with budget and design decisions made room by room along the way.
           </p>
 
           <div className="vd-flow">
             {[
-              { num: "01", title: "Request a Quote", desc: "Customer clicks 'Request a Quote' → popup opens → chooses Self/Others → fills Property tab (property type, locality, budget, sq.ft, address) → Project tab" },
-              { num: "02", title: "Quote sits in Drafts", desc: "Until submitted, the quote lives in 'Drafts'. Once submitted, it appears in 'Quotations' with a status badge" },
-              { num: "03", title: "Finalize the Project", desc: "Customer reviews the quotation row → clicks to 'Finalize' (freeze) when ready to proceed — this converts it into an active project" },
-              { num: "04", title: "Project Dashboard opens", desc: "Customer lands on the Project Dashboard — sees Total Budget / Utilized / Balance, and a filterable grid of interior elements per room" },
-              { num: "05", title: "Customize room-by-room", desc: "Using the 'Interior Elements Add-Ons' panel, customer adds/removes elements (TV Unit, False Ceiling, Wall Sconces, etc.) per room — Living/Dining, Master Bedroom, Pooja Room" },
-              { num: "06", title: "Vendor assigned by tier", desc: "A vendor is assigned from the relevant tier (e.g. Platinum) — visible in the 'List of Vendors' table on the dashboard" },
-              { num: "07", title: "Quality Checked", desc: "During/after execution, the Quality Checker lets the customer (or field team) log Product / Product Type / Sub Type with an image and send a quality report" },
+              { num: "01", title: "Get a Quote", desc: "Customer submits project basics — square footage, tier (e.g. Premium/Diamond)" },
+              { num: "02", title: "Room-by-room design selection", desc: "Customer goes room by room, choosing interior elements one at a time" },
+              { num: "03", title: "Live budget calculation", desc: "Budget updates automatically as elements are chosen, so there are no surprises" },
+              { num: "04", title: "Select a vendor", desc: "At the end of the flow, the customer selects a vendor from those available" },
+              { num: "05", title: "Evaluate vendor profile", desc: "Customer checks the vendor's individual marketing/profile page and discusses the project with a Project Manager" },
+              { num: "06", title: "Verify the designer", desc: "Before signing anything, the customer runs an OTP-verified check to confirm the designer is not a defaulter" },
+              { num: "07", title: "Track progress & quality", desc: "During execution, the Project Progress dashboard and the field team's Quality Checker keep the customer informed" },
             ].map((step, i) => (
               <div key={i} className="vd-flow-item">
                 <div className="vd-flow-num">{step.num}</div>
@@ -433,63 +473,228 @@ const VoydDetail = () => {
           </div>
 
           <div className="vd-highlight-box" style={{ marginTop: "32px" }}>
-            💡 The Project Dashboard was the most complex screen on the platform — it had to show budget
-            data, a filterable product grid, a room-wise customization panel, AND a vendor list, without
-            overwhelming a non-technical homeowner. We solved this with a left filter rail, a sticky
-            budget header, and a slide-in Add-Ons panel that opens on demand instead of always being visible.
+            💡 The Quality Checker is mobile-web by design — inspections happen on-site. An admin creates
+            a profile for the inspection team, they log in on their phone, check each room, and a PDF
+            report is generated and sent to the customer.
           </div>
         </div>
       </section>
 
-      {/* ── 08 SCREENS ── */}
+      {/* ── 06 SCREENS ── */}
       <section className="vd-section vd-dark">
         <div className="vd-inner">
-          <div className="vd-section-label vd-label-accent">08 — Screens</div>
+          <div className="vd-section-label vd-label-accent">06 — Screens</div>
           <h2 className="vd-heading vd-heading-white">Every page. <span className="vd-accent">Every flow.</span></h2>
           <p className="vd-body vd-body-muted">
-            Below are the key screens designed across the customer, vendor, and shopping experiences.
+            Screens below are the ones I designed — customer journey, trust &amp; quality tools, and the
+            shopping experience.
           </p>
         </div>
 
-        <Screen src="/voyd/homepage.jpg" alt="Voyd Homepage" label="Homepage" sub="Trust building + journey overview" onOpen={openImage} />
-        <Screen src="/voyd/get-a-quote.jpg" alt="Get a Quote popup" label="Get a Quote — Popup" sub="Self/Others, Property & Project tabs" onOpen={openImage} />
-        <Screen src="/voyd/my-quotations.jpg" alt="My Quotations page" label="My Quotations" sub="Quotations vs Drafts, status tracking" onOpen={openImage} />
-        <Screen src="/voyd/project-dashboard.jpg" alt="Project Dashboard" label="Project Dashboard" sub="Budget tracker + filterable product grid" onOpen={openImage} />
-        <Screen src="/voyd/add-ons-panel.jpg" alt="Interior Elements Add-Ons panel" label="Interior Elements Add-Ons" sub="Room-wise customization — Living/Dining, Master Bedroom, Pooja Room" onOpen={openImage} />
-        <Screen src="/voyd/quality-checker.jpg" alt="Quality Checker" label="Quality Checker" sub="Product / Product Type / Sub Type + image, send report" onOpen={openImage} />
-        <Screen src="/voyd/designer-growth.jpg" alt="Designer Growth page" label="Designer Growth Page" sub="Leads, payments, material sourcing, studio access" onOpen={openImage} />
-
-        <div className="vd-inner" style={{ paddingTop: "40px" }}>
-          <p className="vd-screen-label-full" style={{ padding: "0 0 16px", color: "rgba(255,255,255,0.4)" }}>Shopping Experience</p>
-          <div className="vd-screen-grid-2">
-            <Screen src="/voyd/shop.jpg" alt="Shop page" label="Shop — by Room / Category" full={false} onOpen={openImage} />
-            <Screen src="/voyd/product-detail.jpg" alt="Product Detail Page" label="Product Detail Page" full={false} onOpen={openImage} />
-            <Screen src="/voyd/cart.jpg" alt="Cart page" label="My Cart" full={false} onOpen={openImage} />
-            <Screen src="/voyd/checkout.jpg" alt="Checkout page" label="Checkout" full={false} onOpen={openImage} />
+        {/* Continuous full-width scroll — one screen after another, no grid */}
+        <Screen
+          index="01"
+          src="/voydimages/Homepagenew.png"
+          alt="Voyd Interiors Homepage"
+          label="Homepage"
+          sub="Hero, trust sections, journey overview"
+          onOpen={openImage}
+        />
+        <Screen
+          index="02"
+          src="/voydimages/Customer-Services.png"
+          alt="Customer Services page"
+          label="Customer Services"
+          sub="Budgeting, verified designers, visualization, quality control"
+          onOpen={openImage}
+        />
+        <Screen
+          index="03"
+          src="/voydimages/pop-up.png"
+          alt="Get a Quote popup"
+          label="Get a Quote — Popup"
+          sub="Name, mobile, email, city, project details"
+          onOpen={openImage}
+        />
+        <figure className="vd-screen-full">
+          <div className="vd-screen-header">
+            <span className="vd-screen-index">04</span>
+            <div className="vd-screen-header-text">
+              <p className="vd-screen-label-full">Verify Your Interior Designer</p>
+              <span className="vd-screen-sub-chip">4-step OTP verification flow</span>
+            </div>
           </div>
+          <p className="vd-screen-story">
+            We ask for the customer's mobile number here because it doubles as a lead — once they're
+            verified, our team can follow up directly and help them take the next step with a trusted
+            designer.
+          </p>
+          <div className="vd-verify-grid">
+            <Screen src="/voydimages/Verify-designer1.png" alt="Verify Designer step 1" label="Step 1 — Your details" full={false} onOpen={openImage} />
+            <Screen src="/voydimages/Verify-designer2.png" alt="Verify Designer OTP step" label="Step 2 — OTP verification" full={false} onOpen={openImage} />
+            <Screen src="/voydimages/Verify-designer3.png" alt="Verify Designer info step" label="Step 3 — Designer info" full={false} onOpen={openImage} />
+            <Screen src="/voydimages/Verify-designer4.png" alt="Verify Designer result" label="Result — trusted or defaulter" full={false} onOpen={openImage} />
+          </div>
+        </figure>
+
+        <Screen
+          index="05"
+          src="/voydimages/project-progress.png"
+          alt="Project Progress dashboard"
+          label="Project Progress Dashboard"
+          sub="Completion breakdown by category"
+          onOpen={openImage}
+        />
+
+        <div className="vd-inner">
+          <p className="vd-screen-group-label">Shopping Experience</p>
         </div>
+        <Screen
+          index="06"
+          src="/voydimages/Shop-By-Room.png"
+          alt="Shop by Room"
+          label="Shop by Room"
+          sub="Living Room, Bedroom, Office, Kids Room, Kitchen, Balcony"
+          onOpen={openImage}
+        />
+        <Screen
+          index="07"
+          src="/voydimages/Shop-By-Category.png"
+          alt="Shop by Category"
+          label="Shop by Category"
+          sub="Sofa & Beds, Home Decor, Lights, Sanitary, Wardrobes and more"
+          onOpen={openImage}
+        />
+        <Screen
+          index="08"
+          src="/voydimages/All-Products-filters-search.png"
+          alt="Shop listing page"
+          label="Shop — Filters & Search"
+          sub="Room type, discount, colour, price filters"
+          onOpen={openImage}
+        />
+        <Screen
+          index="09"
+          src="/voydimages/Pooja-Units-category.png"
+          alt="Pooja Units category"
+          label="Category — Pooja Units"
+          sub="Glass, Wall-Mounted, Metal, Corner, Marble, Foldable and more"
+          onOpen={openImage}
+        />
+        <Screen
+          index="10"
+          src="/voydimages/Sanitary-category.png"
+          alt="Sanitary category"
+          label="Category — Sanitary"
+          sub="Wash Basins, Water Closets, Faucets & Taps, Kitchen Sinks"
+          onOpen={openImage}
+        />
+        <Screen
+          index="11"
+          src="/voydimages/Wardrobe-category.png"
+          alt="Wardrobe category"
+          label="Category — Wardrobe"
+          sub="Sliding, Hinged, Walk-in, Modular options"
+          onOpen={openImage}
+        />
+        <Screen
+          index="12"
+          src="/voydimages/Individual-product-page.png"
+          alt="Product Detail Page"
+          label="Product Detail Page"
+          sub="Variants, pricing, reviews, related items"
+          onOpen={openImage}
+        />
+        <Screen
+          index="13"
+          src="/voydimages/MY CART.png"
+          alt="Cart page"
+          label="My Cart"
+          sub="Quantity controls, order summary, checkout"
+          onOpen={openImage}
+        />
+
+        <div className="vd-inner">
+          <p className="vd-screen-group-label">Supporting Pages</p>
+        </div>
+        <Screen
+          index="14"
+          src="/voydimages/Contact-us-page.png"
+          alt="Contact Us page"
+          label="Contact Us"
+          sub="Form, embedded map, office details"
+          onOpen={openImage}
+        />
+        <figure className="vd-screen-full">
+          <div className="vd-screen-header">
+            <span className="vd-screen-index">15</span>
+            <div className="vd-screen-header-text">
+              <p className="vd-screen-label-full">Login / Signup</p>
+              <span className="vd-screen-sub-chip">Customer / Vendor toggle, Google sign-in</span>
+            </div>
+          </div>
+          <div className="vd-pair-grid">
+            <Screen src="/voydimages/Customer-login-page.png" alt="Customer registration page" label="Customer Registration" full={false} onOpen={openImage} />
+            <Screen src="/voydimages/Vendor-registration-page.png" alt="Vendor registration page" label="Vendor Registration" full={false} onOpen={openImage} />
+          </div>
+        </figure>
+        <Screen
+          index="16"
+          src="/voydimages/404-page-not-found.png"
+          alt="404 page"
+          label="404 — Page Not Found"
+          sub="Error state"
+          onOpen={openImage}
+        />
       </section>
 
-      {/* ── 09 UI STYLE ── */}
+      {/* ── 07 QUALITY CHECKER — MOBILE APP ── */}
+      <section className="vd-section vd-dark">
+      
+
+        <Screen
+          src="/voydimages/VOYD-Quality-Checker.png"
+          alt="Quality Checker — all mobile screens"
+          label="Quality Checker — All Screens"
+          sub="Full mobile flow, admin to field inspection to PDF report"
+          onOpen={openImage}
+        />
+
+        <DriveVideoBlock
+          fileId="1ETJDMshD8EggeR3EG01I80SZxn8EPUHg"
+          label="Screen Recording"
+          sub="Live walkthrough of the mobile flow"
+        />
+
+        <Screen
+          src="/voydimages/Deisgn-system.png"
+          alt="Quality Checker mobile app design system"
+          label="Design System — Mobile App"
+          sub="Colors, type, components for the Quality Checker only"
+          onOpen={openImage}
+        />
+      </section>
+
+      {/* ── 08 UI STYLE ── */}
       <section className="vd-section vd-white">
         <div className="vd-inner">
-          <div className="vd-section-label">09 — UI Style &amp; Design System</div>
+          <div className="vd-section-label">08 — UI Style &amp; Design System</div>
           <h2 className="vd-heading">Colors, typography <span className="vd-accent">&amp; components</span></h2>
           <p className="vd-body">
             Voyd's visual identity needed to feel premium and trustworthy — like a high-end interior
-            studio, not a generic furniture site. We built the system around a deep green primary color
-            (used for CTAs, headers, and trust badges), a warm gold/tan accent for highlights and vendor
-            tiers, and a serif display font paired with a clean sans-serif body font.
+            studio, not a generic furniture site. The system is built around a deep forest green primary
+            color (headers, CTAs, trust badges), a warm gold/terracotta accent, and a cream background,
+            paired with an editorial serif for headlines and a clean sans-serif for body/UI text.
           </p>
 
           {/* COLORS */}
           <h3 className="vd-subheading">Color Palette</h3>
           <div className="vd-colors">
             {[
-              { color: "#1F6E4D", name: "Primary Green", hex: "#1F6E4D", use: "Headers, CTAs, primary buttons, links" },
+              { color: "#1F6E4D", name: "Forest Green", hex: "#1F6E4D", use: "Headers, CTAs, primary buttons, links" },
               { color: "#0E2B22", name: "Deep Forest", hex: "#0E2B22", use: "Dark sections, footer, hero banners" },
-              { color: "#B6905C", name: "Gold / Tan Accent", hex: "#B6905C", use: "Vendor tiers, highlights, secondary accents" },
-              { color: "#F6F3EC", name: "Warm Off-White", hex: "#F6F3EC", use: "Section backgrounds, cards" },
+              { color: "#B6905C", name: "Gold / Terracotta Accent", hex: "#B6905C", use: "Highlights, badges, secondary accents" },
+              { color: "#F6F3EC", name: "Cream", hex: "#F6F3EC", use: "Section backgrounds, category banners" },
               { color: "#FFFFFF", name: "White", hex: "#FFFFFF", use: "Cards, content areas, text on dark", border: true },
               { color: "#5A6B63", name: "Muted Gray-Green", hex: "#5A6B63", use: "Body text, secondary information" },
             ].map((c, i) => (
@@ -503,21 +708,20 @@ const VoydDetail = () => {
           </div>
 
           {/* TYPOGRAPHY */}
-          <h3 className="vd-subheading" style={{ marginTop: "48px" }}>Typography — Cinzel + Inter</h3>
+          <h3 className="vd-subheading" style={{ marginTop: "48px" }}>Typography — Serif + Sans-serif</h3>
           <p className="vd-body" style={{ marginBottom: "8px" }}>
-            <strong>Cinzel</strong> (serif) is used for hero titles and major section headings — it gives
-            the "premium interior studio" feel seen on banners like "Your Quotation" and "Project Details."
-            <strong> Inter</strong> (sans-serif) is used for everything else — body copy, labels, buttons,
-            forms, and UI components — to keep the actual product usable and clean.
+            A serif display font is used for hero titles and trust-heavy moments (like "Verify Your
+            Interior Designer" and the 404 page) to give a premium, editorial feel. A clean sans-serif
+            handles everything else — body copy, labels, buttons, forms, and UI components — to keep the
+            product usable.
           </p>
           <div className="vd-type-scale">
             {[
-              { name: "H1 — Hero (Cinzel)", size: "48–72px / 700", sample: "Your Quotation", font: "Cinzel", weight: "700", sampleSize: "26px" },
-              { name: "H2 — Section (Cinzel)", size: "32–44px / 600", sample: "Project Details", font: "Cinzel", weight: "600", sampleSize: "22px" },
-              { name: "H3 — Card Title (Inter)", size: "18–22px / 700", sample: "Interior Elements Add-Ons", font: "Inter", weight: "700", sampleSize: "16px" },
-              { name: "Body (Inter)", size: "14–16px / 400", sample: "Track your project budget room by room.", font: "Inter", weight: "400", sampleSize: "14px", color: "#5A6B63" },
-              { name: "Label / Status (Inter)", size: "11–12px / 700 / CAPS", sample: "FINALIZED", font: "Inter", weight: "700", sampleSize: "11px", color: "#1F6E4D" },
-              { name: "Price / Budget (Inter)", size: "18–20px / 700", sample: "₹20,00,000", font: "Inter", weight: "700", sampleSize: "18px", color: "#B6905C" },
+              { name: "H1 — Hero (Serif)", size: "40–56px / 600", sample: "Verify Your Interior Designer", font: "serif", weight: "600", sampleSize: "22px" },
+              { name: "H2 — Section (Serif)", size: "28–36px / 600", sample: "Complete Interior Design", font: "serif", weight: "600", sampleSize: "20px" },
+              { name: "H3 — Card Title (Sans)", size: "16–20px / 700", sample: "Budgeting Planning", font: "sans-serif", weight: "700", sampleSize: "16px" },
+              { name: "Body (Sans)", size: "14–16px / 400", sample: "Confirm your number and we'll check the designer's record in seconds.", font: "sans-serif", weight: "400", sampleSize: "14px", color: "#5A6B63" },
+              { name: "Label / Status (Sans)", size: "11–12px / 700 / CAPS", sample: "TRUSTED", font: "sans-serif", weight: "700", sampleSize: "11px", color: "#1F6E4D" },
             ].map((t, i) => (
               <div key={i} className="vd-type-row">
                 <span className="vd-type-name">{t.name}</span>
@@ -525,7 +729,7 @@ const VoydDetail = () => {
                 <span
                   className="vd-type-demo"
                   style={{
-                    fontFamily: t.font === "Cinzel" ? "'Cinzel', serif" : "'Inter', sans-serif",
+                    fontFamily: t.font,
                     fontSize: t.sampleSize,
                     fontWeight: t.weight,
                     color: t.color || "#111",
@@ -538,11 +742,35 @@ const VoydDetail = () => {
               </div>
             ))}
           </div>
-
-          {/* STYLE GUIDE SCREENSHOT */}
-          <h3 className="vd-subheading" style={{ marginTop: "48px" }}>Style Guide</h3>
-          <Screen src="/voyd/styleguide.jpg" alt="Voyd Style Guide" label="Style Guide — Colors, Type, Components" sub={null} onOpen={openImage} />
         </div>
+      </section>
+
+      {/* ── 09 MOTION WORK ── */}
+      <section className="vd-section vd-dark">
+        <div className="vd-inner">
+          <div className="vd-section-label vd-label-accent">09 — Motion Design</div>
+          <h2 className="vd-heading vd-heading-white">Bringing the brand <span className="vd-accent">to life</span></h2>
+          <p className="vd-body vd-body-muted">
+            Alongside UI design, I created Voyd's logo animation and two marketing videos — an automation
+            explainer and a services overview — using Adobe Premiere Pro and After Effects.
+          </p>
+        </div>
+
+        <VideoBlock
+          src="/voydimages/voyd logo.mp4"
+          label="Voyd Logo"
+          sub="Brand intro animation — Adobe After Effects"
+        />
+        <YouTubeBlock
+          videoId="ZL5FCKvg6AE"
+          label="Services Video"
+          sub="Marketing overview of the Voyd platform"
+        />
+        <YouTubeBlock
+          videoId="f-xCr9lwgYQ"
+          label="Services Video — After Effects Animation"
+          sub="Full motion graphics & animation reel — Adobe After Effects"
+        />
       </section>
 
       {/* ── 10 OUTCOME ── */}
@@ -553,12 +781,13 @@ const VoydDetail = () => {
 
           <div className="vd-outcome-list">
             {[
-              "Complete customer journey — homepage, Get a Quote flow, My Quotations, Project Dashboard with budget tracking",
-              "Room-wise 'Interior Elements Add-Ons' system — Living/Dining, Master Bedroom, Pooja Room and more",
-              "Quality Checker tool — Product / Product Type / Sub Type reporting with image upload",
-              "Designer Growth page — leads, escrow-protected payments, material sourcing, profile marketing",
-              "Full e-commerce flow — Shop by Room/Category, Product Detail, Cart, multi-payment Checkout",
-              "One shared design system — Cinzel + Inter typography, green & gold palette — across all 3 user experiences",
+              "Complete customer journey — homepage, Customer Services, Get a Quote, shopping experience",
+              "Verify Your Interior Designer — an OTP-gated defaulter/trust check that protects customers before they sign",
+              "Mobile-web Quality Checker — field inspection tool used by the on-site team, generating PDF reports for customers",
+              "Project Progress dashboard — category-wise completion tracking with visual gauges",
+              "Full e-commerce browsing flow — Shop by Room/Category, category pages, Product Detail, Cart",
+              "One shared design system — serif + sans-serif typography, green & gold palette",
+              "Logo animation and 2 marketing videos produced for the brand",
               "Live at voydinterior.com",
             ].map((item, i) => (
               <div key={i} className="vd-outcome-item">
@@ -566,25 +795,6 @@ const VoydDetail = () => {
                 <span>{item}</span>
               </div>
             ))}
-          </div>
-
-          <div className="vd-stats" style={{ marginTop: "48px" }}>
-            <div className="vd-stat vd-stat-dark">
-              <span className="vd-stat-num">15<span className="vd-stat-plus">+</span></span>
-              <span className="vd-stat-label">Screens</span>
-            </div>
-            <div className="vd-stat vd-stat-dark">
-              <span className="vd-stat-num">3</span>
-              <span className="vd-stat-label">User Roles</span>
-            </div>
-            <div className="vd-stat vd-stat-dark">
-              <span className="vd-stat-num">2</span>
-              <span className="vd-stat-label">Designers</span>
-            </div>
-            <div className="vd-stat vd-stat-dark">
-              <span className="vd-stat-num">1</span>
-              <span className="vd-stat-label">Design System</span>
-            </div>
           </div>
 
           <div className="vd-live-link">

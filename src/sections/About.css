@@ -1,6 +1,6 @@
 .about {
     background-color: #f2f2f0;
-    padding: 100px 80px;
+    padding: 100px 80px 60px;
 }
 
 .about-container {
@@ -28,25 +28,30 @@
     right: -20px;
     background: #f05a28;
     color: #fff;
-    width: 80px;
-    height: 80px;
-    border-radius: 12px;
+    width: 88px;
+    height: 88px;
+    border-radius: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 20px rgba(240, 90, 40, 0.3);
+    box-shadow: 0 8px 24px rgba(240, 90, 40, 0.32);
 }
 
 .badge-num {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 800;
     line-height: 1;
+    margin-bottom: 4px;
 }
 
 .badge-label {
-    font-size: 0.7rem;
-    opacity: 0.9;
+    font-size: 0.68rem;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    letter-spacing: 0.3px;
+    opacity: 0.95;
 }
 
 .about-right {
@@ -59,15 +64,17 @@
     color: #f05a28;
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .about-title {
-    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-family: 'Clash Display', sans-serif;
+    font-size: clamp(2rem, 3.4vw, 2.9rem);
     font-weight: 700;
     color: #1a1a1a;
     line-height: 1.2;
-    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    margin-bottom: 28px;
 }
 
 .accent {
@@ -76,33 +83,49 @@
 
 .about-desc {
     color: #555;
-    font-size: 0.97rem;
-    line-height: 1.8;
-    margin-bottom: 16px;
+    font-size: 0.98rem;
+    line-height: 1.75;
+    margin-bottom: 18px;
+    max-width: 560px;
+}
+
+.about-desc:last-of-type {
+    margin-bottom: 32px;
 }
 
 .about-tools {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 24px;
+    margin-top: 8px;
 }
 
 .tool-badge {
-    background: #e8e8e5;
-    color: #333;
-    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    color: #2a2a2a;
+    padding: 9px 16px;
     border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 0.84rem;
+    font-weight: 600;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tool-badge:hover {
+    transform: translateY(-2px);
+    border-color: rgba(240, 90, 40, 0.35);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
 .about-stats {
     display: flex;
     justify-content: center;
     gap: 60px;
-    margin-top: 80px;
-    padding-top: 48px;
+    margin-top: 56px;
+    padding-top: 40px;
     border-top: 1px solid #ddd;
     max-width: 1100px;
     margin-left: auto;
@@ -139,6 +162,18 @@
     .about-img-wrapper {
         width: 200px;
         margin: 0 auto;
+    }
+    .about-title {
+        text-align: center;
+    }
+    .about-desc {
+        max-width: none;
+    }
+    .about-tag {
+        text-align: center;
+    }
+    .about-tools {
+        justify-content: center;
     }
     .about-stats {
         flex-wrap: wrap;

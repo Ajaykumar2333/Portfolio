@@ -1,11 +1,15 @@
 import "./About.css";
 
 const About = () => {
-  const tools = [
-    { name: "Figma", icon: "🎨" },
-    { name: "Photoshop", icon: "🖼️" },
-    { name: "After Effects", icon: "🎬" },
-    { name: "React JS", icon: "⚛️" },
+  const skills = [
+    { name: "UI/UX Design", icon: "🎯" },
+    { name: "UX Research", icon: "🔍" },
+    { name: "Wireframing", icon: "📐" },
+    { name: "Prototyping", icon: "🧩" },
+    { name: "Responsive Design", icon: "📱" },
+    { name: "HTML • CSS • JavaScript", icon: "💻" },
+    { name: "Motion Design", icon: "🎬" },
+    { name: "Developer Collaboration", icon: "🤝" },
   ];
 
   return (
@@ -17,7 +21,7 @@ const About = () => {
             <div className="about-img-placeholder"><img src="./assets/Ajaypic.png" alt="" /></div>
             <div className="about-badge">
               <span className="badge-num">3+</span>
-              <span className="badge-label">years</span>
+              <span className="badge-label">Years<br />UI/UX</span>
             </div>
           </div>
         </div>
@@ -27,22 +31,20 @@ const About = () => {
           <h2 className="about-title">
             Designing <span className="accent">Interfaces.</span>
             <br />
-            Writing the <span className="accent">Code.</span>
+            Building Better <span className="accent">Experiences.</span>
           </h2>
           <p className="about-desc">
-            I'm a UI/UX Designer & Frontend Developer with 3+ years of experience.
-            My work spans the full design process — competitor research, style guides,
-            wireframes, prototypes, and translating designs into clean frontend code.
+           I'm a UI/UX Designer with 3+ years of experience creating intuitive, user-centered digital experiences. I specialize in UX research, wireframing, prototyping, and high-fidelity UI design that balances user needs with business goals.
           </p>
           <p className="about-desc">
-            I bring strong visual UI knowledge alongside hands-on HTML, CSS, JS
-            and React experience — so my designs don't just look great in Figma,
-            they translate cleanly into real products.
+       needs with business goals.
+
+With hands-on knowledge of HTML, CSS, JavaScript, responsive design, and motion design, I collaborate closely with developers to turn designs into polished digital products
           </p>
           <div className="about-tools">
-            {tools.map((t) => (
-              <span key={t.name} className="tool-badge">
-                {t.icon} {t.name}
+            {skills.map((s) => (
+              <span key={s.name} className="tool-badge">
+                {s.icon} {s.name}
               </span>
             ))}
           </div>
@@ -50,24 +52,7 @@ const About = () => {
 
       </div>
 
-      <div className="about-stats">
-        <div className="stat-item">
-          <span className="stat-value">3+</span>
-          <span className="stat-label">Years Experience</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">40+</span>
-          <span className="stat-label">Projects Done</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">20+</span>
-          <span className="stat-label">Happy Clients</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-value">10+</span>
-          <span className="stat-label">Tools Mastered</span>
-        </div>
-      </div>
+     
     </section>
   );
 };

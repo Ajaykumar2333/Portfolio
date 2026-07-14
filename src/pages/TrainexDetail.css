@@ -977,6 +977,108 @@
 }
 
 
+/* ══════════════════════════════════════════
+   06 — WEBSITE DESIGN — SCREEN CARDS
+   Clean, highlighted heading + description,
+   then the full screenshot in a soft frame.
+══════════════════════════════════════════ */
+
+.tx-screens-list {
+    max-width: 1040px;
+    margin: 48px auto 0;
+    padding: 0 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.tx-screen-card {
+    background: #fff;
+    border: 1px solid #ececea;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(17, 17, 17, 0.03);
+    transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.tx-screen-card:hover {
+    border-color: rgba(241, 98, 50, 0.3);
+    box-shadow: 0 16px 40px rgba(17, 17, 17, 0.08);
+    transform: translateY(-2px);
+}
+
+.tx-screen-card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 28px 32px 24px;
+}
+
+.tx-screen-card-index {
+    flex-shrink: 0;
+    font-family: 'SF Mono', 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background: linear-gradient(135deg, #F16232, #1B4F8A);
+    padding: 7px 12px;
+    border-radius: 7px;
+    margin-top: 3px;
+}
+
+.tx-screen-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.tx-screen-card-title {
+    font-size: clamp(18px, 2.2vw, 22px);
+    font-weight: 800;
+    color: #111;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+}
+
+.tx-screen-card-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1px;
+    height: 8px;
+    background: rgba(241, 98, 50, 0.16);
+    z-index: -1;
+    border-radius: 2px;
+}
+
+.tx-screen-card-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 560px;
+}
+
+.tx-screen-card-frame {
+    line-height: 0;
+    background: #f7f7f5;
+    border-top: 1px solid #ececea;
+    padding: 20px;
+}
+
+.tx-screen-card-frame .tx-screen-img {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(17, 17, 17, 0.08);
+}
+
+
 /* ── SCREEN SHOWCASE ── */
 
 .tx-screen-showcase-label {
@@ -1492,6 +1594,17 @@
     }
     .tx-wf-grid {
         grid-template-columns: 1fr;
+    }
+    .tx-screens-list {
+        padding: 0 24px;
+        gap: 28px;
+    }
+    .tx-screen-card-head {
+        padding: 20px 20px 18px;
+        gap: 14px;
+    }
+    .tx-screen-card-frame {
+        padding: 12px;
     }
     .tx-ia-grid {
         grid-template-columns: 1fr;

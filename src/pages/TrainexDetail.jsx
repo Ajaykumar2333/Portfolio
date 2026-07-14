@@ -122,6 +122,32 @@ const VideoCard = ({ src, title, tool, desc, disabled, onClick }) => {
 };
 
 /* ─────────────────────────────────────────────
+   SCREEN CARD — index badge + highlighted heading
+   + one-line description of what the screen is
+   about, then the full screenshot. Click opens
+   the full-size lightbox.
+───────────────────────────────────────────── */
+const ScreenCard = ({ index, label, desc, src, alt, onOpen }) => (
+  <div className="tx-screen-card">
+    <div className="tx-screen-card-head">
+      <span className="tx-screen-card-index">{index}</span>
+      <div className="tx-screen-card-text">
+        <h3 className="tx-screen-card-title">{label}</h3>
+        <p className="tx-screen-card-desc">{desc}</p>
+      </div>
+    </div>
+    <div className="tx-screen-card-frame">
+      <img
+        src={src}
+        alt={alt}
+        className="tx-screen-img tx-clickable-img"
+        onClick={() => onOpen(src, alt)}
+      />
+    </div>
+  </div>
+);
+
+/* ─────────────────────────────────────────────
    MAIN COMPONENT
 ───────────────────────────────────────────── */
 const TrainexDetail = () => {
@@ -134,6 +160,21 @@ const TrainexDetail = () => {
   const closeVideo = () => setVideoModal(null);
   const openImage = (src, alt) => setLightbox({ src, alt });
   const closeImage = () => setLightbox(null);
+
+  const websitePages = [
+    { label: "Courses", src: "/assets/course.jpg",
+      desc: "Full course catalogue with filters — helps learners quickly find the right SAP module or IT course for their background." },
+    { label: "Our Programs", src: "/assets/ourprograms.jpg",
+      desc: "Individual and corporate program tracks laid out side by side, so each visitor lands on the path built for them." },
+    { label: "Projects", src: "/assets/Projects.jpg",
+      desc: "Live project listings that give learners a look at the hands-on, portfolio-building work they'll actually do." },
+    { label: "Project Detail", src: "/assets/Projectdetail.jpg",
+      desc: "A deep dive into a single project — scope, tools used, and the outcome a learner walks away with." },
+    { label: "Reviews", src: "/assets/reviews.jpg",
+      desc: "Student testimonials and success stories that build trust before a visitor ever talks to the team." },
+    { label: "Live Sessions", src: "/assets/livesession.jpg",
+      desc: "Webinar schedule and registration — keeps prospective learners engaged with upcoming live content." },
+  ];
 
   return (
     <div className="tx-page">
@@ -158,7 +199,7 @@ const TrainexDetail = () => {
             Trainex <span className="tx-accent">Academy</span>
           </h1>
           <p className="tx-hero-sub">
-            IT Learning, Upskilling & Careers — Website · LMS · Motion Design
+            IT Learning, Upskilling & Careers — Marketing Website · Motion Design
           </p>
           <div className="tx-meta-grid">
             <div className="tx-meta-item">
@@ -171,7 +212,7 @@ const TrainexDetail = () => {
             </div>
             <div className="tx-meta-item">
               <span className="tx-meta-label">Platform</span>
-              <span className="tx-meta-value">Website + LMS</span>
+              <span className="tx-meta-value">Website</span>
             </div>
             <div className="tx-meta-item">
               <span className="tx-meta-label">Tools</span>
@@ -188,10 +229,10 @@ const TrainexDetail = () => {
       {/* ── HERO BANNER IMAGE ── */}
       <div className="tx-img-banner">
         <img
-          src="/assets/hero-banner.jpg"
+          src="/assets/Homepage.png"
           alt="Trainex Homepage"
           className="tx-banner-img tx-clickable-img"
-          onClick={() => openImage("/assets/Homepage.jpg", "Trainex Homepage")}
+          onClick={() => openImage("/assets/Homepage.png", "Trainex Homepage")}
         />
       </div>
 
@@ -201,7 +242,7 @@ const TrainexDetail = () => {
           <div className="tx-section-label">01 — Overview</div>
           <h2 className="tx-heading">What is <span className="tx-accent">Trainex Academy?</span></h2>
           <p className="tx-body">
-            Trainex Academy is an IT training institute based in Hyderabad offering expert-led SAP training, IT courses, live projects, and corporate training for freshers and working professionals — both online and in-person. The platform connects learners with 300+ industry trainers and provides end-to-end career support from enrollment to job placement assistance.
+            Trainex Academy is an IT training institute based in Hyderabad offering expert-led SAP training, IT courses, live projects, and corporate training for freshers and working professionals — both online and in-person. The website connects prospective learners with 300+ industry trainers and communicates the full course catalogue, corporate offering, and enrollment path.
           </p>
           <div className="tx-highlight-box">
             🚀 Live at <a href="https://www.trainexacademy.com" target="_blank" rel="noreferrer">trainexacademy.com</a> — a real shipped product actively used by students and corporate clients across India.
@@ -212,21 +253,21 @@ const TrainexDetail = () => {
               <div className="tx-role-icon">🎨</div>
               <div className="tx-role-content">
                 <h4>UI Design — Figma</h4>
-                <p>Designed every page of the website and complete LMS platform — homepage, courses, corporate, reviews, webinar, projects, and all LMS screens including dashboard, profile, and recordings.</p>
+                <p>Designed every page of the marketing website — homepage, courses, corporate, reviews, webinar, and projects — from wireframe through final visual design.</p>
               </div>
             </div>
             <div className="tx-role-card">
               <div className="tx-role-icon">💻</div>
               <div className="tx-role-content">
                 <h4>Frontend — HTML, CSS & JavaScript</h4>
-                <p>A senior developer set up the architecture. I wrote the component-level HTML, CSS, and JavaScript — translating my own Figma designs into working, responsive UI code with API integration.</p>
+                <p>My team lead set up the React project architecture. Within that setup, I wrote the component-level HTML, CSS, and JavaScript — translating my own Figma designs into working UI and making sure every page was fully responsive across desktop, tablet, and mobile.</p>
               </div>
             </div>
             <div className="tx-role-card">
               <div className="tx-role-icon">🎬</div>
               <div className="tx-role-content">
                 <h4>Motion & Creative — After Effects · Premiere Pro · Photoshop</h4>
-                <p>Logo animation, intro video, trainer profile animation, promotional videos, and social media poster designs — complete visual brand execution beyond screens.</p>
+                <p>Logo animation, platform intro video, trainer profile animation, promotional videos, and social media poster designs — complete visual brand execution beyond the screens.</p>
               </div>
             </div>
           </div>
@@ -239,7 +280,7 @@ const TrainexDetail = () => {
           <div className="tx-section-label">02 — The Problem</div>
           <h2 className="tx-heading">What needed to <span className="tx-accent">be solved</span></h2>
           <p className="tx-body">
-            Trainex Academy had no digital presence. Prospective students had no way to discover the platform, understand what it offered, or enroll online. Existing students had no centralized place to access their learning materials, track progress, or attend live sessions.
+            Trainex Academy had no digital presence. Prospective students had no way to discover the institute, understand what it offered, or start the enrollment conversation online — and there was no visual brand content to build trust before someone talked to the team.
           </p>
           <div className="tx-problem-grid">
             <div className="tx-problem-card">
@@ -249,11 +290,6 @@ const TrainexDetail = () => {
             </div>
             <div className="tx-problem-card">
               <div className="tx-problem-num">02</div>
-              <h4>No Learning Platform</h4>
-              <p>Students had no centralized system to access recordings, materials, assignments, or track their own progress.</p>
-            </div>
-            <div className="tx-problem-card">
-              <div className="tx-problem-num">03</div>
               <h4>No Brand Identity in Motion</h4>
               <p>No visual brand content — no videos, no animations, no social media assets to build awareness and trust online.</p>
             </div>
@@ -271,8 +307,8 @@ const TrainexDetail = () => {
           <div className="tx-process-flow">
             {[
               { num: "01", icon: "🔍", title: "Understand", desc: "Business model, 3 user types, competitor audit of NIIT & Simplilearn" },
-              { num: "02", icon: "🗂️", title: "Structure",  desc: "Full sitemap — 7 website pages + 9 LMS sections defined before Figma" },
-              { num: "03", icon: "✏️", title: "Wireframe",  desc: "Low-fi layouts for all key pages — hierarchy first, looks second" },
+              { num: "02", icon: "🗂️", title: "Structure",  desc: "Full sitemap — 7 website pages mapped and structured before Figma" },
+              { num: "03", icon: "✏️", title: "Wireframe",  desc: "Low-fi layouts for key pages — hierarchy first, looks second" },
               { num: "04", icon: "🎨", title: "Visual Design", desc: "Navy + orange system, every screen with real content & component states" },
               { num: "05", icon: "💻", title: "Build & Ship", desc: "HTML/CSS/JS — translated Figma 1:1, API integrated, tested, live" },
               { num: "06", icon: "🎬", title: "Motion",     desc: "Logo anim, intro video, trainer reel, 3 promos, 6 posters" },
@@ -296,83 +332,10 @@ const TrainexDetail = () => {
         </div>
       </section>
 
-      {/* ── 04 USER PERSONAS — RADIAL HUB LAYOUT ── */}
-      <section className="tx-section tx-section-dark">
-        <div className="tx-inner">
-          <div className="tx-section-label tx-label-orange">04 — Understanding the Users</div>
-
-          <div className="tx-personas-hub">
-            {/* Center heading */}
-            <div className="tx-personas-hub-center">
-              <h2 className="tx-heading tx-heading-white" style={{ margin: 0 }}>
-                3 users.<br /><span className="tx-accent">3 different needs.</span>
-              </h2>
-              <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", marginTop: "12px", lineHeight: "1.6" }}>
-                Before designing a single screen,<br />I mapped who would use Trainex<br />and what they actually needed.
-              </p>
-            </div>
-
-            {/* Persona 01 — Learner */}
-            <div className="tx-persona-hub-card tx-persona-hub-card--1">
-              <div className="tx-persona-hub-top">
-                <div className="tx-persona-hub-avatar" style={{ background:"rgba(241,98,50,0.15)", borderColor:"rgba(241,98,50,0.3)", color:"#F16232" }}>RK</div>
-                <div>
-                  <span className="tx-persona-hub-tag" style={{ color:"#F16232", borderColor:"rgba(241,98,50,0.3)" }}>Learner</span>
-                  <h3>Ravi Kumar</h3>
-                  <p className="tx-persona-hub-meta">Fresh IT Graduate · 22 · Hyderabad</p>
-                </div>
-              </div>
-              <blockquote className="tx-persona-hub-quote">"I don't know which SAP module to pick — I can't afford to waste ₹40,000 on the wrong one."</blockquote>
-              <div className="tx-persona-hub-rows">
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label">Goal</span><p>Land a SAP consulting job within 6 months</p></div>
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label">Pain</span><p>Too many modules, no guidance on which fits his background</p></div>
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label">Design Impact</span><p>Free counselling CTA · Success story videos · LMS progress tracking</p></div>
-              </div>
-            </div>
-
-            {/* Persona 02 — Upskiller */}
-            <div className="tx-persona-hub-card tx-persona-hub-card--2">
-              <div className="tx-persona-hub-top">
-                <div className="tx-persona-hub-avatar" style={{ background:"rgba(16,185,129,0.15)", borderColor:"rgba(16,185,129,0.3)", color:"#10b981" }}>PM</div>
-                <div>
-                  <span className="tx-persona-hub-tag" style={{ color:"#10b981", borderColor:"rgba(16,185,129,0.3)" }}>Upskiller</span>
-                  <h3>Priya Menon</h3>
-                  <p className="tx-persona-hub-meta">Working Professional · 28 · Bangalore</p>
-                </div>
-              </div>
-              <blockquote className="tx-persona-hub-quote">"I can only study after 9pm — I need recordings I can watch at my own pace."</blockquote>
-              <div className="tx-persona-hub-rows">
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label" style={{color:"#10b981"}}>Goal</span><p>Upskill in SAP FICO without quitting her job</p></div>
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label" style={{color:"#10b981"}}>Pain</span><p>Fixed-timing live classes don't fit her schedule</p></div>
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label" style={{color:"#10b981"}}>Design Impact</span><p>Recordings library with search · Downloadable materials · Flexible schedule view</p></div>
-              </div>
-            </div>
-
-            {/* Persona 03 — Corporate */}
-            <div className="tx-persona-hub-card tx-persona-hub-card--3">
-              <div className="tx-persona-hub-top">
-                <div className="tx-persona-hub-avatar" style={{ background:"rgba(139,92,246,0.15)", borderColor:"rgba(139,92,246,0.3)", color:"#a78bfa" }}>MR</div>
-                <div>
-                  <span className="tx-persona-hub-tag" style={{ color:"#a78bfa", borderColor:"rgba(139,92,246,0.3)" }}>Corporate</span>
-                  <h3>Mahesh Reddy</h3>
-                  <p className="tx-persona-hub-meta">L&D Manager · 38 · Mumbai</p>
-                </div>
-              </div>
-              <blockquote className="tx-persona-hub-quote">"I need to train 20 employees on SAP this quarter and show management ROI."</blockquote>
-              <div className="tx-persona-hub-rows">
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label" style={{color:"#a78bfa"}}>Goal</span><p>Train 20 employees within Q3 budget, show results</p></div>
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label" style={{color:"#a78bfa"}}>Pain</span><p>Generic training doesn't match their SAP version</p></div>
-                <div className="tx-persona-hub-row"><span className="tx-persona-hub-label" style={{color:"#a78bfa"}}>Design Impact</span><p>Dedicated corporate page · Customisation messaging · Fast-response contact form</p></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 05 WIREFRAMES ── */}
+      {/* ── 04 WIREFRAMES ── */}
       <section className="tx-section tx-section-white">
         <div className="tx-inner">
-          <div className="tx-section-label">05 — Wireframes</div>
+          <div className="tx-section-label">04 — Wireframes</div>
           <h2 className="tx-heading">Layout before <span className="tx-accent">looks</span></h2>
           <p className="tx-body">
             Before applying any colors or visual design, I wireframed the key pages in Figma. The goal was to get the content hierarchy, layout, and user flow right first — then layer on the visual design.
@@ -381,8 +344,6 @@ const TrainexDetail = () => {
             {[
               { src: "/assets/wf-homepage.jpg", label: "Homepage — Layout & Hierarchy" },
               { src: "/assets/wf-courses.jpg",  label: "Courses Page — Filters & Cards" },
-              { src: "/assets/wf-lms.jpg",      label: "LMS Dashboard — Information Layout" },
-              { src: "/assets/wf-mobile.jpg",   label: "Mobile — Responsive Layout" },
             ].map((wf, i) => (
               <div key={i} className="tx-wf-item">
                 <img
@@ -396,82 +357,18 @@ const TrainexDetail = () => {
             ))}
           </div>
           <div className="tx-note-box">
-            💡 Wireframing helped me catch layout problems early — like the LMS dashboard having too much information competing for attention. I resolved the hierarchy in wireframes before investing time in visual design.
+            💡 Wireframing helped me catch layout problems early — like the homepage hero competing with the course cards for attention. I resolved the hierarchy in wireframes before investing time in visual design.
           </div>
         </div>
       </section>
 
-      {/* ── 06 USER FLOWS — VISUAL FLOW DIAGRAM ── */}
+      {/* ── 06 IA ── */}
       <section className="tx-section tx-section-gray">
         <div className="tx-inner">
-          <div className="tx-section-label">06 — User Flows</div>
-          <h2 className="tx-heading">How users <span className="tx-accent">move through</span> the platform</h2>
-
-          {/* Learner Journey */}
-          <h3 className="tx-subheading">Learner Journey</h3>
-          <div className="tx-userflow">
-            {[
-              { icon: "🔍", step: "Discovery",  desc: "Google / Social Ad",       color: "#1B4F8A" },
-              { icon: "📖", step: "Explore",    desc: "Homepage → Courses",        color: "#1B4F8A" },
-              { icon: "💬", step: "Counsel",    desc: "Free SME Guidance",         color: "#F16232" },
-              { icon: "✅", step: "Enroll",     desc: "Pay → Get LMS Access",      color: "#F16232" },
-              { icon: "📱", step: "Learn",      desc: "Dashboard → Live Sessions", color: "#10b981" },
-              { icon: "🏆", step: "Graduate",   desc: "Placement Support",         color: "#10b981" },
-            ].map((s, i, arr) => (
-              <div key={i} className="tx-userflow-row">
-                <div className="tx-userflow-node" style={{ borderColor: s.color }}>
-                  <div className="tx-userflow-node-icon">{s.icon}</div>
-                  <div className="tx-userflow-node-label">
-                    <strong style={{ color: s.color }}>{s.step}</strong>
-                    <span>{s.desc}</span>
-                  </div>
-                </div>
-                {i < arr.length - 1 && (
-                  <div className="tx-userflow-connector">
-                    <div className="tx-userflow-line" />
-                    <div className="tx-userflow-arrowhead">›</div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Corporate Journey */}
-          <h3 className="tx-subheading" style={{ marginTop: "48px" }}>Corporate Client Journey</h3>
-          <div className="tx-userflow">
-            {[
-              { icon: "🏢", step: "Discover", desc: "Search Corporate SAP Training", color: "#1B4F8A" },
-              { icon: "📄", step: "Review",   desc: "Corporate Page → Curriculum",   color: "#1B4F8A" },
-              { icon: "📞", step: "Contact",  desc: "Fill Form → Talk to Team",       color: "#F16232" },
-              { icon: "🎓", step: "Train",    desc: "Custom Batch · 20 Employees",    color: "#10b981" },
-            ].map((s, i, arr) => (
-              <div key={i} className="tx-userflow-row">
-                <div className="tx-userflow-node" style={{ borderColor: s.color }}>
-                  <div className="tx-userflow-node-icon">{s.icon}</div>
-                  <div className="tx-userflow-node-label">
-                    <strong style={{ color: s.color }}>{s.step}</strong>
-                    <span>{s.desc}</span>
-                  </div>
-                </div>
-                {i < arr.length - 1 && (
-                  <div className="tx-userflow-connector">
-                    <div className="tx-userflow-line" />
-                    <div className="tx-userflow-arrowhead">›</div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 07 IA ── */}
-      <section className="tx-section tx-section-white">
-        <div className="tx-inner">
-          <div className="tx-section-label">07 — Information Architecture</div>
-          <h2 className="tx-heading">Structure of <span className="tx-accent">the platform</span></h2>
-          <p className="tx-body">Two products, one brand — a public marketing website focused on conversion, and a private LMS focused on learning.</p>
-          <div className="tx-ia-grid">
+          <div className="tx-section-label">05 — Information Architecture</div>
+          <h2 className="tx-heading">Structure of <span className="tx-accent">the website</span></h2>
+          <p className="tx-body">Every page mapped and given a clear conversion goal before any visual design began.</p>
+          <div className="tx-ia-grid tx-ia-grid-single">
             <div className="tx-ia-card">
               <h3>🌐 Website Pages</h3>
               <div className="tx-ia-items">
@@ -491,123 +388,45 @@ const TrainexDetail = () => {
                 ))}
               </div>
             </div>
-            <div className="tx-ia-card">
-              <h3>📱 LMS Sections</h3>
-              <div className="tx-ia-items">
-                {[
-                  ["Dashboard", "Learning overview + progress"],
-                  ["Live Sessions", "Join or replay sessions"],
-                  ["Recordings", "Searchable session library"],
-                  ["Material", "PDFs, slides, docs"],
-                  ["Projects", "Hands-on project briefs"],
-                  ["Assignments", "Pending + graded work"],
-                  ["Quiz", "Module assessments"],
-                  ["Incident/Support", "Ticket system"],
-                  ["My Profile", "Personal + progress data"],
-                ].map(([section, desc], i) => (
-                  <div key={i} className="tx-ia-item">
-                    <span className="tx-ia-page">{section}</span>
-                    <span className="tx-ia-goal">{desc}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ── 08 WEBSITE DESIGN ── */}
-      <section className="tx-section tx-section-gray">
-        <div className="tx-inner">
-          <div className="tx-section-label">08 — Website Design</div>
-          <h2 className="tx-heading">Every page. <span className="tx-accent">Every pixel.</span></h2>
-          <p className="tx-body">Every single page designed in Figma. Focus — build credibility, communicate value clearly, drive enrollments.</p>
-
-          <div
-            className="tx-screen-showcase-hero tx-clickable-img"
-            onClick={() => openImage("/assets/Homepage.jpg", "Homepage — Full View")}
-          >
-            <img src="/assets/Homepage.jpg" alt="Homepage Full View" />
-            <div className="tx-screen-showcase-label">
-              <h4>Homepage — Full View</h4>
-              <span>Awareness + Conversion</span>
-            </div>
-          </div>
-
-          <h3 className="tx-subheading" style={{ marginTop: "48px" }}>Website Pages</h3>
-          <div className="tx-bento-grid">
-            {[
-              { num: "01", name: "Courses",       purpose: "Awareness + Conversion", src: "/assets/course.jpg" },
-              { num: "02", name: "Our Programs",   purpose: "Discovery + Enrollment",  src: "/assets/ourprograms.jpg" },
-              { num: "03", name: "Projects",       purpose: "Value Add",               src: "/assets/Projects.jpg" },
-              { num: "04", name: "Project Detail", purpose: "Deep Dive",               src: "/assets/Projectdetail.jpg" },
-              { num: "05", name: "Reviews",        purpose: "Trust Building",          src: "/assets/reviews.jpg" },
-              { num: "06", name: "Live Sessions",  purpose: "Engagement",              src: "/assets/livesession.jpg" },
-            ].map((page, i) => (
-              <div
-                key={i}
-                className="tx-bento-item tx-clickable-img"
-                onClick={() => openImage(page.src, page.name)}
-              >
-                <img src={page.src} alt={page.name} />
-                <div className="tx-bento-overlay">
-                  <span className="tx-bento-overlay-num">{page.num}</span>
-                  <h4>{page.name}</h4>
-                  <p>{page.purpose}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 09 LMS DESIGN ── */}
-      <section className="tx-section tx-section-dark">
-        <div className="tx-inner">
-          <div className="tx-section-label tx-label-orange">09 — LMS Platform Design</div>
-          <h2 className="tx-heading tx-heading-white">Where students <span className="tx-accent">actually learn.</span></h2>
-          <p className="tx-body tx-body-muted">The product students use every day. Needed to be clear, motivating, and easy to navigate.</p>
-
-          <div
-            className="tx-screen-showcase-hero tx-clickable-img"
-            onClick={() => openImage("/assets/lms-dashboard.jpg", "LMS Dashboard — Full View")}
-          >
-            <img src="/assets/lms-dashboard.jpg" alt="LMS Dashboard" />
-            <div className="tx-screen-showcase-label">
-              <h4>LMS Dashboard — Full View</h4>
-              <span>Student Home</span>
-            </div>
-          </div>
-
-          <h3 className="tx-subheading tx-subheading-white" style={{ marginTop: "48px" }}>LMS Screens</h3>
-          <div className="tx-lms-bento">
-            {[
-              { src: "/assets/lms-continue.jpg",   label: "Continue Learning Banner" },
-              { src: "/assets/lms-stats.jpg",       label: "Stat Cards" },
-              { src: "/assets/lms-assignments.jpg", label: "Assignments — Urgency Colors" },
-              { src: "/assets/lms-progress.jpg",    label: "Progress Overview" },
-              { src: "/assets/lms-recordings.jpg",  label: "Recordings Screen" },
-              { src: "/assets/lms-profile.jpg",     label: "My Profile Screen" },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="tx-lms-bento-item tx-clickable-img"
-                onClick={() => openImage(item.src, item.label)}
-              >
-                <img src={item.src} alt={item.label} />
-                <div className="tx-lms-bento-label">
-                  <span>{item.label}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 10 UI STYLE ── */}
+      {/* ── 06 WEBSITE DESIGN — SCREENS ── */}
       <section className="tx-section tx-section-white">
         <div className="tx-inner">
-          <div className="tx-section-label">10 — UI Style & Design System</div>
+          <div className="tx-section-label">06 — Website Design</div>
+          <h2 className="tx-heading">Every page. <span className="tx-accent">Every pixel.</span></h2>
+          <p className="tx-body">Every single page designed in Figma and shipped live. Focus — build credibility, communicate value clearly, drive enrollments.</p>
+        </div>
+
+        <div className="tx-screens-list">
+          <ScreenCard
+            index="01"
+            label="Homepage"
+            desc="First impression and value proposition — hero banner, course highlights, trainer credibility, and a clear path to enrollment."
+            src="/assets/Homepage.png"
+            alt="Homepage — Full View"
+            onOpen={openImage}
+          />
+          {websitePages.map((p, i) => (
+            <ScreenCard
+              key={i}
+              index={String(i + 2).padStart(2, "0")}
+              label={p.label}
+              desc={p.desc}
+              src={p.src}
+              alt={p.label}
+              onOpen={openImage}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* ── 07 UI STYLE ── */}
+      <section className="tx-section tx-section-gray">
+        <div className="tx-inner">
+          <div className="tx-section-label">07 — UI Style & Design System</div>
           <h2 className="tx-heading">Colors, typography <span className="tx-accent">& components</span></h2>
 
           <h3 className="tx-subheading">Color Palette</h3>
@@ -615,10 +434,10 @@ const TrainexDetail = () => {
             {[
               { name: "Primary Blue",    hex: "#1B4F8A", use: "Headers, CTAs, accents",    border: false },
               { name: "Orange Accent",   hex: "#F16232", use: "Highlights, buttons, tags", border: false },
-              { name: "Dark",            hex: "#111111", use: "Dark sections, sidebar",     border: false },
+              { name: "Dark",            hex: "#111111", use: "Dark sections, footer",     border: false },
               { name: "White",           hex: "#FFFFFF", use: "Cards, backgrounds",         border: true  },
-              { name: "Red — Urgent",    hex: "#EF4444", use: "Due tomorrow, errors",       border: false },
-              { name: "Green — Success", hex: "#10B981", use: "Present, completed, live",  border: false },
+              { name: "Red — Alert",     hex: "#EF4444", use: "Errors, urgent notices",     border: false },
+              { name: "Green — Success", hex: "#10B981", use: "Confirmations, live badges", border: false },
             ].map((c) => (
               <div className="tx-color-item" key={c.hex}>
                 <div className="tx-color-swatch" style={{ background: c.hex, border: c.border ? "1px solid #ddd" : "none" }}></div>
@@ -648,12 +467,12 @@ const TrainexDetail = () => {
         </div>
       </section>
 
-      {/* ── 11 FRONTEND ── */}
+      {/* ── 09 FRONTEND ── */}
       <section className="tx-section tx-section-gray">
         <div className="tx-inner">
-          <div className="tx-section-label">11 — Frontend Development</div>
+          <div className="tx-section-label">08 — Frontend Development</div>
           <h2 className="tx-heading">Designed it. <span className="tx-accent">Coded it.</span></h2>
-          <p className="tx-body">A senior developer set up the architecture and environment. I wrote the component-level HTML, CSS, and JavaScript — translating every Figma screen into working UI. Designing and building the same product gave me a real advantage: I know exactly which design decisions are practical to build.</p>
+          <p className="tx-body">My team lead set up the React project architecture and environment. Within that setup, I wrote the component-level HTML, CSS, and JavaScript — translating every Figma screen I designed into working UI, and making sure every single page was fully responsive. Designing and building the same product gave me a real advantage: I know exactly which design decisions are practical to build.</p>
           <div className="tx-dev-grid">
             <div className="tx-dev-card">
               <h4>📄 HTML & CSS</h4>
@@ -665,36 +484,37 @@ const TrainexDetail = () => {
             </div>
             <div className="tx-dev-card">
               <h4>📱 Fully Responsive</h4>
-              <p>Desktop (1440px+) · Tablet (768–1439px) · Mobile (below 768px) — all breakpoints handled.</p>
+              <p>Desktop (1440px+) · Tablet (768–1439px) · Mobile (below 768px) — every page tested and made responsive across all breakpoints.</p>
             </div>
             <div className="tx-dev-card">
               <h4>🔌 API Integration</h4>
-              <p>Dynamic course listings, student data, and live session schedules fetched from backend and displayed in the UI.</p>
+              <p>Dynamic course listings and live session schedules fetched from the backend and displayed in the UI.</p>
             </div>
           </div>
           <div className="tx-highlight-box" style={{ marginTop: "32px" }}>
-            💡 Being both the designer and the developer on the same product meant zero handoff problems. What you see in the live site matches the Figma design exactly — because the same person made both decisions.
+            💡 Being both the designer and a frontend contributor on the same product meant zero handoff problems. What you see in the live site matches the Figma design closely — because I understood both sides of the same decisions.
           </div>
         </div>
       </section>
 
-      {/* ── 12 CREATIVE WORK ── */}
+      {/* ── 10 CREATIVE WORK ── */}
       <section className="tx-section tx-section-dark">
         <div className="tx-inner">
-          <div className="tx-section-label tx-label-orange">12 — Motion & Creative Work</div>
+          <div className="tx-section-label tx-label-orange">09 — Motion & Creative Work</div>
           <h2 className="tx-heading tx-heading-white">Beyond screens — <span className="tx-accent">brand brought to life</span></h2>
           <p className="tx-body tx-body-muted">
-            After shipping the digital product, I extended the Trainex brand into motion and visual design — creating a complete set of creative assets for brand identity and marketing.
+            After shipping the digital product, I extended the Trainex brand into motion and visual design — creating a complete set of creative assets for brand identity and marketing in After Effects, Premiere Pro, and Photoshop.
           </p>
 
           <h3 className="tx-subheading tx-subheading-white">Motion Assets</h3>
           <div className="tx-creative-video-grid">
-            {/* Logo Animation — coming soon */}
+            {/* Logo Animation */}
             <VideoCard
-              disabled
+              src="/assets/logo-animation.mp4"
               title="Logo Animation"
               tool="After Effects"
               desc="Brand identity animation — the Trainex logo brought to life. Used across all video content as an opener."
+              onClick={() => openVideo("/assets/logo-animation.mp4", "Logo Animation")}
             />
             {/* Platform Intro Video */}
             <VideoCard
@@ -704,12 +524,13 @@ const TrainexDetail = () => {
               desc="Brand introduction video for Trainex Academy — used for platform onboarding and marketing."
               onClick={() => openVideo("/assets/Trainexprefix.mov", "Platform Intro Video")}
             />
-            {/* Trainer Profile Animation — coming soon */}
+            {/* Trainer Profile Animation */}
             <VideoCard
-              disabled
+              src="/assets/trainer-profile-animation.mp4"
               title="Trainer Profile Animation"
               tool="After Effects · Premiere Pro"
               desc="Animated profile video for trainers — used to showcase expertise and build credibility with prospective students."
+              onClick={() => openVideo("/assets/trainer-profile-animation.mp4", "Trainer Profile Animation")}
             />
           </div>
 
@@ -765,19 +586,18 @@ const TrainexDetail = () => {
         </div>
       </section>
 
-      {/* ── 13 OUTCOME ── */}
+      {/* ── 11 OUTCOME ── */}
       <section className="tx-section tx-section-white">
         <div className="tx-inner">
-          <div className="tx-section-label">13 — Outcome</div>
+          <div className="tx-section-label">10 — Outcome</div>
           <h2 className="tx-heading">From <span className="tx-accent">zero to live product.</span></h2>
           <div className="tx-outcome-list">
             {[
-              "Complete marketing website — designed in Figma, built in HTML/CSS/JS, fully responsive",
-              "LMS platform — dashboard, recordings, profile screens — designed and coded",
-              "Dynamic content integration — course listings and student data from backend APIs",
-              "Logo animation, intro video, trainer profile animation — full motion identity",
+              "Complete marketing website — designed in Figma, built in HTML/CSS/JS, fully responsive across every page",
+              "Dynamic content integration — course listings and live session schedules pulled from backend APIs",
+              "Logo animation, platform intro video, and trainer profile animation — full motion brand identity",
               "3 promotional videos — brand awareness and marketing",
-              "6+ poster designs — social media and marketing collateral",
+              "8 poster designs — social media and marketing collateral",
               "Live product actively used by students and corporate clients across India",
             ].map((item, i) => (
               <div key={i} className="tx-outcome-item">

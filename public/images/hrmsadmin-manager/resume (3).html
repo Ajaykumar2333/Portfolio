@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V Ajaykumar — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#181a24;
+    --text-soft:#454857;
+    --text-faint:#83869a;
+    --accent:rgb(240, 90, 40);
+    --accent-2:#0ea5a0;
+    --accent-tint:#fdece5;
+    --line:#e6e7ef;
+    --paper:#ffffff;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html,body{ background:#e6e7ee; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    font-size:13.2px;
+    line-height:1.6;
+    display:flex;
+    justify-content:center;
+    padding:28px 0;
+  }
+
+  .page{
+    width:210mm;
+    background:var(--paper);
+    box-shadow:0 4px 30px rgba(20,20,40,0.16);
+    padding:14mm 16mm 16mm 16mm;
+  }
+
+  /* ===== HEADER ===== */
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+
+  .head-left h1{
+    font-family:'Manrope', sans-serif;
+    font-weight:800;
+    font-size:31px;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+
+  .role{
+    margin-top:5px;
+    font-family:'Manrope', sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--accent);
+  }
+
+  .notice-pill{
+    margin-top:10px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Manrope', sans-serif;
+    font-size:10.3px;
+    font-weight:700;
+    letter-spacing:0.02em;
+    color:var(--accent-2);
+    background:#e9f9f8;
+    padding:5px 12px;
+    border-radius:100px;
+  }
+  .notice-pill::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--accent-2); }
+
+  .contact-col{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:5px;
+    font-size:11.8px;
+    color:var(--text-soft);
+    text-align:right;
+    padding-top:3px;
+  }
+  .contact-col a{ color:var(--text-soft); text-decoration:none; }
+  .contact-col a:hover{ color:var(--accent); text-decoration:underline; }
+
+  .portfolio-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Manrope', sans-serif;
+    font-weight:700;
+    font-size:11.5px;
+    color:#fff !important;
+    background:var(--accent);
+    padding:7px 14px;
+    border-radius:6px;
+    text-decoration:none !important;
+    margin-top:3px;
+  }
+  .portfolio-btn:hover{ opacity:0.92; }
+
+  .headrule{ height:1.5px; background:var(--ink); margin-top:14px; }
+
+  /* ===== SECTIONS ===== */
+  /* Alternating soft panels give each section a clear boundary at a
+     glance, instead of relying on whitespace alone to separate them */
+  section{
+    margin-top:20px;
+    padding:18px 20px;
+    border-radius:12px;
+  }
+  section:nth-of-type(even){
+    background:#f6f6fb;
+    border:1px solid var(--line);
+  }
+  section:nth-of-type(odd){
+    padding-left:2px;
+    padding-right:2px;
+  }
+
+  /* Section heading marker — distinct rounded-square "tab" so it never
+     reads as the same icon as the bullet-point dots below it —
+     paired with a fading rule that anchors the heading row */
+  .sec-title{ display:flex; align-items:center; gap:9px; margin-bottom:14px; }
+  .sec-title .dot{
+    width:10px; height:10px;
+    border-radius:3px;
+    background:var(--accent);
+    flex-shrink:0;
+    transform:rotate(45deg);
+  }
+  .sec-title h2{
+    font-family:'Manrope', sans-serif;
+    font-weight:700;
+    font-size:12.3px;
+    text-transform:uppercase;
+    letter-spacing:0.09em;
+    color:var(--ink);
+    white-space:nowrap;
+  }
+  .sec-title .rule{
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, rgba(240,90,40,0.4) 0%, rgba(240,90,40,0) 90%);
+  }
+
+  .profile-text{ color:var(--text-soft); font-size:13px; line-height:1.72; }
+
+  /* ---- simple skills ---- */
+  .skill-row{ margin-bottom:11px; break-inside:avoid; page-break-inside:avoid; }
+  .skill-row:last-child{ margin-bottom:0; }
+  .skill-row .s-cat{
+    font-family:'Manrope', sans-serif;
+    font-weight:700;
+    font-size:12.4px;
+    color:var(--ink);
+    margin-bottom:3px;
+  }
+  .skill-row .s-list{ font-size:12.4px; color:var(--text-soft); line-height:1.6; }
+
+  /* ---- education / cert row ---- */
+  .flat-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .flat-card{
+    flex:1;
+    min-width:210px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:6px;
+    padding:11px 13px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+  .flat-card .fc-title{ font-family:'Manrope', sans-serif; font-weight:700; font-size:12.3px; color:var(--ink); }
+  .flat-card .fc-sub{ font-size:11px; color:var(--text-faint); margin-top:2px; }
+  .flat-card .fc-date{ font-size:10.3px; color:var(--accent-2); margin-top:3px; font-weight:600; }
+  .flat-card a{ display:inline-block; margin-top:4px; font-size:10.5px; font-weight:700; color:var(--accent-2); text-decoration:none; }
+  .flat-card a:hover{ text-decoration:underline; }
+
+  /* ---- experience ---- */
+  .job{ break-inside:avoid; page-break-inside:avoid; }
+  .job-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    flex-wrap:wrap; gap:8px; margin-bottom:8px;
+  }
+  .job-head h3{ font-family:'Manrope', sans-serif; font-weight:700; font-size:14px; }
+  .job-head .meta{ font-size:11px; color:var(--text-faint); font-weight:500; white-space:nowrap; }
+
+  /* Bullet-point marker — kept as a small circle, but shifted to the
+     teal accent so it reads as a clearly different icon from the
+     rotated-square section heading marker above */
+  ul.bullets{ list-style:none; margin-top:2px; }
+  ul.bullets li{
+    position:relative; padding-left:16px;
+    color:var(--text-soft); font-size:12.4px; line-height:1.58; margin-bottom:5px;
+  }
+  ul.bullets li:last-child{ margin-bottom:0; }
+  ul.bullets li::before{
+    content:""; position:absolute; left:1px; top:7px;
+    width:5px; height:5px; border-radius:50%; background:var(--accent-2);
+  }
+
+  /* ---- projects ---- */
+  .proj{ padding:13px 0; border-bottom:1px solid var(--line); break-inside:avoid; page-break-inside:avoid; }
+  .proj:first-child{ padding-top:0; }
+  .proj:last-child{ border-bottom:none; padding-bottom:0; }
+  .proj-head{ display:flex; align-items:center; flex-wrap:wrap; gap:9px; margin-bottom:3px; }
+  .proj-head h3{ font-family:'Manrope', sans-serif; font-weight:700; font-size:14px; }
+  .proj-tag{
+    font-family:'Manrope', sans-serif; font-size:9.3px; font-weight:700;
+    letter-spacing:0.02em; text-transform:uppercase; color:var(--accent);
+    background:var(--accent-tint); padding:3px 8px; border-radius:4px;
+  }
+  .proj-sub{ font-size:11.5px; color:var(--text-faint); margin-bottom:7px; font-style:italic; }
+
+  /* ---- achievements ---- */
+  .ach-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .ach{ flex:1; min-width:230px; border-left:3px solid var(--accent); padding-left:11px; break-inside:avoid; page-break-inside:avoid; }
+  .ach .a-title{ font-family:'Manrope', sans-serif; font-weight:700; font-size:12.2px; color:var(--ink); }
+  .ach .a-sub{ font-size:11.4px; color:var(--text-soft); margin-top:2px; line-height:1.5; }
+
+  @media print{
+    body{ padding:0; background:var(--paper); }
+    .page{ box-shadow:none; width:auto; }
+    @page{ size:A4; margin:0; }
+    section, .job, .proj, .ach, .flat-card, .skill-row{ break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="head-left">
+      <h1>V Ajaykumar</h1>
+      <p class="role">UI/UX Designer · Motion Designer · Frontend Developer</p>
+      <span class="notice-pill">15 Days Notice Period</span>
+    </div>
+    <div class="contact-col">
+      <span><a href="mailto:vodlajay113@gmail.com">vodlajay113@gmail.com</a></span>
+      <span><a href="tel:+919346175460">+91 9346175460</a></span>
+      <span>Hyderabad, India</span>
+      <span><a href="https://linkedin.com/in/ajaykumar811" target="_blank">linkedin.com/in/ajaykumar811</a></span>
+      <a href="https://portfolio-rose-xi-68.vercel.app" target="_blank" class="portfolio-btn">View Portfolio ↗</a>
+    </div>
+  </header>
+
+  <div class="headrule"></div>
+
+  <section>
+    <div class="sec-title"><span class="dot"></span><h2>Profile</h2><span class="rule"></span></div>
+    <p class="profile-text">UI/UX Designer with 3+ years of experience designing complex B2B SaaS platforms, EdTech products, and HR systems. I think deeply about user problems, design intuitive end-to-end experiences, and bring them to life with clean visual design. Proficient in motion design and basic frontend development — I understand how my designs get built, which makes me a better collaborator and a faster executor.</p>
+  </section>
+
+  <section>
+    <div class="sec-title"><span class="dot"></span><h2>Skills</h2><span class="rule"></span></div>
+    <div class="skill-row"><div class="s-cat">UX Design</div><div class="s-list">User Research, Wireframing, Prototyping, User Flows, Information Architecture, Personas, Usability</div></div>
+    <div class="skill-row"><div class="s-cat">UI Design</div><div class="s-list">Visual Design, Design Systems, Component Libraries, Responsive Design, Figma</div></div>
+    <div class="skill-row"><div class="s-cat">Motion Design</div><div class="s-list">After Effects, Premiere Pro, DaVinci Resolve</div></div>
+    <div class="skill-row"><div class="s-cat">Frontend</div><div class="s-list">HTML, CSS, JavaScript</div></div>
+  </section>
+
+  <section>
+    <div class="sec-title"><span class="dot"></span><h2>Experience</h2><span class="rule"></span></div>
+    <div class="job">
+      <div class="job-head">
+        <h3>UI/UX Designer — Allyted Solutions</h3>
+        <span class="meta">02/2022 – Present · Hyderabad</span>
+      </div>
+      <ul class="bullets">
+        <li>Designed multiple company products end-to-end — from research and user flows to final UI — across B2B SaaS, EdTech, E-commerce, and HR Tech domains</li>
+        <li>Self-initiated, designed, and co-developed the company's internal HRMS platform (now used daily by the entire team) — identified real workflow pain points and proposed the product unprompted</li>
+        <li>Built and maintained complete design systems with color tokens, component libraries, icon systems, and data tables used across all projects</li>
+        <li>Created motion design assets — intro videos, logo animations, promotional and social media videos — using After Effects and Premiere Pro</li>
+        <li>Collaborated closely with developers by providing implementation-ready designs and writing frontend code for UI components when needed</li>
+        <li>Won Best Employee Award for outstanding contribution</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><span class="dot"></span><h2>Selected Projects</h2><span class="rule"></span></div>
+
+    <div class="proj">
+      <div class="proj-head"><h3>Jaldihire</h3><span class="proj-tag">UI/UX + Design System</span></div>
+      <p class="proj-sub">360° AI-Powered SaaS Hiring Platform</p>
+      <ul class="bullets">
+        <li>Joined a live B2B SaaS product mid-development; owned the UI/UX layer — visual consistency, usability, design system — while core app logic and backend were already built</li>
+        <li>Designed the Employer Dashboard, Post a Job form, All Jobs listing, and Job Description page, all built on a design system I created from scratch (buttons, forms, alerts, data tables, dropdowns, icons)</li>
+        <li>Redesigned the complete marketing website — homepage, dedicated landing pages for Employer, Applicant, and Interviewer, plus Services and About pages</li>
+        <li>Key UX decisions: built the design system before any screens, used a dark navy + orange palette to stand out in a blue/green-heavy recruitment space, and designed the All Jobs listing for fast scanning across 1,300+ listings</li>
+      </ul>
+    </div>
+
+    <div class="proj">
+      <div class="proj-head"><h3>Allyted HRMS</h3><span class="proj-tag">UI/UX + Frontend · Self-Initiated</span></div>
+      <p class="proj-sub">Internal HR Management System</p>
+      <ul class="bullets">
+        <li>Self-initiated: identified real problems in daily workflows, proposed the product, got it approved, then designed and co-developed it</li>
+        <li>Designed 17 modules from scratch — Attendance, Leaves, Reimbursement, Payslips, Directory, Assets, Role Management, Admin Panel, and more</li>
+        <li>Designed a role-based permission system flexible for any org structure</li>
+        <li>Eliminated leave email chaos, WhatsApp reimbursements, and manual attendance tracking through friction-reducing UX</li>
+        <li>Developed the entire frontend in HTML, CSS, and JavaScript; integrated all APIs</li>
+      </ul>
+    </div>
+
+    <div class="proj">
+      <div class="proj-head"><h3>Trainex Academy</h3><span class="proj-tag">UI + Motion</span></div>
+      <p class="proj-sub">EdTech Platform</p>
+      <ul class="bullets">
+        <li>Designed every page of the website plus LMS dashboard, Profile, and Recordings screens</li>
+        <li>Created brand motion assets: intro video, logo animation, and social promo videos</li>
+        <li>Designed for learners, corporate L&D managers, and 300+ trainers</li>
+      </ul>
+    </div>
+
+    <div class="proj">
+      <div class="proj-head"><h3>Big Leap Technologies</h3><span class="proj-tag">UI + Frontend · Freelance</span></div>
+      <p class="proj-sub">Training Institute Website + LMS + Admin Panel</p>
+      <ul class="bullets">
+        <li>Designed and frontend-developed the marketing website, student LMS, and CMS admin panel — went straight to high-fidelity Figma design with no wireframes, zero to shipped in 2 months</li>
+        <li>Built the entire frontend independently in HTML, CSS, and JS within a React architecture; a teammate handled backend and APIs</li>
+      </ul>
+    </div>
+
+    <div class="proj">
+      <div class="proj-head"><h3>Voyd Interiors</h3><span class="proj-tag">UI Design</span></div>
+      <p class="proj-sub">Premium E-commerce Website</p>
+      <ul class="bullets">
+        <li>Designed the customer-facing journey end to end — homepage, Get a Quote lead-capture flow, and full shopping experience (Shop by Room/Category, Product Detail, Cart)</li>
+        <li>Designed the platform's trust &amp; quality tools — a mobile-web Quality Checker for on-site field inspections with PDF report generation, and a Project Progress dashboard</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><span class="dot"></span><h2>Education &amp; Certification</h2><span class="rule"></span></div>
+    <div class="flat-row">
+      <div class="flat-card">
+        <div class="fc-title">MBA</div><div class="fc-sub">Jaya Prakash Narayana College of Engineering</div><div class="fc-date">2024 – 2026</div>
+      </div>
+      <div class="flat-card">
+        <div class="fc-title">B.Tech</div><div class="fc-sub">Annamacharya Institute of Technology and Science</div><div class="fc-date">2019 – 2022</div>
+      </div>
+      <div class="flat-card">
+        <div class="fc-title">UI/UX Design Certificate</div><div class="fc-sub">Frontline Edutech</div><a href="#" target="_blank">View certificate ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><span class="dot"></span><h2>Achievements</h2><span class="rule"></span></div>
+    <div class="ach-row">
+      <div class="ach">
+        <div class="a-title">Best Employee Award</div><div class="a-sub">Allyted Solutions — outstanding contribution &amp; performance</div>
+      </div>
+      <div class="ach">
+        <div class="a-title">Data-Driven Research</div><div class="a-sub">Manual recruitment system in Sheets + Data Studio informed Jaldihire's UX</div>
+      </div>
+      <div class="ach">
+        <div class="a-title">Motion Design Portfolio</div><div class="a-sub">Logo animations, intros &amp; social promos for Trainex Academy</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

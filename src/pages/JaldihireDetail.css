@@ -3,6 +3,7 @@
    Premium screen presentation, large DS components
 ═══════════════════════════════════════════════ */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap');
 .jh-page {
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
@@ -134,18 +135,15 @@
 
 .jh-img-banner {
     background: #0a0a0a;
-    padding: 40px 80px;
 }
 
 .jh-banner-img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 12px;
-    object-fit: cover;
-    max-height: 700px;
-    object-position: top;
+    border-radius: 12px 12px 0 0;
     border: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: none;
 }
 
 
@@ -165,6 +163,10 @@
 
 .jh-gray {
     background: #f4f4f2;
+}
+
+.jh-section-after-banner {
+    padding-top: 40px;
 }
 
 
@@ -297,49 +299,6 @@
 }
 
 
-/* ── STATS ── */
-
-.jh-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin: 40px 0;
-}
-
-.jh-stat {
-    background: #f8f8f6;
-    border-radius: 10px;
-    padding: 24px 16px;
-    text-align: center;
-    border: 1px solid #eee;
-    transition: all 0.2s;
-}
-
-.jh-stat:hover {
-    border-color: #F16232;
-    transform: translateY(-2px);
-}
-
-.jh-stat-num {
-    display: block;
-    font-size: 40px;
-    font-weight: 800;
-    color: #F16232;
-    line-height: 1;
-    margin-bottom: 8px;
-}
-
-.jh-stat-plus {
-    font-size: 24px;
-}
-
-.jh-stat-label {
-    font-size: 12px;
-    color: #888;
-    font-weight: 500;
-}
-
-
 /* ── SCOPE GRID ── */
 
 .jh-scope-grid {
@@ -409,8 +368,207 @@
 
 
 /* ══════════════════════════════════════════
-   SCREEN DISPLAY SYSTEM — the key upgrade
+   WEBSITE BRAND & TYPOGRAPHY
+   Shown right after the intro, before any
+   website screenshots — this is the website's
+   own color + type system (separate from the
+   web application design system further down).
 ══════════════════════════════════════════ */
+
+.jh-brand-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 28px;
+}
+
+.jh-brand-card {
+    border: 1px solid #eee;
+    border-radius: 14px;
+    padding: 24px;
+    background: #fbfbfa;
+}
+
+.jh-brand-swatch {
+    width: 100%;
+    height: 90px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.jh-brand-swatch-gradient {
+    background: linear-gradient(135deg, #F5E84C 0%, #F6B643 100%);
+}
+
+.jh-brand-swatch-primary {
+    background: #072C50;
+}
+
+.jh-brand-card-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.jh-brand-card-hex {
+    font-size: 12px;
+    font-family: monospace;
+    color: #999;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.jh-brand-card-use {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.6;
+    margin: 0;
+}
+
+
+/* Big "Aa" typography showcase */
+
+.jh-font-showcase {
+    margin-top: 48px;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fbfbfa;
+}
+
+.jh-font-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 56px 24px 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.jh-font-hero-aa {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 128px;
+    line-height: 1;
+    color: #072C50;
+    letter-spacing: -2px;
+}
+
+.jh-font-hero-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #F6B643;
+    margin-top: 18px;
+    background: linear-gradient(135deg, #F5E84C 0%, #F6B643 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.jh-font-hero-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #888;
+    margin-top: 8px;
+}
+
+.jh-font-scale {
+    padding: 8px 0;
+}
+
+.jh-font-row {
+    display: grid;
+    grid-template-columns: 160px 180px 1fr;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 16px;
+}
+
+.jh-font-row:last-child {
+    border-bottom: none;
+}
+
+.jh-font-row-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    font-family: 'Poppins', sans-serif;
+}
+
+.jh-font-row-size {
+    font-size: 11px;
+    color: #aaa;
+    font-family: monospace;
+}
+
+.jh-font-row-demo {
+    font-family: 'Poppins', sans-serif;
+}
+
+@media (max-width: 700px) {
+    .jh-brand-grid {
+        grid-template-columns: 1fr;
+    }
+    .jh-font-hero-aa {
+        font-size: 84px;
+    }
+    .jh-font-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+}
+
+
+/* ══════════════════════════════════════════
+   SCREEN DISPLAY SYSTEM
+   Every screenshot shows completely, at its real
+   size and aspect ratio — no cropping, no shrinking.
+   Frames just wrap the image; the page scrolls to
+   see tall ones, which is expected and fine. Click
+   any screen to open it full-size in the lightbox.
+══════════════════════════════════════════ */
+
+.jh-shot {
+    position: relative;
+    cursor: pointer;
+}
+
+.jh-shot .jh-screen-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.jh-shot-hint {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.72);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 100px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    letter-spacing: 0.2px;
+}
+
+.jh-shot:hover .jh-shot-hint {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 
 /* Full-width screen block */
@@ -453,7 +611,9 @@
 }
 
 
-/* The frame that holds each screenshot */
+/* The frame that holds each screenshot — no fixed
+   height, no cropping. It just wraps the image at
+   its natural size, full width. */
 
 .jh-screen-frame {
     border-radius: 14px;
@@ -518,12 +678,6 @@
 
 /* All screen images */
 
-.jh-screen-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
 .jh-video {
     width: 100%;
     height: auto;
@@ -571,6 +725,212 @@
 
 .jh-label-white {
     color: rgba(255, 255, 255, 0.45);
+}
+
+
+/* ══════════════════════════════════════════
+   BROWSER WINDOW — for full marketing pages
+   Frames the whole page at a fixed height with
+   the screenshot scaled to fit inside it, so a
+   recruiter sees the entire page design at a
+   glance instead of scrolling through it.
+   Click to open full-size in the lightbox.
+══════════════════════════════════════════ */
+
+.jh-browser-block {
+    margin: 32px 0 8px;
+}
+
+.jh-browser-block>.jh-screen-label {
+    margin-bottom: 14px;
+}
+
+.jh-browser-window {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s ease;
+}
+
+.jh-browser-window:hover {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.jh-browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 16px;
+    background: #ececea;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.jh-browser-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.jh-dot-red {
+    background: #ff5f57;
+}
+
+.jh-dot-yellow {
+    background: #febc2e;
+}
+
+.jh-dot-green {
+    background: #28c840;
+}
+
+.jh-browser-url {
+    margin-left: 10px;
+    font-size: 12px;
+    font-family: monospace;
+    color: #888;
+    background: #fff;
+    padding: 3px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.jh-browser-scroll {
+    background: #fff;
+    position: relative;
+}
+
+
+/* Sticky "scroll to see full page" hint. The track spans the
+   full height of the tall screenshot (absolute, inset:0), and the
+   pill inside is position:sticky — it rides along at the top of the
+   viewport while the screenshot is being scrolled through, then
+   disappears naturally once the screenshot has scrolled past
+   (no JS scroll listeners needed). */
+
+.jh-scroll-hint-track {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+}
+
+.jh-scroll-hint {
+    position: sticky;
+    top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: fit-content;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 100px;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Contained width — leaves breathing room left/right instead of full-bleed,
+   so each screen reads like an intentional framed showcase, not a stretched image */
+
+.jh-browser-contained {
+    max-width: 1200px;
+    width: 100%;
+    margin: 40px auto 0;
+}
+
+
+/* Landing Pages — big centered section heading */
+
+.jh-lp-heading-wrap {
+    text-align: center;
+    padding: 72px 24px 8px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.jh-lp-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #F16232;
+    margin-bottom: 14px;
+}
+
+.jh-lp-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #111;
+    margin: 0;
+    line-height: 1.15;
+}
+
+.jh-browser-role-tag {
+    --lp-color: #F16232;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--lp-color);
+    background: color-mix(in srgb, var(--lp-color) 10%, white);
+    border: 1.5px solid var(--lp-color);
+    border-radius: 100px;
+    padding: 9px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.jh-browser-role-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.jh-browser-role-tagline {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #666;
+}
+
+@media (max-width: 600px) {
+    .jh-browser-role-tagline {
+        display: none;
+    }
+}
+
+.jh-browser-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 56px;
+}
+
+@media (max-width: 900px) {
+    .jh-browser-grid-2 {
+        grid-template-columns: 1fr;
+    }
+    .jh-browser-contained {
+        max-width: 100%;
+        margin-top: 32px;
+    }
 }
 
 
@@ -751,6 +1111,167 @@
 }
 
 
+/* ══════════════════════════════════════════
+   MOTION SHOWCASE — Applicant page screen
+   recording. Black backdrop, giant low-opacity
+   watermark text behind, laptop mockup up front.
+   The laptop now fills the full contained width
+   (no max-width cap) so the recorded content
+   doesn't get clipped, and the video only plays
+   once this section scrolls into view (handled
+   by the ScrollPlayVideo component in the JSX).
+══════════════════════════════════════════ */
+
+.jh-motion-showcase {
+    position: relative;
+    background: #0a0a0a;
+    border-radius: 24px;
+    padding: 56px 20px 48px;
+    margin: 24px 0 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.jh-motion-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(70px, 13vw, 200px);
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: rgba(255, 255, 255, 0.06);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.jh-motion-stack {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    /* No max-width cap — fills the full contained
+       width (up to 1200px via .jh-browser-contained)
+       so the laptop is as wide as possible and the
+       screen recording isn't cut off. */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.jh-motion-laptop {
+    position: relative;
+    width: 100%;
+    background: #161616;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px 14px 4px 4px;
+    padding: 14px 14px 18px;
+    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.65), 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.jh-motion-laptop-cam {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #444;
+}
+
+.jh-motion-laptop-screen {
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 16 / 9;
+}
+
+.jh-motion-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.jh-motion-laptop-base-top {
+    width: 92%;
+    height: 14px;
+    margin-top: 2px;
+    background: linear-gradient(180deg, #222, #0a0a0a);
+    border-radius: 0 0 8px 8px;
+}
+
+.jh-motion-laptop-base-bottom {
+    width: 55%;
+    height: 6px;
+    margin-top: 2px;
+    background: #050505;
+    border-radius: 0 0 100px 100px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+}
+
+.jh-motion-caption {
+    position: relative;
+    z-index: 1;
+    margin-top: 24px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.jh-motion-note {
+    position: relative;
+    z-index: 1;
+    margin: 10px 0 0;
+    max-width: 520px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 700px) {
+    .jh-motion-showcase {
+        padding: 48px 12px 36px;
+        border-radius: 16px;
+    }
+    .jh-motion-watermark {
+        letter-spacing: 2px;
+    }
+}
+
+
+/* ══════════════════════════════════════════
+   FULL-WIDTH VIDEO — applicant sign-in prototype,
+   autoplaying and looping, no extra framing.
+══════════════════════════════════════════ */
+
+.jh-video-full {
+    width: 100%;
+    margin: 32px 0 24px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+}
+
+.jh-video-full-el {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
 /* ── COLORS ── */
 
 .jh-colors {
@@ -792,41 +1313,6 @@
 }
 
 
-/* ── TYPOGRAPHY ── */
-
-.jh-type-scale {
-    border: 1px solid #eee;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 24px;
-}
-
-.jh-type-row {
-    display: grid;
-    grid-template-columns: 160px 180px 1fr;
-    align-items: center;
-    padding: 18px 24px;
-    border-bottom: 1px solid #f0f0f0;
-    gap: 16px;
-}
-
-.jh-type-row:last-child {
-    border-bottom: none;
-}
-
-.jh-type-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: #555;
-}
-
-.jh-type-size {
-    font-size: 11px;
-    color: #aaa;
-    font-family: monospace;
-}
-
-
 /* ── DECISIONS ── */
 
 .jh-decisions {
@@ -840,11 +1326,13 @@
     gap: 20px;
     border-radius: 10px;
     padding: 24px;
+    background: rgba(13, 27, 42, 0.04);
+    border: 1px solid #eee;
     transition: border-color 0.2s;
 }
 
 .jh-decision-card:hover {
-    border-color: rgba(241, 98, 50, 0.4) !important;
+    border-color: rgba(241, 98, 50, 0.4);
 }
 
 .jh-decision-num {
@@ -859,12 +1347,14 @@
     font-size: 15px;
     font-weight: 700;
     margin-bottom: 8px;
+    color: #111;
 }
 
 .jh-decision-content p {
     font-size: 14px;
     line-height: 1.7;
     margin: 0;
+    color: #666;
 }
 
 
@@ -953,6 +1443,53 @@
 }
 
 
+/* ══════════════════════════════════════════
+   LIGHTBOX — full-size detail view, opened by
+   clicking any Shot. This is the only place
+   scrolling/zooming logic lives — everything
+   above is "see it all at once."
+══════════════════════════════════════════ */
+
+.jh-lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+}
+
+.jh-lightbox-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    cursor: default;
+}
+
+.jh-lightbox-close {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.jh-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
 /* ── RESPONSIVE ── */
 
 @media (max-width: 1100px) {
@@ -971,12 +1508,6 @@
     }
     .jh-section {
         padding: 60px 24px;
-    }
-    .jh-img-banner {
-        padding: 24px;
-    }
-    .jh-stats {
-        grid-template-columns: 1fr 1fr;
     }
     .jh-scope-grid {
         grid-template-columns: 1fr;
@@ -1002,8 +1533,7 @@
     .jh-ds-row-reverse .jh-ds-screen {
         order: 2;
     }
-    .jh-type-row {
-        grid-template-columns: 1fr;
-        gap: 4px;
+    .jh-lightbox-overlay {
+        padding: 16px;
     }
 }

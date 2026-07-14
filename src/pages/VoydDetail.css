@@ -83,11 +83,6 @@
 
 .vd-clickable {
     cursor: zoom-in;
-    transition: opacity 0.2s;
-}
-
-.vd-clickable:hover {
-    opacity: 0.9;
 }
 
 
@@ -217,24 +212,97 @@
 .vd-screen-full {
     margin: 0;
     line-height: 0;
+    position: relative;
+}
+
+
+/* Divider between consecutive screen blocks — skipped when there's no header
+   (e.g. the hero teaser crop) so it doesn't add a stray rule up top */
+
+.vd-screen-full:has(+ .vd-screen-full) {
+    padding-bottom: 0;
+}
+
+.vd-screen-full+.vd-screen-full {
+    border-top: 1px solid rgba(216, 183, 136, 0.14);
+}
+
+
+/* ── Screen heading block — index badge + title + accent sub-chip ── */
+
+.vd-screen-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 48px 80px 18px;
+    line-height: 1.3;
+}
+
+.vd-screen-index {
+    flex-shrink: 0;
+    font-family: 'SF Mono', 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #0a0a0a;
+    background: linear-gradient(135deg, #F16232, #D8874B);
+    padding: 7px 11px;
+    border-radius: 6px;
+    margin-top: 2px;
+}
+
+.vd-screen-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
 }
 
 .vd-screen-label-full {
-    font-size: 11px;
+    font-size: clamp(20px, 2.6vw, 26px);
     font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.4);
-    padding: 24px 80px 12px;
-    line-height: 1.6;
-    display: block;
+    color: #fff;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
+    margin: 0;
 }
 
-.vd-screen-label-full span {
-    color: rgba(255, 255, 255, 0.6);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-transform: none;
+.vd-screen-sub-chip {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: #D8B788;
+    background: rgba(216, 183, 136, 0.1);
+    border: 1px solid rgba(216, 183, 136, 0.3);
+    padding: 5px 12px;
+    border-radius: 100px;
+}
+
+
+/* Small uppercase group divider used between "Shopping Experience" /
+   "Supporting Pages" clusters within the Screens section */
+
+.vd-screen-group-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #F16232;
+    padding: 56px 0 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vd-screen-group-label::before {
+    content: '';
+    width: 20px;
+    height: 2px;
+    background: #F16232;
+    flex-shrink: 0;
 }
 
 .vd-screen-img {
@@ -261,6 +329,134 @@
     font-weight: 600;
     color: rgba(255, 255, 255, 0.6);
     letter-spacing: 0.5px;
+}
+
+
+/* 2×2 grid used for the Verify Designer flow — 4 steps shown at once
+   instead of stacked full-width, to cut down on scroll length */
+
+.vd-verify-grid,
+.vd-pair-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 8px 80px 56px;
+}
+
+.vd-verify-grid .vd-screen-img-sm,
+.vd-pair-grid .vd-screen-img-sm {
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vd-verify-grid .vd-screen-caption,
+.vd-pair-grid .vd-screen-caption {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+}
+
+
+/* ── YOUTUBE EMBED — thumbnail with play button until clicked ── */
+
+.vd-yt-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+}
+
+.vd-yt-frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+.vd-yt-thumb {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    cursor: pointer;
+    background: #000;
+    display: block;
+}
+
+.vd-yt-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.82;
+    transition: opacity 0.2s;
+}
+
+.vd-yt-thumb:hover img {
+    opacity: 1;
+}
+
+.vd-yt-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 76px;
+    height: 76px;
+    background: rgba(241, 98, 50, 0.92);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 26px;
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s;
+}
+
+.vd-yt-thumb:hover .vd-yt-play {
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+
+/* ── GOOGLE DRIVE VIDEO — full width, header aligned like other screens ── */
+
+.vd-drive-video-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+}
+
+.vd-drive-video-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+
+/* Story text now reads like a designer's note pulled out from the page,
+   echoing the persona-quote treatment used elsewhere on the site */
+
+.vd-screen-story {
+    font-size: 15px;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 22px 80px 4px;
+    padding-left: 20px;
+    border-left: 3px solid #F16232;
+    max-width: 700px;
+}
+
+.vd-hero-crop {
+    width: 100%;
+    height: 920px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
 }
 
 .vd-screen-section {
@@ -1149,8 +1345,28 @@
         grid-template-columns: 1fr;
         gap: 4px;
     }
-    .vd-screen-label-full {
-        padding: 20px 24px 10px;
+    .vd-screen-header {
+        padding: 32px 24px 14px;
+        gap: 12px;
+    }
+    .vd-screen-index {
+        font-size: 11px;
+        padding: 6px 9px;
+    }
+    .vd-screen-story {
+        margin: 16px 24px 4px;
+        padding-left: 14px;
+    }
+    .vd-screen-group-label {
+        padding: 40px 24px 0;
+    }
+    .vd-verify-grid,
+    .vd-pair-grid {
+        grid-template-columns: 1fr;
+        padding: 8px 24px 40px;
+    }
+    .vd-hero-crop {
+        height: 260px;
     }
 }
 
@@ -1164,4 +1380,21 @@
     .vd-stats {
         grid-template-columns: 1fr 1fr;
     }
+    .vd-screen-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.vd-logo-video-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+}
+
+.vd-logo-video-wrap video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }

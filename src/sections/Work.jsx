@@ -61,27 +61,21 @@ const Work = () => {
           </h2>
         </div>
 
-        <div className="work-list">
+        <div className="work-grid">
           {projects.map((project) => (
-            <Link to={project.path} key={project.id} className="work-item">
-              <div className="work-item-num">
-                {project.id}
+            <Link to={project.path} key={project.id} className="work-card">
+              <div className="work-card-head">
+                <span className="work-card-num">{project.id}</span>
+                <span className="work-card-arrow">→</span>
               </div>
-              <div className="work-item-body">
-                <div className="work-item-top">
-                  <div>
-                    <p className="work-item-cat">{project.category}</p>
-                    <h3 className="work-item-name">{project.title}</h3>
-                  </div>
-                  <div className="work-item-tags">
-                    {project.tags.map((t) => (
-                      <span key={t} className="work-tag-chip">{t}</span>
-                    ))}
-                  </div>
-                </div>
-                <p className="work-item-desc">{project.desc}</p>
+              <p className="work-card-cat">{project.category}</p>
+              <h3 className="work-card-name">{project.title}</h3>
+              <p className="work-card-desc">{project.desc}</p>
+              <div className="work-card-tags">
+                {project.tags.map((t) => (
+                  <span key={t} className="work-tag-chip">{t}</span>
+                ))}
               </div>
-              <div className="work-item-arrow">→</div>
             </Link>
           ))}
         </div>
