@@ -1,8 +1,71 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./BigLeapDetail.css";
+
+/* ─────────────────────────────────────────────
+   IMAGE LIGHTBOX — click any screen to enlarge
+───────────────────────────────────────────── */
+const ImageLightbox = ({ src, alt, onClose }) => {
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <div className="bl-lightbox-overlay" onClick={onClose}>
+      <button className="bl-lightbox-close" onClick={onClose} aria-label="Close">✕</button>
+      <img src={src} alt={alt} className="bl-lightbox-img" onClick={(e) => e.stopPropagation()} />
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   SHOT — clickable image, opens the lightbox
+───────────────────────────────────────────── */
+const Shot = ({ src, alt, className, onOpen }) => (
+  <img
+    src={src}
+    alt={alt}
+    className={className}
+    onClick={() => onOpen(src, alt)}
+  />
+);
+
+/* ─────────────────────────────────────────────
+   BROWSER FRAME — for full marketing pages.
+   Traffic-light bar + URL + sticky scroll hint,
+   so a full page reads as an intentional framed
+   showcase instead of a raw stretched screenshot.
+───────────────────────────────────────────── */
+const BrowserFrame = ({ url, src, alt, onOpen }) => (
+  <div className="bl-browser-window">
+    <div className="bl-browser-bar">
+      <span className="bl-browser-dot bl-dot-red" />
+      <span className="bl-browser-dot bl-dot-yellow" />
+      <span className="bl-browser-dot bl-dot-green" />
+      <span className="bl-browser-url">{url}</span>
+    </div>
+    <div className="bl-browser-scroll">
+      <div className="bl-scroll-hint-track">
+        <span className="bl-scroll-hint">↓ Scroll to see full page</span>
+      </div>
+      <Shot src={src} alt={alt} className="bl-browser-img" onOpen={onOpen} />
+    </div>
+  </div>
+);
 
 const BigLeapDetail = () => {
   const img = (name) => `/bl-images/${name}`;
+  const [lightbox, setLightbox] = useState(null);
+  const openLightbox = (src, alt) => setLightbox({ src, alt });
+  const closeLightbox = () => setLightbox(null);
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
     <div className="bl-page">
@@ -25,8 +88,8 @@ const BigLeapDetail = () => {
           <p className="bl-hero-tagline">From Learning to Real Engineering</p>
           <p className="bl-hero-sub">
             A complete freelance project — I designed and frontend-developed the full marketing
-            website, LMS, and a production-grade CMS admin panel for a Hyderabad-based Data
-            Engineering institute. Zero to shipped product in 2 months.
+            website and a production-grade CMS admin panel for a Hyderabad-based Data
+            Engineering institute, with the Student LMS currently in design. Zero to shipped product in 2 months.
           </p>
           <div className="bl-meta-grid">
             <div className="bl-meta-item">
@@ -56,11 +119,6 @@ const BigLeapDetail = () => {
           </div>
         </div>
       </section>
-
-      {/* ── HERO BANNER ── */}
-      <div className="bl-img-banner">
-        <img src={img("BL-FinalHomepage.jpg")} alt="Big Leap Homepage" className="bl-banner-img" />
-      </div>
 
       {/* ══════════════════════════════════════
           01 — THE PROBLEM
@@ -236,88 +294,68 @@ const BigLeapDetail = () => {
             </p>
           </div>
 
-          {/* Homepage full bleed */}
-          <div className="bl-screen-full">
-            <div className="bl-screen-header">
+          {/* Homepage — real browser window, full page */}
+          <div className="bl-browser-block">
+            <div className="bl-screen-label-row">
               <span className="bl-screen-num">01</span>
               <span className="bl-screen-label">Homepage</span>
               <span className="bl-screen-note">Hero · Courses · Tech Stack · Why Most Freshers Struggle · Learning Journey · Trainers · Testimonials · FAQ · CTA</span>
             </div>
-            <div className="bl-screen-frame">
-              <img src={img("BL-FinalHomepage.jpg")} alt="Homepage" className="bl-screen-img" />
-            </div>
+            <BrowserFrame url="bigleaptech.in" src={img("BL-FinalHomepage.jpg")} alt="Homepage" onOpen={openLightbox} />
             <div className="bl-screen-caption">
               The homepage communicates Big Leap's core differentiator in the hero — "From Learning to Real Engineering." The "Why Most Freshers Struggle" section directly addresses the visitor's anxiety and shows how Big Leap solves it. Every section builds trust before asking for action.
             </div>
           </div>
 
           {/* Our Programs + Placements */}
-          <div className="bl-screen-grid-2">
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-num">02</span>
-                  <span className="bl-screen-label">Our Programs Page</span>
-                </div>
+          <div className="bl-browser-grid-2">
+            <div className="bl-browser-block">
+              <div className="bl-screen-label-row">
+                <span className="bl-screen-num">02</span>
+                <span className="bl-screen-label">Our Programs Page</span>
               </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("BL-Ourprogram.jpg")} alt="Our Programs" className="bl-screen-img" />
-              </div>
+              <BrowserFrame url="bigleaptech.in/programs" src={img("BL-Ourprogram.jpg")} alt="Our Programs" onOpen={openLightbox} />
               <div className="bl-screen-caption">All courses listed clearly with duration, highlights and a direct enroll CTA.</div>
             </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-num">03</span>
-                  <span className="bl-screen-label">Placements Page</span>
-                </div>
+            <div className="bl-browser-block">
+              <div className="bl-screen-label-row">
+                <span className="bl-screen-num">03</span>
+                <span className="bl-screen-label">Placements Page</span>
               </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("BL-Placements.jpg")} alt="Placements" className="bl-screen-img" />
-              </div>
+              <BrowserFrame url="bigleaptech.in/placements" src={img("BL-Placements.jpg")} alt="Placements" onOpen={openLightbox} />
               <div className="bl-screen-caption">Student journey stories, hiring companies, placement process — the trust builder.</div>
             </div>
           </div>
 
-          {/* Industry Simulation full bleed */}
-          <div className="bl-screen-full">
-            <div className="bl-screen-header">
+          {/* Industry Simulation — real browser window, full page */}
+          <div className="bl-browser-block">
+            <div className="bl-screen-label-row">
               <span className="bl-screen-num">04</span>
               <span className="bl-screen-label">Industry Simulation Page</span>
               <span className="bl-screen-note">Big Leap's biggest differentiator — needed its own dedicated page</span>
             </div>
-            <div className="bl-screen-frame">
-              <img src={img("BL-Industry-simulations.jpg")} alt="Industry Simulation" className="bl-screen-img" />
-            </div>
+            <BrowserFrame url="bigleaptech.in/industry-simulation" src={img("BL-Industry-simulations.jpg")} alt="Industry Simulation" onOpen={openLightbox} />
             <div className="bl-screen-caption">
               This page was critical — "Industry Simulation" is what makes Big Leap different from every other institute. I gave it a full dedicated page with 8 core engineering experiences, a Traditional Learning vs Industry Simulation comparison section, and audience targeting (freshers, final-year students, non-IT candidates, off-campus seekers).
             </div>
           </div>
 
           {/* Course Detail + About */}
-          <div className="bl-screen-grid-2">
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-num">05</span>
-                  <span className="bl-screen-label">Course Detail Page</span>
-                </div>
+          <div className="bl-browser-grid-2">
+            <div className="bl-browser-block">
+              <div className="bl-screen-label-row">
+                <span className="bl-screen-num">05</span>
+                <span className="bl-screen-label">Course Detail Page</span>
               </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("BL-Coursedetail.jpg")} alt="Course Detail" className="bl-screen-img" />
-              </div>
+              <BrowserFrame url="bigleaptech.in/course/detail" src={img("BL-Coursedetail.jpg")} alt="Course Detail" onOpen={openLightbox} />
               <div className="bl-screen-caption">Full course breakdown — overview, curriculum accordion, pricing card, certificate section, reviews.</div>
             </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-num">06</span>
-                  <span className="bl-screen-label">About Us Page</span>
-                </div>
+            <div className="bl-browser-block">
+              <div className="bl-screen-label-row">
+                <span className="bl-screen-num">06</span>
+                <span className="bl-screen-label">About Us Page</span>
               </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("BL-Aboutus.jpg")} alt="About Us" className="bl-screen-img" />
-              </div>
+              <BrowserFrame url="bigleaptech.in/about" src={img("BL-Aboutus.jpg")} alt="About Us" onOpen={openLightbox} />
               <div className="bl-screen-caption">"We Build Engineers, Not Just Graduates" — mission, vision, expert mentors section.</div>
             </div>
           </div>
@@ -337,7 +375,7 @@ const BigLeapDetail = () => {
             </p>
           </div>
           <div className="bl-lms-login-frame">
-            <img src={img("BL-LMS-login.jpg")} alt="LMS Login" className="bl-lms-login-img" />
+            <Shot src={img("BL-LMS-login.jpg")} alt="LMS Login" className="bl-lms-login-img" onOpen={openLightbox} />
           </div>
           <div className="bl-inner">
             <div className="bl-lms-callout">
@@ -349,15 +387,15 @@ const BigLeapDetail = () => {
       </section>
 
       {/* ══════════════════════════════════════
-          06 — LMS SCREENS (PLACEHOLDER)
+          06 — LMS SCREENS (IN PROGRESS)
       ══════════════════════════════════════ */}
       <section className="bl-section bl-gray">
         <div className="bl-inner-wide">
           <div className="bl-inner">
-            <div className="bl-section-label">06 — Student LMS</div>
-            <h2 className="bl-heading">Where learning <span className="bl-accent">actually happens.</span></h2>
+            <div className="bl-section-label">06 — Student LMS <span className="bl-status-pill">In Progress</span></div>
+            <h2 className="bl-heading">Where learning <span className="bl-accent">will happen.</span></h2>
             <p className="bl-body">
-              Once a student logs in, they land in their personal learning dashboard — everything for their batch in one place. Recordings, live session links, assignments, documents, and their profile. All connected directly to what the admin manages in the Curriculum Manager.
+              The Student LMS is currently being designed — the plan is a personal learning dashboard for every student, with everything for their batch in one place: recordings, live session links, assignments, documents, and their profile. It'll connect directly to what the admin manages in the Curriculum Manager. Screens below are what's planned; I'm actively working through the designs now.
             </p>
           </div>
 
@@ -373,14 +411,14 @@ const BigLeapDetail = () => {
                 <div className="bl-lms-ph-icon">{item.icon}</div>
                 <div className="bl-lms-ph-label">{item.label}</div>
                 <div className="bl-lms-ph-desc">{item.desc}</div>
-                <div className="bl-lms-ph-badge">Screens coming soon</div>
+                <div className="bl-lms-ph-badge">Currently designing</div>
               </div>
             ))}
           </div>
 
           <div className="bl-inner" style={{marginTop: "40px"}}>
             <div className="bl-context-box">
-              🔗 <strong>How LMS connects to Admin:</strong> When a batch admin adds a video URL, live session link, or document inside the Curriculum Manager — it reflects instantly in the student's LMS for that lesson. Students only see content for their specific batch, not other batches running on the same course.
+              🔗 <strong>Planned — How LMS will connect to Admin:</strong> Once built, when a batch admin adds a video URL, live session link, or document inside the Curriculum Manager, it'll reflect instantly in the student's LMS for that lesson. Students will only see content for their specific batch, not other batches running on the same course.
             </div>
           </div>
         </div>
@@ -429,7 +467,7 @@ const BigLeapDetail = () => {
               <span className="bl-screen-note">8 stat cards · 6-Month Growth Chart · Popular Courses · Recent Enrollments · Recent Students</span>
             </div>
             <div className="bl-screen-frame bl-screen-frame-light">
-              <img src={img("BL-admindashboard.jpg")} alt="Admin Dashboard" className="bl-screen-img" />
+              <Shot src={img("BL-admindashboard.jpg")} alt="Admin Dashboard" className="bl-screen-img" onOpen={openLightbox} />
             </div>
             <div className="bl-screen-caption">
               The dashboard gives the client a real-time snapshot — total courses, students, revenue, enrollments, active batches. The 6-Month Growth Overview chart tracks enrollments, new students, and revenue together. Recent enrollments and students are visible at a glance without navigating anywhere.
@@ -446,7 +484,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-note">Title · Technology tag · Price · Content hours · Modules / Projects</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Courses.jpg")} alt="Courses" className="bl-screen-img" />
+                <Shot src={img("Courses.jpg")} alt="Courses" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">Clean table — everything the admin needs to know about each course at a glance.</div>
             </div>
@@ -458,7 +496,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-note">Course · Trainer · Students · Start Date · Timings · Manage action</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Batches.jpg")} alt="Batches" className="bl-screen-img" />
+                <Shot src={img("Batches.jpg")} alt="Batches" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">Each batch is tied to a course, trainer, student list, and timing. "Manage" opens the Curriculum Manager.</div>
             </div>
@@ -471,7 +509,7 @@ const BigLeapDetail = () => {
               <span className="bl-screen-note">Thumbnail · Technology · Curriculum PDF · Title · Descriptions · Price · Modules · Learning Outcomes · Key Highlights · Inline Curriculum Builder (Chapters + Lessons)</span>
             </div>
             <div className="bl-screen-frame bl-screen-frame-light">
-              <img src={img("addcoursepopup.jpg")} alt="Add Course" className="bl-screen-img" />
+              <Shot src={img("addcoursepopup.jpg")} alt="Add Course" className="bl-screen-img" onOpen={openLightbox} />
             </div>
             <div className="bl-screen-caption">
               This was the hardest modal to design. A single form that handles everything about a course — from thumbnail upload to building a full chapter-and-lesson curriculum structure, all inline. I used accordion-style chapters with expandable lessons so the form stays manageable despite the depth of content.
@@ -485,7 +523,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-label">Add Batch</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Add-batch-form.jpg")} alt="Add Batch" className="bl-screen-img" />
+                <Shot src={img("Add-batch-form.jpg")} alt="Add Batch" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">Select course, trainer, students, set date and timing. All in one clean modal.</div>
             </div>
@@ -494,7 +532,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-label">Add Trainer</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Add-Trainer.jpg")} alt="Add Trainer" className="bl-screen-img" />
+                <Shot src={img("Add-Trainer.jpg")} alt="Add Trainer" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">Name, email, mobile with country code, optional profile image.</div>
             </div>
@@ -503,7 +541,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-label">Add Workshop</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Add-workshop.jpg")} alt="Add Workshop" className="bl-screen-img" />
+                <Shot src={img("Add-workshop.jpg")} alt="Add Workshop" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">Heading, date, time, platform, and dynamic "What You'll Learn" points.</div>
             </div>
@@ -519,7 +557,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-note">All contact form leads from the website — name, mobile, email, course, message, date</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Enquiries.jpg")} alt="Enquiries" className="bl-screen-img" />
+                <Shot src={img("Enquiries.jpg")} alt="Enquiries" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">Every website enquiry is captured here automatically. Client can track leads without any third-party CRM tool.</div>
             </div>
@@ -531,7 +569,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-note">Total fee · Paid · Due · Status: Paid / Pending / Failed</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Enrollments.jpg")} alt="Enrollments" className="bl-screen-img" />
+                <Shot src={img("Enrollments.jpg")} alt="Enrollments" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">Full payment tracking per student per course. Green "Paid" badge, pending amounts visible at a glance.</div>
             </div>
@@ -544,7 +582,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-label">Students List</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("students.jpg")} alt="Students" className="bl-screen-img" />
+                <Shot src={img("students.jpg")} alt="Students" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">Name, email, mobile, location, course, batch, job status — all in one table.</div>
             </div>
@@ -553,7 +591,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-label">Testimonials</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Testimonials.jpg")} alt="Testimonials" className="bl-screen-img" />
+                <Shot src={img("Testimonials.jpg")} alt="Testimonials" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">10 active reviews managed here — display order, active/inactive toggle, all CMS-driven.</div>
             </div>
@@ -562,7 +600,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-label">FAQs</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("FAQ.jpg")} alt="FAQs" className="bl-screen-img" />
+                <Shot src={img("FAQ.jpg")} alt="FAQs" className="bl-screen-img" onOpen={openLightbox} />
               </div>
               <div className="bl-screen-caption">10 FAQs with order number and status. Client adds, edits, reorders without any code.</div>
             </div>
@@ -578,7 +616,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-note">Heading · Date & Time · Platform (Google Meet etc.) · What You'll Learn points</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("workshops.jpg")} alt="Workshops" className="bl-screen-img" />
+                <Shot src={img("workshops.jpg")} alt="Workshops" className="bl-screen-img" onOpen={openLightbox} />
               </div>
             </div>
             <div className="bl-screen-card">
@@ -589,7 +627,7 @@ const BigLeapDetail = () => {
                 <span className="bl-screen-note">13 categories · Drag & drop to reorder · Reflects live on website</span>
               </div>
               <div className="bl-screen-frame bl-screen-frame-light">
-                <img src={img("Techstacklist.jpg")} alt="Tech Stack" className="bl-screen-img" />
+                <Shot src={img("Techstacklist.jpg")} alt="Tech Stack" className="bl-screen-img" onOpen={openLightbox} />
               </div>
             </div>
           </div>
@@ -605,7 +643,7 @@ const BigLeapDetail = () => {
             <div className="bl-section-label bl-label-light">08 — The Content Flow</div>
             <h2 className="bl-heading bl-heading-white">One system. <span className="bl-accent">Two integrations.</span></h2>
             <p className="bl-body bl-body-muted">
-              The most interesting design challenge in this project was figuring out how content flows between all three products. A course created in admin shows on the public website. A batch created from that course unlocks a Curriculum Manager where real session links and recordings are added — and those go directly into the student's LMS. Here's the full flow:
+              The most interesting design challenge in this project was figuring out how content flows between all three products. A course created in admin shows on the public website. A batch created from that course unlocks a Curriculum Manager where real session links and recordings are added — and those are planned to go directly into the student's LMS, which is currently in design. Here's the intended flow:
             </p>
           </div>
 
@@ -645,8 +683,8 @@ const BigLeapDetail = () => {
             </div>
             <div className="bl-flow-step bl-flow-step-green">
               <div className="bl-flow-icon">🎓</div>
-              <h4>Student LMS</h4>
-              <p>Students see recordings, links and materials for their batch</p>
+              <h4>Student LMS <span className="bl-status-pill" style={{marginLeft: "6px"}}>In Progress</span></h4>
+              <p>Students will see recordings, links and materials for their batch</p>
             </div>
           </div>
 
@@ -657,10 +695,10 @@ const BigLeapDetail = () => {
               <span className="bl-screen-note">Chapter accordion · Per lesson: Video URL · Duration · Live Session Link · Session Date · Documents upload</span>
             </div>
             <div className="bl-screen-frame bl-screen-frame-light">
-              <img src={img("curriculum-manage.jpg")} alt="Curriculum Manager" className="bl-screen-img" />
+              <Shot src={img("curriculum-manage.jpg")} alt="Curriculum Manager" className="bl-screen-img" onOpen={openLightbox} />
             </div>
             <div className="bl-screen-caption bl-caption-light">
-              Each batch has its own curriculum manager. The admin opens a chapter, fills in the video URL, live session recording link, date, and uploads documents — all at the lesson level. Students in that batch see exactly this content in their LMS.
+              Each batch has its own curriculum manager. The admin opens a chapter, fills in the video URL, live session recording link, date, and uploads documents — all at the lesson level. Once the Student LMS is built, students in that batch will see exactly this content there.
             </div>
           </div>
         </div>
@@ -678,7 +716,7 @@ const BigLeapDetail = () => {
         {/* Design System full-width image */}
         <div className="bl-inner-wide">
           <div className="bl-screen-frame bl-screen-frame-light" style={{marginBottom: "64px"}}>
-            <img src={img("DesignSystem.png")} alt="Big Leap Design System" className="bl-screen-img" />
+            <Shot src={img("DesignSystem.png")} alt="Big Leap Design System" className="bl-screen-img" onOpen={openLightbox} />
           </div>
         </div>
 
@@ -793,7 +831,7 @@ const BigLeapDetail = () => {
           <div className="bl-section-label bl-label-light">11 — Outcome</div>
           <h2 className="bl-heading bl-heading-white">Zero to live product. <span className="bl-accent">In 2 months.</span></h2>
           <p className="bl-body bl-body-muted">
-            Big Leap went from absolutely no digital presence to a complete, production-grade web ecosystem — live, actively used, and fully client-managed. Here's everything that shipped:
+            Big Leap went from absolutely no digital presence to a complete, production-grade web ecosystem — the website and admin panel are live, actively used, and fully client-managed. The Student LMS is the one piece still in design. Here's everything shipped, plus what's coming next:
           </p>
 
           <div className="bl-outcome-cols">
@@ -829,16 +867,16 @@ const BigLeapDetail = () => {
               ))}
             </div>
             <div className="bl-outcome-col">
-              <h4 className="bl-outcome-col-title">LMS</h4>
+              <h4 className="bl-outcome-col-title">LMS <span className="bl-status-pill">In Progress</span></h4>
               {[
-                "Student login — split-screen premium design",
-                "Batch-specific content — each student sees only their batch",
-                "Lesson-level: video recordings, live session links, documents",
-                "Curriculum Manager in admin feeds directly into student LMS",
-                "Google OAuth sign-in integration",
+                "Student login — split-screen premium design (designed)",
+                "Batch-specific content — each student sees only their batch (planned)",
+                "Lesson-level: video recordings, live session links, documents (planned)",
+                "Curriculum Manager in admin feeds directly into student LMS (planned)",
+                "Google OAuth sign-in integration (planned)",
               ].map((item, i) => (
-                <div className="bl-outcome-item" key={i}>
-                  <span className="bl-outcome-tick">✓</span>
+                <div className="bl-outcome-item bl-outcome-item-planned" key={i}>
+                  <span className="bl-outcome-tick bl-outcome-tick-planned">◐</span>
                   <span>{item}</span>
                 </div>
               ))}
@@ -853,6 +891,10 @@ const BigLeapDetail = () => {
           </div>
         </div>
       </section>
+
+      {lightbox && (
+        <ImageLightbox src={lightbox.src} alt={lightbox.alt} onClose={closeLightbox} />
+      )}
 
     </div>
   );

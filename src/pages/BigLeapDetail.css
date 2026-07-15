@@ -54,6 +54,21 @@
     color: #F16232;
 }
 
+.bl-status-pill {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #b45309;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    padding: 3px 10px;
+    border-radius: 100px;
+    vertical-align: middle;
+}
+
 .bl-heading {
     font-size: clamp(28px, 4vw, 44px);
     font-weight: 800;
@@ -211,26 +226,6 @@
 
 .bl-meta-link:hover {
     text-decoration: underline;
-}
-
-
-/* ═══════════════════════════════════════════════
-   HERO BANNER
-   ═══════════════════════════════════════════════ */
-
-.bl-img-banner {
-    background: #050505;
-    line-height: 0;
-    overflow: hidden;
-}
-
-.bl-banner-img {
-    width: 100%;
-    max-height: 620px;
-    object-fit: cover;
-    object-position: top;
-    display: block;
-    opacity: 0.9;
 }
 
 
@@ -438,11 +433,21 @@
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
     line-height: 0;
     background: #f4f4f2;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.bl-screen-frame:hover {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
 }
 
 .bl-screen-frame-light {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(13, 27, 42, 0.07);
+}
+
+.bl-screen-frame-light:hover {
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.14);
 }
 
 .bl-screen-frame-dark {
@@ -455,6 +460,170 @@
     display: block;
     object-fit: cover;
     object-position: top;
+    cursor: zoom-in;
+}
+
+
+/* ═══════════════════════════════════════════════
+   BROWSER WINDOW — for full marketing pages.
+   Frames the whole page inside realistic browser
+   chrome with a sticky "scroll to see full page"
+   hint, so a visitor sees the entire page at a
+   glance instead of a raw stretched screenshot.
+   Click any screen to open it full-size.
+   ═══════════════════════════════════════════════ */
+
+.bl-browser-block {
+    margin: 24px 0 8px;
+}
+
+.bl-browser-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 8px;
+}
+
+.bl-browser-window {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    margin-top: 16px;
+}
+
+.bl-browser-window:hover {
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.16), 0 4px 16px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+}
+
+.bl-browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 16px;
+    background: #ececea;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.bl-browser-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.bl-dot-red {
+    background: #ff5f57;
+}
+
+.bl-dot-yellow {
+    background: #febc2e;
+}
+
+.bl-dot-green {
+    background: #28c840;
+}
+
+.bl-browser-url {
+    margin-left: 10px;
+    font-size: 12px;
+    font-family: monospace;
+    color: #888;
+    background: #fff;
+    padding: 3px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.bl-browser-scroll {
+    background: #fff;
+    position: relative;
+}
+
+.bl-browser-img {
+    width: 100%;
+    display: block;
+    cursor: zoom-in;
+}
+
+
+/* Sticky "scroll to see full page" hint — rides along the top of the
+   viewport while the tall screenshot scrolls past underneath it. */
+
+.bl-scroll-hint-track {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+}
+
+.bl-scroll-hint {
+    position: sticky;
+    top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: fit-content;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 100px;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 900px) {
+    .bl-browser-grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════
+   LIGHTBOX — click any screen to view full-size
+   ═══════════════════════════════════════════════ */
+
+.bl-lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 32px;
+    cursor: zoom-out;
+}
+
+.bl-lightbox-img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+    cursor: default;
+}
+
+.bl-lightbox-close {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 
@@ -469,12 +638,19 @@
     box-shadow: 0 20px 80px rgba(0, 0, 0, 0.55);
     max-width: 900px;
     line-height: 0;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.bl-lms-login-frame:hover {
+    box-shadow: 0 28px 100px rgba(0, 0, 0, 0.65);
+    transform: translateY(-2px);
 }
 
 .bl-lms-login-img {
     width: 100%;
     height: auto;
     display: block;
+    cursor: zoom-in;
 }
 
 
@@ -1280,6 +1456,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.bl-outcome-item-planned {
+    color: rgba(255, 255, 255, 0.45);
+    font-style: italic;
+}
+
+.bl-outcome-tick-planned {
+    color: #f5b342;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    font-style: normal;
 }
 
 .bl-btn-outline-dark {
