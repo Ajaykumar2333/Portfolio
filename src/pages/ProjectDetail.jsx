@@ -75,24 +75,6 @@ const caseStudies = {
     outcome:
       "Delivered a visually premium e-commerce website design that elevated the VOYD brand and provided a smooth shopping experience.",
   },
-  "allyted-hrms": {
-    title: "Allyted HRMS",
-    category: "UI/UX Design + Frontend Development",
-    year: "2022",
-    tools: ["Figma", "React JS", "HRMS", "Web App"],
-    overview:
-      "Designed and developed the Allyted HRMS tool — a human resource management web application used internally to manage employees, attendance, payroll and more.",
-    problem:
-      "Allyted needed a centralised HRMS tool to replace manual HR processes and give both HR teams and employees a simple, efficient platform to manage everything.",
-    process: [
-      "Mapped out all HR workflows and requirements",
-      "Designed the full UI system in Figma",
-      "Built reusable component-based frontend in React",
-      "Developed key modules: employee, attendance, payroll",
-    ],
-    outcome:
-      "Delivered a complete HRMS web application that streamlined HR operations across the company, saving time and reducing manual errors.",
-  },
   "big-leap-technologies": {
     title: "Big Leap Technologies",
     category: "UI/UX Design + Frontend Development",

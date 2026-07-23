@@ -20,7 +20,7 @@ const Hero = () => {
         </h1>
 
         <p className="hero-skills">
-          UX Research <span className="dot">•</span> Wireframing{" "}
+          UI Design <span className="dot">•</span> Wireframing{" "}
           <span className="dot">•</span> Prototyping{" "}
           <span className="dot">•</span> Design Systems{" "}
           <span className="dot">•</span> Frontend Collaboration
