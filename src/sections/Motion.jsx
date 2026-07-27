@@ -92,6 +92,13 @@ const motionWorks = [
   },
   {
     id: 2,
+    title: "Voyd Interiors — Logo Animation",
+    tool: "After Effects",
+    type: "local",
+    src: "/voydimages/voyd logo.mp4",
+  },
+  {
+    id: 3,
     title: "Voyd Interiors — Services Video",
     tool: "Premiere Pro · After Effects",
     type: "youtube",
@@ -106,12 +113,12 @@ const Motion = () => {
     <section className="motion-section" id="motion">
       <div className="motion-container">
         <div className="motion-header">
-          <p className="section-tag">Motion Design</p>
+          <p className="section-tag">Other Skills</p>
           <h2 className="section-title">
-            Bringing Designs to <span className="accent">Life</span>
+            Outside UI/UX — <span className="accent">video & motion</span>
           </h2>
           <p className="section-sub">
-            Beyond UI — intro videos, brand animation, and marketing content built in After Effects & Premiere Pro.
+            A skill set I picked up alongside design: brand animation, video editing, and marketing content in After Effects, Premiere Pro, and DaVinci Resolve.
           </p>
         </div>
 

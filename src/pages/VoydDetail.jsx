@@ -1,6 +1,20 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import "./VoydDetail.css";
+import CaseStudyNav from "../components/CaseStudyNav";
+
+const VOYD_SECTIONS = [
+  { id: "vd-overview", label: "01 — Overview" },
+  { id: "vd-team", label: "02 — The Team" },
+  { id: "vd-problem", label: "03 — The Problem" },
+  { id: "vd-ia", label: "04 — Information Architecture" },
+  { id: "vd-flow", label: "05 — Key User Flow" },
+  { id: "vd-screens", label: "06 — Screens" },
+  { id: "vd-quality-checker", label: "07 — Quality Checker" },
+  { id: "vd-design-system", label: "08 — UI Style & Design System" },
+  { id: "vd-motion", label: "09 — Motion Design" },
+  { id: "vd-outcome", label: "10 — Outcome" },
+];
 
 /* ─────────────────────────────────────────────
    IMAGE LIGHTBOX
@@ -177,6 +191,8 @@ const VoydDetail = () => {
   return (
     <div className="vd-page">
 
+      <CaseStudyNav sections={VOYD_SECTIONS} projectTitle="Voyd Interiors" />
+
       {lightbox && (
         <ImageLightbox src={lightbox.src} alt={lightbox.alt} onClose={closeImage} />
       )}
@@ -235,7 +251,7 @@ const VoydDetail = () => {
       <Screen src="/voydimages/banner-img.png" alt="Voyd Interiors Homepage" label="" full crop sub={null} onOpen={openImage} />
 
       {/* ── 01 OVERVIEW ── */}
-      <section className="vd-section vd-white">
+      <section className="vd-section vd-white" id="vd-overview">
         <div className="vd-inner">
           <div className="vd-section-label">01 — Overview</div>
           <h2 className="vd-heading">What is <span className="vd-accent">Voyd Interiors?</span></h2>
@@ -303,7 +319,7 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 02 THE TEAM ── */}
-      <section className="vd-section vd-gray">
+      <section className="vd-section vd-gray" id="vd-team">
         <div className="vd-inner">
           <div className="vd-section-label">02 — The Team</div>
           <h2 className="vd-heading">Who <span className="vd-accent">built this</span></h2>
@@ -362,7 +378,7 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 03 THE PROBLEM ── */}
-      <section className="vd-section vd-dark">
+      <section className="vd-section vd-dark" id="vd-problem">
         <div className="vd-inner">
           <div className="vd-section-label vd-label-accent">03 — The Problem</div>
           <h2 className="vd-heading vd-heading-white">What needed to <span className="vd-accent">be solved</span></h2>
@@ -391,7 +407,7 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 04 INFORMATION ARCHITECTURE ── */}
-      <section className="vd-section vd-white">
+      <section className="vd-section vd-white" id="vd-ia">
         <div className="vd-inner">
           <div className="vd-section-label">04 — Information Architecture</div>
           <h2 className="vd-heading">One platform, <span className="vd-accent">two sides</span></h2>
@@ -442,7 +458,7 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 05 KEY USER FLOW ── */}
-      <section className="vd-section vd-gray">
+      <section className="vd-section vd-gray" id="vd-flow">
         <div className="vd-inner">
           <div className="vd-section-label">05 — Key User Flow</div>
           <h2 className="vd-heading">From <span className="vd-accent">quote to vendor</span></h2>
@@ -481,7 +497,7 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 06 SCREENS ── */}
-      <section className="vd-section vd-dark">
+      <section className="vd-section vd-dark" id="vd-screens">
         <div className="vd-inner">
           <div className="vd-section-label vd-label-accent">06 — Screens</div>
           <h2 className="vd-heading vd-heading-white">Every page. <span className="vd-accent">Every flow.</span></h2>
@@ -649,8 +665,11 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 07 QUALITY CHECKER — MOBILE APP ── */}
-      <section className="vd-section vd-dark">
-      
+      <section className="vd-section vd-dark" id="vd-quality-checker">
+        <div className="vd-inner">
+          <div className="vd-section-label vd-label-accent">07 — Quality Checker</div>
+          <h2 className="vd-heading vd-heading-white">Field inspection, <span className="vd-accent">built for mobile.</span></h2>
+        </div>
 
         <Screen
           src="/voydimages/VOYD-Quality-Checker.png"
@@ -676,7 +695,7 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 08 UI STYLE ── */}
-      <section className="vd-section vd-white">
+      <section className="vd-section vd-white" id="vd-design-system">
         <div className="vd-inner">
           <div className="vd-section-label">08 — UI Style &amp; Design System</div>
           <h2 className="vd-heading">Colors, typography <span className="vd-accent">&amp; components</span></h2>
@@ -746,7 +765,7 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 09 MOTION WORK ── */}
-      <section className="vd-section vd-dark">
+      <section className="vd-section vd-dark" id="vd-motion">
         <div className="vd-inner">
           <div className="vd-section-label vd-label-accent">09 — Motion Design</div>
           <h2 className="vd-heading vd-heading-white">Bringing the brand <span className="vd-accent">to life</span></h2>
@@ -774,10 +793,15 @@ const VoydDetail = () => {
       </section>
 
       {/* ── 10 OUTCOME ── */}
-      <section className="vd-section vd-dark">
+      <section className="vd-section vd-dark" id="vd-outcome">
         <div className="vd-inner">
           <div className="vd-section-label vd-label-accent">10 — Outcome</div>
           <h2 className="vd-heading vd-heading-white">A platform that <span className="vd-accent">connects everyone.</span></h2>
+          <p className="vd-body vd-body-muted" style={{ marginBottom: "32px" }}>
+            Every problem from section 03 now has a direct answer: the trust gap is closed by Verify Your
+            Interior Designer, the visibility gap by the Project Progress dashboard, and the two disconnected
+            experiences are now one platform under a shared design system.
+          </p>
 
           <div className="vd-outcome-list">
             {[

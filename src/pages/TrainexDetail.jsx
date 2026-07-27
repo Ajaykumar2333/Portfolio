@@ -1,6 +1,20 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import "./TrainexDetail.css";
+import CaseStudyNav from "../components/CaseStudyNav";
+
+const TRAINEX_SECTIONS = [
+  { id: "tx-overview", label: "01 — Overview" },
+  { id: "tx-problem", label: "02 — The Problem" },
+  { id: "tx-process", label: "03 — Design Process" },
+  { id: "tx-wireframes", label: "04 — Wireframes" },
+  { id: "tx-ia", label: "05 — Information Architecture" },
+  { id: "tx-website", label: "06 — Website Design" },
+  { id: "tx-design-system", label: "07 — UI Style & Design System" },
+  { id: "tx-frontend-dev", label: "08 — Frontend Development" },
+  { id: "tx-motion", label: "09 — Motion & Creative Work" },
+  { id: "tx-outcome", label: "10 — Outcome" },
+];
 
 /* ─────────────────────────────────────────────
    VIDEO MODAL
@@ -179,6 +193,8 @@ const TrainexDetail = () => {
   return (
     <div className="tx-page">
 
+      <CaseStudyNav sections={TRAINEX_SECTIONS} projectTitle="Trainex Academy" />
+
       {videoModal && (
         <VideoModal src={videoModal.src} title={videoModal.title} onClose={closeVideo} />
       )}
@@ -237,7 +253,7 @@ const TrainexDetail = () => {
       </div>
 
       {/* ── 01 OVERVIEW ── */}
-      <section className="tx-section tx-section-white">
+      <section className="tx-section tx-section-white" id="tx-overview">
         <div className="tx-inner">
           <div className="tx-section-label">01 — Overview</div>
           <h2 className="tx-heading">What is <span className="tx-accent">Trainex Academy?</span></h2>
@@ -275,7 +291,7 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 02 PROBLEM ── */}
-      <section className="tx-section tx-section-gray">
+      <section className="tx-section tx-section-gray" id="tx-problem">
         <div className="tx-inner">
           <div className="tx-section-label">02 — The Problem</div>
           <h2 className="tx-heading">What needed to <span className="tx-accent">be solved</span></h2>
@@ -298,7 +314,7 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 03 DESIGN PROCESS — HORIZONTAL FLOW ── */}
-      <section className="tx-section tx-section-white tx-process-section">
+      <section className="tx-section tx-section-white tx-process-section" id="tx-process">
         <div className="tx-inner">
           <div className="tx-section-label">03 — Design Process</div>
           <h2 className="tx-heading">How I <span className="tx-accent">approached it</span></h2>
@@ -333,7 +349,7 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 04 WIREFRAMES ── */}
-      <section className="tx-section tx-section-white">
+      <section className="tx-section tx-section-white" id="tx-wireframes">
         <div className="tx-inner">
           <div className="tx-section-label">04 — Wireframes</div>
           <h2 className="tx-heading">Layout before <span className="tx-accent">looks</span></h2>
@@ -363,7 +379,7 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 06 IA ── */}
-      <section className="tx-section tx-section-gray">
+      <section className="tx-section tx-section-gray" id="tx-ia">
         <div className="tx-inner">
           <div className="tx-section-label">05 — Information Architecture</div>
           <h2 className="tx-heading">Structure of <span className="tx-accent">the website</span></h2>
@@ -393,7 +409,7 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 06 WEBSITE DESIGN — SCREENS ── */}
-      <section className="tx-section tx-section-white">
+      <section className="tx-section tx-section-white" id="tx-website">
         <div className="tx-inner">
           <div className="tx-section-label">06 — Website Design</div>
           <h2 className="tx-heading">Every page. <span className="tx-accent">Every pixel.</span></h2>
@@ -424,7 +440,7 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 07 UI STYLE ── */}
-      <section className="tx-section tx-section-gray">
+      <section className="tx-section tx-section-gray" id="tx-design-system">
         <div className="tx-inner">
           <div className="tx-section-label">07 — UI Style & Design System</div>
           <h2 className="tx-heading">Colors, typography <span className="tx-accent">& components</span></h2>
@@ -468,7 +484,7 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 09 FRONTEND ── */}
-      <section className="tx-section tx-section-gray">
+      <section className="tx-section tx-section-gray" id="tx-frontend-dev">
         <div className="tx-inner">
           <div className="tx-section-label">08 — Frontend Development</div>
           <h2 className="tx-heading">Designed it. <span className="tx-accent">Coded it.</span></h2>
@@ -498,7 +514,7 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 10 CREATIVE WORK ── */}
-      <section className="tx-section tx-section-dark">
+      <section className="tx-section tx-section-dark" id="tx-motion">
         <div className="tx-inner">
           <div className="tx-section-label tx-label-orange">09 — Motion & Creative Work</div>
           <h2 className="tx-heading tx-heading-white">Beyond screens — <span className="tx-accent">brand brought to life</span></h2>
@@ -587,10 +603,14 @@ const TrainexDetail = () => {
       </section>
 
       {/* ── 11 OUTCOME ── */}
-      <section className="tx-section tx-section-white">
+      <section className="tx-section tx-section-white" id="tx-outcome">
         <div className="tx-inner">
           <div className="tx-section-label">10 — Outcome</div>
           <h2 className="tx-heading">From <span className="tx-accent">zero to live product.</span></h2>
+          <p className="tx-body" style={{ marginBottom: "32px", maxWidth: "640px" }}>
+            I owned this one from Figma file to production code — so every design decision was made with
+            its real implementation in mind, and nothing was lost in handoff because there was no handoff.
+          </p>
           <div className="tx-outcome-list">
             {[
               "Complete marketing website — designed in Figma, built in HTML/CSS/JS, fully responsive across every page",

@@ -40,9 +40,9 @@
 
 .motion-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-    max-width: 800px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1040px;
     margin: 0 auto;
 }
 
@@ -161,5 +161,12 @@
     .motion-grid {
         grid-template-columns: 1fr;
         max-width: 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 900px) {
+    .motion-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 700px;
     }
 }

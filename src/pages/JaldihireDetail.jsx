@@ -1,6 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./JaldihireDetail.css";
+import CaseStudyNav from "../components/CaseStudyNav";
+
+const JALDIHIRE_SECTIONS = [
+  { id: "jh-overview", label: "01 — Overview" },
+  { id: "jh-scope", label: "02 — My Scope" },
+  { id: "jh-brand", label: "03 — Brand & Typography" },
+  { id: "jh-website", label: "04 — Website Redesign" },
+  { id: "jh-design-system", label: "05 — Design System" },
+  { id: "jh-screens", label: "06 — Product Screens" },
+  { id: "jh-decisions", label: "07 — Key Design Decisions" },
+  { id: "jh-outcome", label: "08 — Outcome" },
+];
 
 const landingPages = [
   { key: "employer", label: "Employer", path: "employer", img: "Employer.jpg", color: "#F16232", tagline: "For companies hiring at scale" },
@@ -122,6 +134,8 @@ const JaldihireDetail = () => {
   return (
     <div className="jh-page">
 
+      <CaseStudyNav sections={JALDIHIRE_SECTIONS} projectTitle="Jaldihire" />
+
       {/* ── HERO ── */}
       <section className="jh-hero">
         <div className="jh-hero-inner">
@@ -174,7 +188,7 @@ const JaldihireDetail = () => {
       </div>
 
       {/* ── 01 OVERVIEW ── */}
-      <section className="jh-section jh-white jh-section-after-banner">
+      <section className="jh-section jh-white jh-section-after-banner" id="jh-overview">
         <div className="jh-inner">
           <div className="jh-section-label">01 — Overview</div>
           <h2 className="jh-heading">What is <span className="jh-accent">Jaldihire?</span></h2>
@@ -191,7 +205,7 @@ const JaldihireDetail = () => {
       </section>
 
       {/* ── 02 MY SCOPE ── */}
-      <section className="jh-section jh-gray">
+      <section className="jh-section jh-gray" id="jh-scope">
         <div className="jh-inner">
           <div className="jh-section-label">02 — My Scope</div>
           <h2 className="jh-heading">What I <span className="jh-accent">actually did</span></h2>
@@ -225,7 +239,7 @@ const JaldihireDetail = () => {
       </section>
 
       {/* ── 03 WEBSITE BRAND & TYPOGRAPHY ── */}
-      <section className="jh-section jh-white">
+      <section className="jh-section jh-white" id="jh-brand">
         <div className="jh-inner">
           <div className="jh-section-label">03 — Website Brand & Typography</div>
           <h2 className="jh-heading">The website's <span className="jh-accent">look & feel</span></h2>
@@ -272,7 +286,7 @@ const JaldihireDetail = () => {
       </section>
 
       {/* ── 04 WEBSITE REDESIGN ── */}
-      <section className="jh-section jh-white">
+      <section className="jh-section jh-white" id="jh-website">
         <div className="jh-inner-wide">
           <div className="jh-inner">
             <div className="jh-section-label">04 — Website Redesign</div>
@@ -412,7 +426,7 @@ const JaldihireDetail = () => {
       </section>
 
       {/* ── 04 DESIGN SYSTEM ── */}
-      <section className="jh-section jh-gray">
+      <section className="jh-section jh-gray" id="jh-design-system">
         <div className="jh-inner-wide">
           <div className="jh-inner">
             <div className="jh-section-label">05 — Design System</div>
@@ -542,7 +556,7 @@ const JaldihireDetail = () => {
       </section>
 
       {/* ── 05 PRODUCT SCREENS ── */}
-      <section className="jh-section jh-dark">
+      <section className="jh-section jh-dark" id="jh-screens">
         <div className="jh-inner-wide">
           <div className="jh-inner">
             <div className="jh-section-label jh-label-dark">06 — Product Screens</div>
@@ -655,7 +669,7 @@ const JaldihireDetail = () => {
       </section>
 
       {/* ── 06 KEY DECISIONS ── */}
-      <section className="jh-section jh-white">
+      <section className="jh-section jh-white" id="jh-decisions">
         <div className="jh-inner">
           <div className="jh-section-label">07 — Key Design Decisions</div>
           <h2 className="jh-heading">Why I designed <span className="jh-accent">it this way</span></h2>
@@ -675,10 +689,15 @@ const JaldihireDetail = () => {
       </section>
 
       {/* ── 07 OUTCOME ── */}
-      <section className="jh-section jh-gray">
+      <section className="jh-section jh-gray" id="jh-outcome">
         <div className="jh-inner">
           <div className="jh-section-label">08 — Outcome</div>
           <h2 className="jh-heading">Delivered and <span className="jh-accent">shipped.</span></h2>
+          <p className="jh-body" style={{ marginBottom: "32px", maxWidth: "640px" }}>
+            The design system built first meant every downstream screen — website, employer dashboard,
+            job listings — shared the same components from day one, so nothing had to be redesigned or
+            reconciled later in development.
+          </p>
 
           <div className="jh-outcome-list">
             {[

@@ -20,7 +20,7 @@ const About = () => {
           <div className="about-img-wrapper">
             <div className="about-img-placeholder"><img src="./assets/Ajaypic.png" alt="" /></div>
             <div className="about-badge">
-              <span className="badge-num">3+</span>
+              <span className="badge-num">2+</span>
               <span className="badge-label">Years<br />UI/UX</span>
             </div>
           </div>
@@ -34,12 +34,10 @@ const About = () => {
             Building Better <span className="accent">Experiences.</span>
           </h2>
           <p className="about-desc">
-           I'm a UI/UX Designer with 3+ years of experience creating intuitive, user-centered digital experiences. I specialize in UX research, wireframing, prototyping, and high-fidelity UI design that balances user needs with business goals.
+            I'm a UI/UX Designer with 2+ years of experience creating intuitive, user-centered digital experiences, plus hands-on time as a frontend developer building the very interfaces I design. I specialize in UX research, wireframing, prototyping, and high-fidelity UI design that balances user needs with business goals.
           </p>
           <p className="about-desc">
-       needs with business goals.
-
-With hands-on knowledge of HTML, CSS, JavaScript, responsive design, and motion design, I collaborate closely with developers to turn designs into polished digital products
+            With working knowledge of HTML, CSS, JavaScript, and React, I don't just hand off designs — I collaborate directly with developers, and often build the front end myself, to make sure what ships matches what was designed.
           </p>
           <div className="about-tools">
             {skills.map((s) => (

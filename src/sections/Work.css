@@ -1,15 +1,16 @@
 .work {
-    background: #f2f2f0;
-    padding: 100px 80px;
+    background: #0a0d12;
+    padding: 110px 80px;
 }
 
 .work-container {
-    max-width: 1000px;
+    max-width: 1160px;
     margin: 0 auto;
 }
 
 .work-header {
-    margin-bottom: 48px;
+    max-width: 640px;
+    margin-bottom: 56px;
 }
 
 .work-tag {
@@ -18,67 +19,163 @@
     color: #f05a28;
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
 .work-title-main {
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800;
-    color: #111;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 16px;
+}
+
+.work-subline {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.6;
 }
 
 .accent {
     color: #f05a28;
 }
 
-
-/* Simple restrained card grid */
+/* ── Bento grid: Voyd + Jaldihire full-width feature cards,
+   Trainex + Big Leap as a smaller pair underneath ── */
 
 .work-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 24px;
 }
 
 .work-card {
+    --work-accent: #F16232;
     display: flex;
     flex-direction: column;
-    background: #fff;
-    border: 1px solid #e2e2df;
-    border-radius: 12px;
-    padding: 24px;
+    background: #12161d;
+    border-radius: 18px;
     text-decoration: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
 .work-card:hover {
-    border-color: #d9d9d5;
-    box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-6px);
+    border-color: rgba(241, 98, 50, 0.4);
+    box-shadow: 0 28px 56px -20px rgba(0, 0, 0, 0.55);
+}
+
+.work-card--large {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    min-height: 360px;
+}
+
+.work-card--small {
+    grid-column: span 1;
+}
+
+.work-card-frame {
+    background: #0d1b2a;
+    display: flex;
+    flex-direction: column;
+}
+
+.work-card--large .work-card-frame {
+    flex: 1 1 56%;
+}
+
+.work-card--small .work-card-frame {
+    width: 100%;
+}
+
+.work-card-browserbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    flex-shrink: 0;
+}
+
+.work-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.work-dot-red { background: #ff5f57; }
+.work-dot-yellow { background: #febc2e; }
+.work-dot-green { background: #28c840; }
+
+.work-card-url {
+    margin-left: 8px;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.2px;
+}
+
+.work-card-shot-wrap {
+    position: relative;
+    overflow: hidden;
+    background: #16283b;
+}
+
+.work-card--large .work-card-shot-wrap {
+    flex: 1;
+}
+
+.work-card--small .work-card-shot-wrap {
+    aspect-ratio: 16 / 10;
+}
+
+.work-card-shot {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-card:hover .work-card-shot {
+    transform: scale(1.045);
+}
+
+.work-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 28px 30px 26px;
+    border-top: 3px solid var(--work-accent);
+}
+
+.work-card--large .work-card-body {
+    flex: 1 1 44%;
+    justify-content: center;
+    border-top: none;
+    border-left: 3px solid var(--work-accent);
+    padding: 40px 40px 40px 36px;
+}
+
+.work-card--small .work-card-body {
+    padding: 22px 22px 20px;
 }
 
 .work-card-head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .work-card-num {
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
-    color: #ccc;
-}
-
-.work-card-arrow {
-    font-size: 1rem;
-    color: #ccc;
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.work-card:hover .work-card-arrow {
-    color: #f05a28;
-    transform: translateX(4px);
+    color: var(--work-accent);
 }
 
 .work-card-cat {
@@ -86,51 +183,108 @@
     font-weight: 600;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: #aaa;
-    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .work-card-name {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    color: #111;
+    color: #fff;
     margin-bottom: 10px;
     transition: color 0.2s ease;
 }
 
+.work-card--large .work-card-name {
+    font-size: 1.9rem;
+}
+
 .work-card:hover .work-card-name {
-    color: #f05a28;
+    color: var(--work-accent);
 }
 
 .work-card-desc {
-    font-size: 0.85rem;
-    color: #777;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.55);
     line-height: 1.6;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.work-card-foot {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.work-card--large .work-card-foot {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 24px;
 }
 
 .work-card-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: auto;
 }
 
 .work-tag-chip {
     font-size: 0.68rem;
     font-weight: 500;
-    color: #999;
-    background: #f2f2f0;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.06);
     padding: 4px 10px;
     border-radius: 100px;
     white-space: nowrap;
 }
 
-@media (max-width: 768px) {
+.work-card-cta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--work-accent);
+    white-space: nowrap;
+}
+
+.work-card-arrow {
+    transition: transform 0.2s ease;
+}
+
+.work-card:hover .work-card-arrow {
+    transform: translateX(4px);
+}
+
+@media (max-width: 860px) {
     .work {
-        padding: 60px 24px;
+        padding: 72px 24px;
     }
     .work-grid {
         grid-template-columns: 1fr;
+    }
+    .work-card--large {
+        flex-direction: column;
+        min-height: 0;
+    }
+    .work-card--large .work-card-shot-wrap {
+        aspect-ratio: 16 / 10;
+    }
+    .work-card--large .work-card-body {
+        border-left: none;
+        border-top: 3px solid var(--work-accent);
+        padding: 26px 24px 24px;
+    }
+    .work-card--large .work-card-name {
+        font-size: 1.5rem;
+    }
+    .work-card--large .work-card-foot {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 16px;
+        margin-top: 0;
     }
 }

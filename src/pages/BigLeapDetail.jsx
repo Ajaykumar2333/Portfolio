@@ -1,6 +1,21 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./BigLeapDetail.css";
+import CaseStudyNav from "../components/CaseStudyNav";
+
+const BIGLEAP_SECTIONS = [
+  { id: "bl-problem", label: "01 — The Problem" },
+  { id: "bl-users", label: "02 — Understanding the Users" },
+  { id: "bl-approach", label: "03 — My Approach" },
+  { id: "bl-website", label: "04 — Website Design" },
+  { id: "bl-lms-login", label: "05 — LMS Login" },
+  { id: "bl-lms", label: "06 — Student LMS" },
+  { id: "bl-admin", label: "07 — Admin Panel" },
+  { id: "bl-content-flow", label: "08 — The Content Flow" },
+  { id: "bl-design-system", label: "09 — Design System" },
+  { id: "bl-frontend", label: "10 — Frontend Build" },
+  { id: "bl-outcome", label: "11 — Outcome" },
+];
 
 /* ─────────────────────────────────────────────
    IMAGE LIGHTBOX — click any screen to enlarge
@@ -70,6 +85,8 @@ const BigLeapDetail = () => {
   return (
     <div className="bl-page">
 
+      <CaseStudyNav sections={BIGLEAP_SECTIONS} projectTitle="Big Leap Technologies" />
+
       {/* ── HERO ── */}
       <section className="bl-hero">
         <div className="bl-hero-inner">
@@ -123,7 +140,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           01 — THE PROBLEM
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-white">
+      <section className="bl-section bl-white" id="bl-problem">
         <div className="bl-inner">
           <div className="bl-section-label">01 — The Problem</div>
           <h2 className="bl-heading">They had a great product. <span className="bl-accent">No one could find it.</span></h2>
@@ -166,7 +183,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           02 — UNDERSTANDING THE USERS
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-dark">
+      <section className="bl-section bl-dark" id="bl-users">
         <div className="bl-inner">
           <div className="bl-section-label bl-label-light">02 — Understanding the Users</div>
           <h2 className="bl-heading bl-heading-white">Three very different users. <span className="bl-accent">One connected system.</span></h2>
@@ -226,7 +243,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           03 — MY APPROACH
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-gray">
+      <section className="bl-section bl-gray" id="bl-approach">
         <div className="bl-inner">
           <div className="bl-section-label">03 — My Approach</div>
           <h2 className="bl-heading">How I <span className="bl-accent">tackled this</span></h2>
@@ -281,7 +298,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           04 — WEBSITE DESIGN
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-white">
+      <section className="bl-section bl-white" id="bl-website">
         <div className="bl-inner-wide">
           <div className="bl-inner">
             <div className="bl-section-label">04 — Website Design</div>
@@ -365,7 +382,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           05 — LMS LOGIN
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-dark">
+      <section className="bl-section bl-dark" id="bl-lms-login">
         <div className="bl-inner-wide">
           <div className="bl-inner">
             <div className="bl-section-label bl-label-light">05 — LMS Login</div>
@@ -389,7 +406,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           06 — LMS SCREENS (IN PROGRESS)
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-gray">
+      <section className="bl-section bl-gray" id="bl-lms">
         <div className="bl-inner-wide">
           <div className="bl-inner">
             <div className="bl-section-label">06 — Student LMS <span className="bl-status-pill">In Progress</span></div>
@@ -427,7 +444,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           07 — ADMIN PANEL
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-white">
+      <section className="bl-section bl-white" id="bl-admin">
         <div className="bl-inner-wide">
           <div className="bl-inner">
             <div className="bl-section-label">07 — Admin Panel</div>
@@ -637,7 +654,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           08 — CURRICULUM FLOW
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-dark">
+      <section className="bl-section bl-dark" id="bl-content-flow">
         <div className="bl-inner-wide">
           <div className="bl-inner">
             <div className="bl-section-label bl-label-light">08 — The Content Flow</div>
@@ -707,7 +724,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           09 — DESIGN SYSTEM
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-gray">
+      <section className="bl-section bl-gray" id="bl-design-system">
         <div className="bl-inner">
           <div className="bl-section-label">09 — Design System</div>
           <h2 className="bl-heading">Colors, decisions & <span className="bl-accent">thinking behind them</span></h2>
@@ -782,7 +799,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           10 — FRONTEND BUILD
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-white">
+      <section className="bl-section bl-white" id="bl-frontend">
         <div className="bl-inner">
           <div className="bl-section-label">10 — Frontend Build</div>
           <h2 className="bl-heading">How I built <span className="bl-accent">every screen</span></h2>
@@ -826,7 +843,7 @@ const BigLeapDetail = () => {
       {/* ══════════════════════════════════════
           11 — OUTCOME
       ══════════════════════════════════════ */}
-      <section className="bl-section bl-dark">
+      <section className="bl-section bl-dark" id="bl-outcome">
         <div className="bl-inner">
           <div className="bl-section-label bl-label-light">11 — Outcome</div>
           <h2 className="bl-heading bl-heading-white">Zero to live product. <span className="bl-accent">In 2 months.</span></h2>
