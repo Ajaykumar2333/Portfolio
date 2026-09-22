@@ -1,56 +1,48 @@
 import "./About.css";
 
-const About = () => {
-  const skills = [
-    { name: "UI/UX Design", icon: "🎯" },
-    { name: "UX Research", icon: "🔍" },
-    { name: "Wireframing", icon: "📐" },
-    { name: "Prototyping", icon: "🧩" },
-    { name: "Responsive Design", icon: "📱" },
-    { name: "HTML • CSS • JavaScript", icon: "💻" },
-    { name: "Motion Design", icon: "🎬" },
-    { name: "Developer Collaboration", icon: "🤝" },
-  ];
+const stats = [
+  { num: "3+", label: "Years" },
+];
 
+const About = () => {
   return (
     <section className="about" id="about">
-      <div className="about-container">
-
+      <div className="section-wrap about-grid">
         <div className="about-left">
-          <div className="about-img-wrapper">
-            <div className="about-img-placeholder"><img src="./assets/Ajaypic.png" alt="" /></div>
-            <div className="about-badge">
-              <span className="badge-num">2+</span>
-              <span className="badge-label">Years<br />UI/UX</span>
-            </div>
+          <p className="section-eyebrow">About</p>
+          <h2 className="section-heading about-title">
+            Hi, I'm <span className="accent">Ajaykumar</span>
+          </h2>
+          <p className="about-desc">
+            A designer who also ships the frontend. I care about the detail
+            that gets skipped — the form asking too much, the flow that makes
+            someone stop and think. I design it right, then build it myself
+            so nothing gets lost on the way to production.
+          </p>
+
+          <div className="about-stats">
+            {stats.map((s) => (
+              <div className="about-stat" key={s.label}>
+                <span className="about-stat-num">{s.num}</span>
+                <span className="about-stat-label">{s.label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="about-socials">
+            <a href="mailto:vodlaajay113@gmail.com" aria-label="Email">✉</a>
+            <a href="tel:+919346175460" aria-label="Phone">☎</a>
           </div>
         </div>
 
         <div className="about-right">
-          <p className="about-tag">About Me</p>
-          <h2 className="about-title">
-            Designing <span className="accent">Interfaces.</span>
-            <br />
-            Building Better <span className="accent">Experiences.</span>
-          </h2>
-          <p className="about-desc">
-            I'm a UI/UX Designer with 2+ years of experience creating intuitive, user-centered digital experiences, plus hands-on time as a frontend developer building the very interfaces I design. I specialize in UX research, wireframing, prototyping, and high-fidelity UI design that balances user needs with business goals.
-          </p>
-          <p className="about-desc">
-            With working knowledge of HTML, CSS, JavaScript, and React, I don't just hand off designs — I collaborate directly with developers, and often build the front end myself, to make sure what ships matches what was designed.
-          </p>
-          <div className="about-tools">
-            {skills.map((s) => (
-              <span key={s.name} className="tool-badge">
-                {s.icon} {s.name}
-              </span>
-            ))}
-          </div>
+          <img
+            src="./assets/Ajaypic.png"
+            alt="Ajaykumar Vodla"
+            className="about-img"
+          />
         </div>
-
       </div>
-
-     
     </section>
   );
 };

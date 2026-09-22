@@ -1,21 +1,23 @@
 import Hero from "../sections/Hero";
+import Work from "../sections/Work";
+import Capabilities from "../sections/Capabilities";
 import About from "../sections/About";
+import Timeline from "../sections/Timeline";
 import Skills from "../sections/Skills";
 import Award from "../sections/Award";
-import Work from "../sections/Work";
 import Motion from "../sections/Motion";
 import Contact from "../sections/Contact";
-import Process from "../sections/Process";
 
 const Home = () => {
   return (
     <>
       <Hero />
       <About />
-      <Process />
+      <Work />
+      <Capabilities />
+      <Timeline />
       <Skills />
       <Award />
-      <Work />
       <Motion />
       <Contact />
     </>

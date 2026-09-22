@@ -10,11 +10,10 @@ const BIGLEAP_SECTIONS = [
   { id: "bl-website", label: "04 — Website Design" },
   { id: "bl-lms-login", label: "05 — LMS Login" },
   { id: "bl-lms", label: "06 — Student LMS" },
-  { id: "bl-admin", label: "07 — Admin Panel" },
-  { id: "bl-content-flow", label: "08 — The Content Flow" },
-  { id: "bl-design-system", label: "09 — Design System" },
-  { id: "bl-frontend", label: "10 — Frontend Build" },
-  { id: "bl-outcome", label: "11 — Outcome" },
+  { id: "bl-content-flow", label: "07 — The Content Flow" },
+  { id: "bl-design-system", label: "08 — Design System" },
+  { id: "bl-frontend", label: "09 — Frontend Build" },
+  { id: "bl-outcome", label: "10 — Outcome" },
 ];
 
 /* ─────────────────────────────────────────────
@@ -95,7 +94,6 @@ const BigLeapDetail = () => {
             <span className="bl-tag bl-tag-accent">UI/UX Design</span>
             <span className="bl-tag">Frontend Dev</span>
             <span className="bl-tag">EdTech</span>
-            <span className="bl-tag">Admin Panel</span>
             <span className="bl-tag">LMS</span>
             <span className="bl-tag">Freelance</span>
           </div>
@@ -105,8 +103,8 @@ const BigLeapDetail = () => {
           <p className="bl-hero-tagline">From Learning to Real Engineering</p>
           <p className="bl-hero-sub">
             A complete freelance project — I designed and frontend-developed the full marketing
-            website and a production-grade CMS admin panel for a Hyderabad-based Data
-            Engineering institute, with the Student LMS currently in design. Zero to shipped product in 2 months.
+            website for a Hyderabad-based Data Engineering institute, with the Student LMS
+            currently in design. Zero to shipped product in 2 months.
           </p>
           <div className="bl-meta-grid">
             <div className="bl-meta-item">
@@ -231,9 +229,9 @@ const BigLeapDetail = () => {
               <p className="bl-user-goal"><strong>Goal:</strong> Update website content, track enrollments, manage batches — all without calling a developer.</p>
               <p className="bl-user-pain"><strong>Pain:</strong> Currently dependent on developer for every small change. Wastes time, costs money.</p>
               <div className="bl-user-tags">
-                <span>Admin panel</span>
-                <span>Curriculum manager</span>
-                <span>Enquiries CRM</span>
+                <span>Internal tools</span>
+                <span>Content management</span>
+                <span>Lead tracking</span>
               </div>
             </div>
           </div>
@@ -442,222 +440,12 @@ const BigLeapDetail = () => {
       </section>
 
       {/* ══════════════════════════════════════
-          07 — ADMIN PANEL
-      ══════════════════════════════════════ */}
-      <section className="bl-section bl-white" id="bl-admin">
-        <div className="bl-inner-wide">
-          <div className="bl-inner">
-            <div className="bl-section-label">07 — Admin Panel</div>
-            <h2 className="bl-heading">The hardest part — <span className="bl-accent">and the most powerful.</span></h2>
-            <p className="bl-body">
-              The admin panel was the most challenging and complex part of this entire project. 15+ screens, multiple modals, data tables, drag-and-drop ordering, a nested curriculum builder — all designed to be used by a non-technical client team without any developer help.
-            </p>
-            <p className="bl-body">
-              The goal was simple: the client should be able to do everything themselves — add courses, manage students, track payments, post testimonials, schedule workshops — without ever calling Teja or me.
-            </p>
-
-            <div className="bl-admin-highlight">
-              <div className="bl-admin-hl-item">
-                <span className="bl-admin-hl-num">15+</span>
-                <span className="bl-admin-hl-label">Admin screens designed</span>
-              </div>
-              <div className="bl-admin-hl-item">
-                <span className="bl-admin-hl-num">11</span>
-                <span className="bl-admin-hl-label">Sidebar modules</span>
-              </div>
-              <div className="bl-admin-hl-item">
-                <span className="bl-admin-hl-num">8+</span>
-                <span className="bl-admin-hl-label">Add/Edit modals</span>
-              </div>
-              <div className="bl-admin-hl-item">
-                <span className="bl-admin-hl-num">0</span>
-                <span className="bl-admin-hl-label">Developer needed for content</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Dashboard full bleed */}
-          <div className="bl-screen-full">
-            <div className="bl-screen-header">
-              <span className="bl-screen-num">D</span>
-              <span className="bl-screen-label">Admin Dashboard — The Command Centre</span>
-              <span className="bl-screen-note">8 stat cards · 6-Month Growth Chart · Popular Courses · Recent Enrollments · Recent Students</span>
-            </div>
-            <div className="bl-screen-frame bl-screen-frame-light">
-              <Shot src={img("BL-admindashboard.jpg")} alt="Admin Dashboard" className="bl-screen-img" onOpen={openLightbox} />
-            </div>
-            <div className="bl-screen-caption">
-              The dashboard gives the client a real-time snapshot — total courses, students, revenue, enrollments, active batches. The 6-Month Growth Overview chart tracks enrollments, new students, and revenue together. Recent enrollments and students are visible at a glance without navigating anywhere.
-            </div>
-          </div>
-
-          {/* Courses + Batches */}
-          <div className="bl-screen-grid-2" style={{marginTop: "40px"}}>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-label">Courses List</span>
-                </div>
-                <span className="bl-screen-note">Title · Technology tag · Price · Content hours · Modules / Projects</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Courses.jpg")} alt="Courses" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">Clean table — everything the admin needs to know about each course at a glance.</div>
-            </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-label">Batches</span>
-                </div>
-                <span className="bl-screen-note">Course · Trainer · Students · Start Date · Timings · Manage action</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Batches.jpg")} alt="Batches" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">Each batch is tied to a course, trainer, student list, and timing. "Manage" opens the Curriculum Manager.</div>
-            </div>
-          </div>
-
-          {/* Add Course modal — the complex one */}
-          <div className="bl-screen-full" style={{marginTop: "32px"}}>
-            <div className="bl-screen-header">
-              <span className="bl-screen-label">Add Course — The Most Complex Modal</span>
-              <span className="bl-screen-note">Thumbnail · Technology · Curriculum PDF · Title · Descriptions · Price · Modules · Learning Outcomes · Key Highlights · Inline Curriculum Builder (Chapters + Lessons)</span>
-            </div>
-            <div className="bl-screen-frame bl-screen-frame-light">
-              <Shot src={img("addcoursepopup.jpg")} alt="Add Course" className="bl-screen-img" onOpen={openLightbox} />
-            </div>
-            <div className="bl-screen-caption">
-              This was the hardest modal to design. A single form that handles everything about a course — from thumbnail upload to building a full chapter-and-lesson curriculum structure, all inline. I used accordion-style chapters with expandable lessons so the form stays manageable despite the depth of content.
-            </div>
-          </div>
-
-          {/* 3-col modals */}
-          <div className="bl-screen-grid-3" style={{marginTop: "32px"}}>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <span className="bl-screen-label">Add Batch</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Add-batch-form.jpg")} alt="Add Batch" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">Select course, trainer, students, set date and timing. All in one clean modal.</div>
-            </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <span className="bl-screen-label">Add Trainer</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Add-Trainer.jpg")} alt="Add Trainer" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">Name, email, mobile with country code, optional profile image.</div>
-            </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <span className="bl-screen-label">Add Workshop</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Add-workshop.jpg")} alt="Add Workshop" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">Heading, date, time, platform, and dynamic "What You'll Learn" points.</div>
-            </div>
-          </div>
-
-          {/* Enquiries + Enrollments */}
-          <div className="bl-screen-grid-2" style={{marginTop: "32px"}}>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-label">Enquiries</span>
-                </div>
-                <span className="bl-screen-note">All contact form leads from the website — name, mobile, email, course, message, date</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Enquiries.jpg")} alt="Enquiries" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">Every website enquiry is captured here automatically. Client can track leads without any third-party CRM tool.</div>
-            </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-label">Enrollments & Payments</span>
-                </div>
-                <span className="bl-screen-note">Total fee · Paid · Due · Status: Paid / Pending / Failed</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Enrollments.jpg")} alt="Enrollments" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">Full payment tracking per student per course. Green "Paid" badge, pending amounts visible at a glance.</div>
-            </div>
-          </div>
-
-          {/* Students + Testimonials + FAQs */}
-          <div className="bl-screen-grid-3" style={{marginTop: "32px"}}>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <span className="bl-screen-label">Students List</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("students.jpg")} alt="Students" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">Name, email, mobile, location, course, batch, job status — all in one table.</div>
-            </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <span className="bl-screen-label">Testimonials</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Testimonials.jpg")} alt="Testimonials" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">10 active reviews managed here — display order, active/inactive toggle, all CMS-driven.</div>
-            </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <span className="bl-screen-label">FAQs</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("FAQ.jpg")} alt="FAQs" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-              <div className="bl-screen-caption">10 FAQs with order number and status. Client adds, edits, reorders without any code.</div>
-            </div>
-          </div>
-
-          {/* Workshops + Tech Stack */}
-          <div className="bl-screen-grid-2" style={{marginTop: "32px"}}>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-label">Workshops</span>
-                </div>
-                <span className="bl-screen-note">Heading · Date & Time · Platform (Google Meet etc.) · What You'll Learn points</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("workshops.jpg")} alt="Workshops" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-            </div>
-            <div className="bl-screen-card">
-              <div className="bl-screen-header-sm">
-                <div className="bl-screen-label-row">
-                  <span className="bl-screen-label">Tech Stack Headings</span>
-                </div>
-                <span className="bl-screen-note">13 categories · Drag & drop to reorder · Reflects live on website</span>
-              </div>
-              <div className="bl-screen-frame bl-screen-frame-light">
-                <Shot src={img("Techstacklist.jpg")} alt="Tech Stack" className="bl-screen-img" onOpen={openLightbox} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
-          08 — CURRICULUM FLOW
+          07 — CURRICULUM FLOW
       ══════════════════════════════════════ */}
       <section className="bl-section bl-dark" id="bl-content-flow">
         <div className="bl-inner-wide">
           <div className="bl-inner">
-            <div className="bl-section-label bl-label-light">08 — The Content Flow</div>
+            <div className="bl-section-label bl-label-light">07 — The Content Flow</div>
             <h2 className="bl-heading bl-heading-white">One system. <span className="bl-accent">Two integrations.</span></h2>
             <p className="bl-body bl-body-muted">
               The most interesting design challenge in this project was figuring out how content flows between all three products. A course created in admin shows on the public website. A batch created from that course unlocks a Curriculum Manager where real session links and recordings are added — and those are planned to go directly into the student's LMS, which is currently in design. Here's the intended flow:
@@ -704,29 +492,15 @@ const BigLeapDetail = () => {
               <p>Students will see recordings, links and materials for their batch</p>
             </div>
           </div>
-
-          {/* Curriculum manager screen */}
-          <div className="bl-screen-full" style={{marginTop: "48px"}}>
-            <div className="bl-screen-header bl-screen-header-dark">
-              <span className="bl-screen-label">Curriculum Manager — Batch View</span>
-              <span className="bl-screen-note">Chapter accordion · Per lesson: Video URL · Duration · Live Session Link · Session Date · Documents upload</span>
-            </div>
-            <div className="bl-screen-frame bl-screen-frame-light">
-              <Shot src={img("curriculum-manage.jpg")} alt="Curriculum Manager" className="bl-screen-img" onOpen={openLightbox} />
-            </div>
-            <div className="bl-screen-caption bl-caption-light">
-              Each batch has its own curriculum manager. The admin opens a chapter, fills in the video URL, live session recording link, date, and uploads documents — all at the lesson level. Once the Student LMS is built, students in that batch will see exactly this content there.
-            </div>
-          </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════
-          09 — DESIGN SYSTEM
+          08 — DESIGN SYSTEM
       ══════════════════════════════════════ */}
       <section className="bl-section bl-gray" id="bl-design-system">
         <div className="bl-inner">
-          <div className="bl-section-label">09 — Design System</div>
+          <div className="bl-section-label">08 — Design System</div>
           <h2 className="bl-heading">Colors, decisions & <span className="bl-accent">thinking behind them</span></h2>
         </div>
 
@@ -739,16 +513,15 @@ const BigLeapDetail = () => {
 
         <div className="bl-inner">
           <h3 className="bl-subheading">Color System</h3>
-          <p className="bl-body">Two visual systems — one for the public website, one for the admin — sharing the same brand identity.</p>
+          <p className="bl-body">A dark navy + orange brand identity built for the public website.</p>
 
           <div className="bl-colors">
             {[
               { name: "Deep Navy", hex: "#0B1437", use: "Website dark backgrounds, hero sections", border: false },
               { name: "Orange Accent", hex: "#F16232", use: "CTAs, highlights, active states", border: false },
               { name: "Brand Blue", hex: "#1B4F8A", use: "Logo, navigation, links", border: false },
-              { name: "White", hex: "#FFFFFF", use: "Admin backgrounds, light sections", border: true },
-              { name: "Admin Blue", hex: "#2563EB", use: "Admin primary action buttons", border: false },
-              { name: "Success Green", hex: "#10B981", use: "Paid status, active badges", border: false },
+              { name: "White", hex: "#FFFFFF", use: "Light section backgrounds", border: true },
+              { name: "Success Green", hex: "#10B981", use: "Success states, active badges", border: false },
             ].map((c) => (
               <div className="bl-color-item" key={c.hex}>
                 <div className="bl-color-swatch" style={{ background: c.hex, border: c.border ? "1px solid #ddd" : "none" }} />
@@ -764,8 +537,8 @@ const BigLeapDetail = () => {
           <div className="bl-decisions-grid">
             <div className="bl-decision-card">
               <span className="bl-decision-num">01</span>
-              <h4>Dark Website, Light Admin — Same Brand</h4>
-              <p>The website is dark navy + orange — premium and technical. The admin is clean white — efficient for daily non-technical use. Two completely different visual contexts, but the same orange accent and logo ties them together. The audience dictated the visual system.</p>
+              <h4>Dark Navy + Orange — Premium, Not Generic</h4>
+              <p>Most EdTech sites default to light, template-looking layouts. Dark navy paired with a single confident orange accent gave Big Leap a premium, technical feel — closer to a product company than a training centre.</p>
             </div>
             <div className="bl-decision-card">
               <span className="bl-decision-num">02</span>
@@ -774,8 +547,8 @@ const BigLeapDetail = () => {
             </div>
             <div className="bl-decision-card">
               <span className="bl-decision-num">03</span>
-              <h4>Modal-First Admin UX</h4>
-              <p>All create/edit actions in the admin happen in modals — no page navigations. This keeps the admin panel feeling fast and app-like, not like a series of form pages. The "Add Course" modal is the most complex UI in the project — inline curriculum builder with nested chapters and lessons, all inside a single scrollable modal.</p>
+              <h4>Every Page Built to Convert</h4>
+              <p>Each page was designed around a single conversion goal — establish credibility fast, communicate the differentiator clearly, and make the next step obvious. Nothing on the site is purely decorative.</p>
             </div>
             <div className="bl-decision-card">
               <span className="bl-decision-num">04</span>
@@ -790,18 +563,18 @@ const BigLeapDetail = () => {
             <div className="bl-decision-card">
               <span className="bl-decision-num">06</span>
               <h4>Tech Stack Drag-and-Drop Reorder</h4>
-              <p>The Tech Stack section on the website needed to be reorderable by the client without code. I designed a drag-and-drop interface in the admin (TechStack Headings screen) where the client drags rows to reorder and saves — it reflects live on the website. Small feature, massive independence for the client.</p>
+              <p>The Tech Stack section on the website needed to be reorderable by the client without code. I designed a drag-and-drop interface where the client drags rows to reorder and saves — it reflects live on the website. Small feature, massive independence for the client.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════
-          10 — FRONTEND BUILD
+          09 — FRONTEND BUILD
       ══════════════════════════════════════ */}
       <section className="bl-section bl-white" id="bl-frontend">
         <div className="bl-inner">
-          <div className="bl-section-label">10 — Frontend Build</div>
+          <div className="bl-section-label">09 — Frontend Build</div>
           <h2 className="bl-heading">How I built <span className="bl-accent">every screen</span></h2>
           <p className="bl-body">
             My strengths going in were HTML, CSS, and JavaScript. Teja handled the entire backend — APIs, database, server — and set up the React project structure for me since React was new territory for me at the time. From there, every component, layout, and interaction you see was written by me.
@@ -826,14 +599,14 @@ const BigLeapDetail = () => {
               <span className="bl-build-icon">📱</span>
               <div>
                 <h4>Responsive Design</h4>
-                <p>Website fully responsive across desktop, tablet, and mobile. Admin panel optimized for desktop since it's primarily used on larger screens by the client team.</p>
+                <p>Website fully responsive across desktop, tablet, and mobile — every breakpoint hand-checked against the Figma to make sure nothing broke on smaller screens.</p>
               </div>
             </div>
             <div className="bl-build-item">
               <span className="bl-build-icon">⚡</span>
               <div>
                 <h4>Interactive UI Patterns</h4>
-                <p>Accordion curriculum sections, modal open/close, dynamic form fields (add learning point, add chapter, add lesson), drag-and-drop table rows for tech stack reordering — all JS-driven interactions I built and wired to backend APIs Teja provided.</p>
+                <p>Accordion curriculum sections on the course detail page, sticky navigation, contact form validation, and other JS-driven interactions across the site — all built and wired to the backend APIs Teja provided.</p>
               </div>
             </div>
           </div>
@@ -841,14 +614,14 @@ const BigLeapDetail = () => {
       </section>
 
       {/* ══════════════════════════════════════
-          11 — OUTCOME
+          10 — OUTCOME
       ══════════════════════════════════════ */}
       <section className="bl-section bl-dark" id="bl-outcome">
         <div className="bl-inner">
-          <div className="bl-section-label bl-label-light">11 — Outcome</div>
+          <div className="bl-section-label bl-label-light">10 — Outcome</div>
           <h2 className="bl-heading bl-heading-white">Zero to live product. <span className="bl-accent">In 2 months.</span></h2>
           <p className="bl-body bl-body-muted">
-            Big Leap went from absolutely no digital presence to a complete, production-grade web ecosystem — the website and admin panel are live, actively used, and fully client-managed. The Student LMS is the one piece still in design. Here's everything shipped, plus what's coming next:
+            Big Leap went from absolutely no digital presence to a live, production-grade marketing website — designed and frontend-built end to end. The Student LMS is the one piece still in design. Here's everything shipped, plus what's coming next:
           </p>
 
           <div className="bl-outcome-cols">
@@ -859,23 +632,7 @@ const BigLeapDetail = () => {
                 "Dark navy + orange brand system — premium feel, no templates",
                 "Conversion-focused layout — every page drives toward enrollment",
                 "Fully responsive across all screen sizes",
-                "Contact enquiry form — leads go directly to admin panel",
-              ].map((item, i) => (
-                <div className="bl-outcome-item" key={i}>
-                  <span className="bl-outcome-tick">✓</span>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-            <div className="bl-outcome-col">
-              <h4 className="bl-outcome-col-title">Admin Panel</h4>
-              {[
-                "15+ screens — full CMS, zero developer dependency for client",
-                "Course catalog with inline curriculum builder",
-                "Batch management — course + trainer + students + timings",
-                "Enrollment + payment tracking (Paid / Pending / Failed)",
-                "Enquiries CRM, FAQs, Testimonials, Workshop management",
-                "Tech stack drag-and-drop reorder reflecting live on website",
+                "Contact enquiry form for lead capture",
               ].map((item, i) => (
                 <div className="bl-outcome-item" key={i}>
                   <span className="bl-outcome-tick">✓</span>
@@ -889,7 +646,6 @@ const BigLeapDetail = () => {
                 "Student login — split-screen premium design (designed)",
                 "Batch-specific content — each student sees only their batch (planned)",
                 "Lesson-level: video recordings, live session links, documents (planned)",
-                "Curriculum Manager in admin feeds directly into student LMS (planned)",
                 "Google OAuth sign-in integration (planned)",
               ].map((item, i) => (
                 <div className="bl-outcome-item bl-outcome-item-planned" key={i}>

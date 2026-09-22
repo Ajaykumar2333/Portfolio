@@ -4,23 +4,43 @@ const Process = () => {
   const steps = [
     {
       num: "01",
-      title: "Problem-first",
-      desc: "Before touching a single pixel, I dig into the real problem — user pain points, business goals, and constraints.",
+      title: "Understand the Problem",
+      desc: "Start with the business goal behind the request, not just the feature that was asked for.",
     },
     {
       num: "02",
-      title: "Fast Prototyping",
-      desc: "Ideas move fast from sketch to clickable prototype, so concepts can be seen and felt early — not just described.",
+      title: "Research Users & Requirements",
+      desc: "Talk to who's actually using it, and find out exactly where the current experience breaks down.",
     },
     {
       num: "03",
-      title: "Real-user Feedback",
-      desc: "Designs get tested with real users, not just gut instinct — every assumption earns its place through feedback.",
+      title: "Define User Flows",
+      desc: "Map how someone moves through the product end to end, before a single screen exists.",
     },
     {
       num: "04",
-      title: "Continuous Iteration",
-      desc: "Design doesn't stop at handoff. I refine based on data and feedback, again and again, until it's right.",
+      title: "Create Wireframes",
+      desc: "Test structure and logic at low fidelity, before spending time on visual polish.",
+    },
+    {
+      num: "05",
+      title: "Design Polished Interfaces",
+      desc: "High-fidelity UI built to hold up under real use, not just look good in a first review.",
+    },
+    {
+      num: "06",
+      title: "Build Scalable Design Systems",
+      desc: "Components and patterns built to grow with the product, not get rebuilt every sprint.",
+    },
+    {
+      num: "07",
+      title: "Prototype Interactions",
+      desc: "Make key flows clickable so decisions get tested before a line of code is written.",
+    },
+    {
+      num: "08",
+      title: "Iterate on Feedback",
+      desc: "Design doesn't stop at handoff — it gets sharper with every round of real feedback.",
     },
   ];
 
@@ -39,13 +59,12 @@ const Process = () => {
       </svg>
 
       <div className="process-container">
-        <p className="process-tag">My Approach</p>
+        <p className="process-tag">Design Process</p>
         <h2 className="process-title">
-          How I <span className="accent">Design</span>
+          From Problem to <span className="accent">Shipped Product</span>
         </h2>
 
         <div className="process-track">
-          <span className="process-track-line" />
           {steps.map((step) => (
             <div className="process-node" key={step.num}>
               <div className="process-circle">{step.num}</div>
