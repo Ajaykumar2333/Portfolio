@@ -16,22 +16,20 @@ const design = [
   "Branding",
 ];
 
-const tech = [
-  "React",
-  "React Native (Expo)",
-  "JavaScript (ES6+)",
-  "TypeScript",
-  "HTML5",
-  "CSS3",
-  "Tailwind CSS",
-  "PHP / MySQL",
-  "Vite",
-  "Responsive Design",
-  "Component Architecture",
-  "REST APIs",
-  "Git & GitHub",
-  "Design-to-Code Handoff",
-  "Performance Optimization",
+const tools = [
+  "Figma",
+  "Adobe XD",
+  "Photoshop",
+  "Illustrator",
+  "After Effects",
+  "Premiere Pro",
+  "DaVinci Resolve",
+  "Design Tokens",
+  "Component Libraries",
+  "Developer Handoff",
+  "Motion Graphics",
+  "Poster Design",
+  "Video Editing",
 ];
 
 const Skills = () => {
@@ -39,7 +37,7 @@ const Skills = () => {
     <section className="skills" id="skills">
       <div className="section-wrap">
         <p className="section-eyebrow">Skills</p>
-        <h2 className="section-heading skills-heading">Design <span className="accent">&amp;</span> Tech</h2>
+        <h2 className="section-heading skills-heading">Design <span className="accent">&amp;</span> Tools</h2>
 
         <div className="skills-cols">
           <div>
@@ -49,9 +47,9 @@ const Skills = () => {
             </div>
           </div>
           <div>
-            <p className="skills-col-label">Tech</p>
+            <p className="skills-col-label">Tools</p>
             <div className="skills-chips">
-              {tech.map((s) => <span key={s} className="skills-chip skills-chip--mono">{s}</span>)}
+              {tools.map((s) => <span key={s} className="skills-chip">{s}</span>)}
             </div>
           </div>
         </div>

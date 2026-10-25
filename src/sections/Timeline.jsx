@@ -3,9 +3,9 @@ import "./Timeline.css";
 const experience = [
   {
     period: "2022 — Present",
-    title: "UI/UX Designer & Frontend Developer",
+    title: "UI/UX Designer",
     org: "Allyted Solutions",
-    desc: "Design and frontend across an internal HRMS, the VOYD Interiors platform, and client projects.",
+    desc: "Product design across an internal HRMS, the VOYD Interiors platform, and client projects.",
   },
 ];
 
@@ -20,7 +20,7 @@ const education = [
     period: "2022",
     title: "B.Tech, Electrical Engineering",
     org: "",
-    desc: "Foundation before moving into design and frontend development.",
+    desc: "Foundation before moving into UI/UX design.",
   },
 ];
 

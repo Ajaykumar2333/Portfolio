@@ -7,6 +7,7 @@ import TrainexDetail from "./pages/TrainexDetail";
 import JaldihireDetail from "./pages/JaldihireDetail";
 import VoydDetail from "./pages/VoydDetail";
 import BigLeapDetail from "./pages/BigLeapDetail";
+import PropertyInspectionDetail from "./pages/PropertyInspectionDetail";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/jaldihire" element={<JaldihireDetail />} />
         <Route path="/voyd" element={<VoydDetail />} />
         <Route path="/bigleap" element={<BigLeapDetail />} />
+        <Route path="/property-inspection" element={<PropertyInspectionDetail />} />
       </Routes>
     </Router>
   );

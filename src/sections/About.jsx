@@ -14,10 +14,10 @@ const About = () => {
             Hi, I'm <span className="accent">Ajaykumar</span>
           </h2>
           <p className="about-desc">
-            A designer who also ships the frontend. I care about the detail
-            that gets skipped — the form asking too much, the flow that makes
-            someone stop and think. I design it right, then build it myself
-            so nothing gets lost on the way to production.
+            A UI/UX designer who cares about the detail that gets skipped — the
+            form asking too much, the flow that makes someone stop and think. I
+            research it, design it right, and hand it over so nothing gets lost
+            on the way to production.
           </p>
 
           <div className="about-stats">

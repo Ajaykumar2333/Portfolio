@@ -5,19 +5,19 @@ const cards = [
   {
     title: "UX / UI Design",
     desc: "From problem framing to high-fidelity screens — wireframes, flows, and interfaces built around how people actually use the product.",
-    items: ["User Research", "Wireframes & Prototypes", "High-Fidelity UI", "Usability Testing"],
+    items: ["Wireframes & User Flows", "High-Fidelity UI", "Interactive Prototypes", "Responsive Design"],
     image: "/assets/offer-uiux.png",
   },
   {
-    title: "Frontend Development",
-    desc: "I build what I design. React interfaces wired to real APIs, not static handoffs someone else has to interpret.",
-    items: ["React & TypeScript", "REST API Integration", "Responsive, Production Code", "Performance Optimization"],
+    title: "UX Research & Testing",
+    desc: "Design decisions backed by real users — interviews, journeys and usability tests that show what to fix before anything ships.",
+    items: ["User Interviews & Personas", "User Journeys", "Usability Testing", "Accessibility (WCAG)"],
     image: "/assets/offer-dev.png",
   },
   {
     title: "Design Systems",
     desc: "Reusable components and tokens so the product stays consistent as it grows, instead of getting rebuilt every sprint.",
-    items: ["Component Libraries", "Design Tokens", "Design-to-Code Handoff", "Documentation"],
+    items: ["Component Libraries", "Design Tokens", "Developer Handoff", "Documentation"],
     image: "/assets/offer-design-system.png",
   },
   {
@@ -77,7 +77,7 @@ const Capabilities = () => {
               What I <span className="accent">Offer</span>
             </h2>
             <p className="capabilities-subtext">
-              End-to-end product design and front-end development.
+              End-to-end product design, from research to hand-off.
             </p>
           </div>
 

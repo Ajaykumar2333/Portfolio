@@ -17,11 +17,6 @@ const tools = [
   { name: "After Effects", icon: "https://cdn.simpleicons.org/adobeaftereffects" },
   { name: "Premiere Pro", icon: "https://cdn.simpleicons.org/adobepremierepro" },
   { name: "DaVinci Resolve", icon: "https://cdn.simpleicons.org/davinciresolve" },
-  { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-  { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-  { name: "Tailwind CSS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" },
-  { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
-  { name: "Vite", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" },
 ];
 
 const Hero = () => {
@@ -52,17 +47,17 @@ const Hero = () => {
 
       <div className="hero-headline-wrap">
         <h1 className="hero-title">
-          <span className="hero-line hero-line-1">CREATIVE</span>
-          <span className="hero-line hero-line-2">DEVELOPER</span>
+          <span className="hero-line hero-line-1">UI/UX</span>
+          <span className="hero-line hero-line-2">DESIGNER</span>
         </h1>
         <img src="/assets/avatar.png" alt="Ajaykumar Vodla" className="hero-avatar" />
       </div>
 
       <div className="hero-bottom-row">
         <div className="hero-tagline">
-          <p>I bridge the design-to-code gap</p>
+          <p>I turn complex flows into simple interfaces</p>
           <p className="hero-tagline-muted">
-            UI/UX design, frontend development &amp; visual storytelling — end to end
+            User research, UI/UX design &amp; visual storytelling — end to end
           </p>
           <p className="hero-name">Ajaykumar Vodla</p>
         </div>

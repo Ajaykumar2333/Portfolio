@@ -2,13 +2,11 @@ import "./Toolkit.css";
 
 const tools = [
   { name: "Figma", slug: "figma", color: "F24E1E" },
+  { name: "Adobe XD", slug: "adobexd", color: "FF61F6" },
   { name: "Photoshop", slug: "adobephotoshop", color: "31A8FF" },
+  { name: "Illustrator", slug: "adobeillustrator", color: "FF9A00" },
   { name: "After Effects", slug: "adobeaftereffects", color: "9999FF" },
-  { name: "React", slug: "react", color: "61DAFB" },
-  { name: "Tailwind CSS", slug: "tailwindcss", color: "38BDF8" },
-  { name: "Vite", slug: "vite", color: "646CFF" },
-  { name: "GitHub", slug: "github", color: "ffffff" },
-  { name: "VS Code", slug: "visualstudiocode", color: "007ACC" },
+  { name: "Premiere Pro", slug: "adobepremierepro", color: "9999FF" },
 ];
 
 const Toolkit = () => {

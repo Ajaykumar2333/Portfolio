@@ -19,7 +19,7 @@ const Award = () => {
           <h3 className="award-title">Best Employee<br />Allyted Solutions, 2024</h3>
           <p className="award-desc">
             Recognised company-wide out of the entire team for consistently high-quality
-            design and frontend work, reliable delivery, and a strong ownership mindset
+            UI/UX design work, reliable delivery, and a strong ownership mindset
             across every project I touched.
           </p>
           <div className="award-divider" />
