@@ -83,7 +83,89 @@
 }
 
 .motion-card {
+    position: relative;
     cursor: pointer;
+}
+
+
+/* --- Hover popup (desktop): a bigger player pops over the card --- */
+
+.motion-hover-popup {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 150%;
+    z-index: 30;
+    padding: 8px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    transform: translateX(-50%);
+    transform-origin: center top;
+    animation: motionPopIn 0.28s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+    cursor: default;
+}
+
+
+/* keep the popup inside the page: left card opens to the right, right card to the left */
+
+.motion-card--col0 .motion-hover-popup {
+    left: -6px;
+    transform: none;
+    transform-origin: left top;
+}
+
+.motion-card--col2 .motion-hover-popup {
+    left: auto;
+    right: -6px;
+    transform: none;
+    transform-origin: right top;
+}
+
+.motion-hover-player {
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+}
+
+.motion-hover-player iframe,
+.motion-hover-player video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
+}
+
+.motion-hover-expand {
+    display: block;
+    margin: 8px 2px 2px auto;
+    padding: 6px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.motion-hover-expand:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+@keyframes motionPopIn {
+    from {
+        opacity: 0;
+        scale: 0.9;
+    }
+    to {
+        opacity: 1;
+        scale: 1;
+    }
 }
 
 .motion-thumb {

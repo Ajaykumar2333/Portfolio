@@ -1,0 +1,107 @@
+/* ── Scroll progress line ── */
+
+.fx-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 200;
+    background: linear-gradient(90deg, var(--accent, #d9a441), #f0cf8a);
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+}
+
+
+/* ── Fade-up when a block scrolls into view ── */
+
+.fx-hidden {
+    opacity: 0;
+    transform: translateY(26px);
+}
+
+.fx-in {
+    /* "backwards" = no transform is left on the element after it finishes */
+    animation: fxUp 0.7s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+}
+
+@keyframes fxUp {
+    from {
+        opacity: 0;
+        transform: translateY(26px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ── Hover / press micro-interactions ── */
+
+/* cards lift a little (on the inner frame so the existing card animation is not touched) */
+.work-card-frame,
+.workpage-card-frame {
+    transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.35s ease, border-color 0.25s ease;
+}
+
+.work-card:hover .work-card-frame,
+.workpage-card:hover .workpage-card-frame {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    border-color: var(--accent, #d9a441);
+}
+
+/* video and poster cards */
+.motion-thumb,
+.motion-poster-card {
+    transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.3, 1), border-color 0.25s ease, box-shadow 0.35s ease;
+}
+
+.motion-card:hover .motion-thumb,
+.motion-poster-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent, #d9a441);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+/* the round play button grows when you hover its card */
+.play-icon {
+    transition: transform 0.25s ease;
+}
+
+.motion-card:hover .play-icon {
+    transform: scale(1.12);
+}
+
+/* every button and button-like link gets a small press-down feel */
+button:active,
+.about-btn:active,
+.nsh-pill:active {
+    transform: scale(0.97);
+}
+
+.about-socials a {
+    transition: transform 0.2s ease, border-color 0.25s, color 0.25s;
+}
+
+.about-socials a:hover {
+    transform: translateY(-3px) rotate(-6deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fx-progress {
+        transition: none;
+    }
+    .fx-in,
+    .motion-hover-popup {
+        animation: none;
+    }
+    .work-card:hover .work-card-frame,
+    .workpage-card:hover .workpage-card-frame,
+    .motion-card:hover .motion-thumb,
+    .motion-poster-card:hover {
+        transform: none;
+    }
+}

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./Motion.css";
 import { DRIVE_VIDEOS, drivePreviewUrl, driveThumbUrl } from "../utils/drive";
 
@@ -29,24 +29,79 @@ const MotionModal = ({ video, onClose }) => (
   </div>
 );
 
-const MotionCard = ({ video, onOpen }) => {
+// Hover popup only on devices with a real mouse and enough width
+const canHoverPreview = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(hover: hover) and (min-width: 900px)").matches;
+
+const HOVER_DELAY_MS = 350; // small wait so the popup does not open while the mouse just passes by
+
+// The player shown inside the hover popup
+const PreviewPlayer = ({ video }) => {
+  if (video.type === "drive") {
+    return (
+      <iframe
+        src={drivePreviewUrl(video.link)}
+        title={video.title}
+        allow="autoplay; fullscreen"
+        allowFullScreen
+        frameBorder="0"
+      />
+    );
+  }
+  if (video.type === "youtube") {
+    return (
+      <iframe
+        src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&mute=1`}
+        title={video.title}
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+        frameBorder="0"
+      />
+    );
+  }
+  return <video src={video.src} controls autoPlay muted loop playsInline />;
+};
+
+const MotionCard = ({ video, index, onOpen }) => {
   const videoRef = useRef(null);
+  const timer = useRef(null);
   const [hovered, setHovered] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   const handleEnter = () => {
     setHovered(true);
     if (video.type === "local" && videoRef.current) videoRef.current.play().catch(() => {});
+    if (canHoverPreview()) {
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setPreview(true), HOVER_DELAY_MS);
+    }
   };
   const handleLeave = () => {
     setHovered(false);
+    clearTimeout(timer.current);
+    setPreview(false);
     if (video.type === "local" && videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
   };
 
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const openFull = () => {
+    clearTimeout(timer.current);
+    setPreview(false);
+    onOpen(video);
+  };
+
   return (
-    <div className="motion-card" onClick={() => onOpen(video)} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+    <div
+      className={`motion-card motion-card--col${index % 3}`}
+      onClick={openFull}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
       <div className="motion-thumb">
         {video.type === "drive" ? (
           <img
@@ -68,6 +123,17 @@ const MotionCard = ({ video, onOpen }) => {
       </div>
       <p className="motion-title">{video.title}</p>
       <p className="motion-tool">{video.tool}</p>
+
+      {preview && (
+        <div className="motion-hover-popup" onClick={(e) => e.stopPropagation()}>
+          <div className="motion-hover-player">
+            <PreviewPlayer video={video} />
+          </div>
+          <button type="button" className="motion-hover-expand" onClick={openFull}>
+            Full screen <span aria-hidden="true">⤢</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };
@@ -122,8 +188,8 @@ const Motion = () => {
         <div className="motion-container">
           <h3 className="motion-subheading">Motion &amp; Video</h3>
           <div className="motion-grid">
-            {motionWorks.map((video) => (
-              <MotionCard key={video.id} video={video} onOpen={setOpenVideo} />
+            {motionWorks.map((video, i) => (
+              <MotionCard key={video.id} video={video} index={i} onOpen={setOpenVideo} />
             ))}
           </div>
 

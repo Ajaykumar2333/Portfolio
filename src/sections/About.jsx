@@ -4,6 +4,13 @@ const stats = [
   { num: "3+", label: "Years" },
 ];
 
+// Smooth-scroll to a section of the home page
+const goTo = (id) => (e) => {
+  e.preventDefault();
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 const About = () => {
   return (
     <section className="about" id="about">
@@ -19,6 +26,15 @@ const About = () => {
             research it, design it right, and hand it over so nothing gets lost
             on the way to production.
           </p>
+
+          <div className="about-actions">
+            <a href="#work" className="about-btn about-btn--primary" onClick={goTo("work")}>
+              Design works <span aria-hidden="true">↗</span>
+            </a>
+            <a href="#motion" className="about-btn about-btn--ghost" onClick={goTo("motion")}>
+              Motion works <span aria-hidden="true">↗</span>
+            </a>
+          </div>
 
           <div className="about-stats">
             {stats.map((s) => (
@@ -37,7 +53,7 @@ const About = () => {
 
         <div className="about-right">
           <img
-            src="./assets/Ajaypic.png"
+            src="/assets/Ajaypic.png"
             alt="Ajaykumar Vodla"
             className="about-img"
           />

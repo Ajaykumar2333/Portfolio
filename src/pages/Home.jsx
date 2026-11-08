@@ -6,10 +6,14 @@ import Skills from "../sections/Skills";
 import Award from "../sections/Award";
 import Motion from "../sections/Motion";
 import Contact from "../sections/Contact";
+import NextSectionHint from "../components/NextSectionHint";
+import PageEffects from "../components/PageEffects";
 
 const Home = () => {
   return (
     <>
+      <PageEffects />
+      <NextSectionHint />
       <Hero />
       <About />
       <Work />
