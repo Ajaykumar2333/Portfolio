@@ -22,7 +22,9 @@
     --csn-text-active: #ffffff;
 }
 
+
 /* Push every case-study page's content clear of the docked sidebar. */
+
 @media (min-width: 901px) {
     .jh-page,
     .tx-page,
@@ -32,7 +34,9 @@
     }
 }
 
+
 /* ── Desktop docked sidebar ── */
+
 .csn-sidebar {
     display: none;
 }
@@ -90,7 +94,9 @@
     position: relative;
 }
 
+
 /* connecting spine running the full height of the list */
+
 .csn-sidebar-list::before {
     content: "";
     position: absolute;
@@ -182,12 +188,16 @@
     color: var(--csn-text-active);
 }
 
+
 /* ── Mobile/tablet: compact back button ── */
+
 .csn-back-mobile {
     display: none;
 }
 
+
 /* ── Mobile/tablet: slim top progress bar ── */
+
 .csn-mobile-bar {
     display: none;
 }
@@ -198,7 +208,7 @@
         align-items: center;
         justify-content: center;
         position: fixed;
-        top: 74px;
+        top: 10px;
         left: 16px;
         z-index: 440;
         width: 36px;
@@ -210,37 +220,32 @@
         text-decoration: none;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
-
     .csn-mobile-bar {
         display: block;
         position: sticky;
-        top: 64px;
+        top: 0;
         z-index: 440;
         background: var(--csn-bg);
         padding: 10px 16px 9px 62px;
     }
-
     .csn-mobile-track {
         height: 3px;
         border-radius: 3px;
         background: var(--csn-line);
         overflow: hidden;
     }
-
     .csn-mobile-fill {
         height: 100%;
         background: var(--csn-accent);
         border-radius: 3px;
         transition: width 0.25s ease;
     }
-
     .csn-mobile-label {
         display: flex;
         align-items: baseline;
         gap: 8px;
         margin-top: 7px;
     }
-
     .csn-mobile-count {
         font-size: 0.66rem;
         font-weight: 700;
@@ -248,7 +253,6 @@
         font-variant-numeric: tabular-nums;
         letter-spacing: 0.5px;
     }
-
     .csn-mobile-text {
         font-size: 0.72rem;
         font-weight: 600;

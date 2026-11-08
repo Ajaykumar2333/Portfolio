@@ -1656,3 +1656,14 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Google Drive player inside the video popup */
+
+.tx-modal-iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 70vh;
+    display: block;
+    border: 0;
+}

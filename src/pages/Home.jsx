@@ -1,6 +1,5 @@
 import Hero from "../sections/Hero";
 import Work from "../sections/Work";
-import Capabilities from "../sections/Capabilities";
 import About from "../sections/About";
 import Timeline from "../sections/Timeline";
 import Skills from "../sections/Skills";
@@ -14,7 +13,6 @@ const Home = () => {
       <Hero />
       <About />
       <Work />
-      <Capabilities />
       <Timeline />
       <Skills />
       <Award />

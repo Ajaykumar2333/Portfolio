@@ -2,24 +2,24 @@ import "./Timeline.css";
 
 const experience = [
   {
-    period: "2022 — Present",
+    period: "Feb 2023 — Present",
     title: "UI/UX Designer",
     org: "Allyted Solutions",
-    desc: "Product design across an internal HRMS, the VOYD Interiors platform, and client projects.",
+    desc: "Websites, web apps and mobile apps, from research to developer hand-off. Internal HRMS, VOYD Interiors, JaldiHire, Trainex Academy and more.",
   },
 ];
 
 const education = [
   {
-    period: "2026",
+    period: "2024 — 2026",
     title: "MBA, Marketing",
-    org: "",
+    org: "Jaya Prakash Narayan College of Engineering",
     desc: "Completed while working full-time.",
   },
   {
-    period: "2022",
+    period: "2019 — 2022",
     title: "B.Tech, Electrical Engineering",
-    org: "",
+    org: "Annamacharya Institute of Technology and Sciences",
     desc: "Foundation before moving into UI/UX design.",
   },
 ];

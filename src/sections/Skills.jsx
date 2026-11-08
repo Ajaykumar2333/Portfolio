@@ -1,35 +1,60 @@
 import "./Skills.css";
 
-const design = [
-  "Design Thinking",
+const research = [
+  "User Research",
+  "Market & Competitor Analysis",
   "User Personas",
+  "Empathy Maps",
   "User Journeys",
-  "Information Architecture",
-  "Wireframing",
-  "High-Fidelity UI Design",
-  "Interaction Design",
-  "Design Systems",
-  "Accessibility (WCAG)",
   "Usability Testing",
-  "Prototyping (Figma)",
+];
+const ux = [
+  "Design Thinking",
+  "User Flows",
+  "Information Architecture",
+  "Sitemaps",
+  "Wireframing",
+  "Prototyping",
+  "Interaction Design",
+];
+const ui = [
+  "High-Fidelity UI",
   "Visual Design",
+  "Responsive Design",
+  "Design Systems",
+  "Design Tokens",
+  "Component Libraries",
+  "Accessibility (WCAG)",
   "Branding",
 ];
-
 const tools = [
   "Figma",
-  "Adobe XD",
   "Photoshop",
   "Illustrator",
+  "Adobe XD (basic)",
   "After Effects",
   "Premiere Pro",
   "DaVinci Resolve",
-  "Design Tokens",
-  "Component Libraries",
-  "Developer Handoff",
+];
+const ai = ["Claude", "Lovable"];
+const other = [
+  "Developer Hand-off",
+  "Working with Developers",
   "Motion Graphics",
-  "Poster Design",
   "Video Editing",
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "React (basics)",
+];
+
+const groups = [
+  ["UX Research", research],
+  ["UX Design", ux],
+  ["UI Design", ui],
+  ["Tools", tools],
+  ["AI Tools", ai],
+  ["Hand-off & Other", other],
 ];
 
 const Skills = () => {
@@ -40,18 +65,14 @@ const Skills = () => {
         <h2 className="section-heading skills-heading">Design <span className="accent">&amp;</span> Tools</h2>
 
         <div className="skills-cols">
-          <div>
-            <p className="skills-col-label">Design</p>
-            <div className="skills-chips">
-              {design.map((s) => <span key={s} className="skills-chip">{s}</span>)}
+          {groups.map(([label, list]) => (
+            <div key={label}>
+              <p className="skills-col-label">{label}</p>
+              <div className="skills-chips">
+                {list.map((s) => <span key={s} className="skills-chip">{s}</span>)}
+              </div>
             </div>
-          </div>
-          <div>
-            <p className="skills-col-label">Tools</p>
-            <div className="skills-chips">
-              {tools.map((s) => <span key={s} className="skills-chip">{s}</span>)}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

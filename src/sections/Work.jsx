@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ProjectLink from "../components/ProjectLink";
 import { projects } from "../data/projects";
 import "./Work.css";
 
@@ -17,8 +18,8 @@ const Work = () => {
 
         <div className="work-grid">
           {preview.map((project, i) => (
-            <Link
-              to={project.path}
+            <ProjectLink
+              project={project}
               key={project.id}
               className="work-card"
               style={{ "--reveal-delay": `${i * 0.1}s` }}
@@ -42,7 +43,7 @@ const Work = () => {
                 </div>
                 <p className="work-card-cat">{project.category}</p>
               </div>
-            </Link>
+            </ProjectLink>
           ))}
         </div>
 

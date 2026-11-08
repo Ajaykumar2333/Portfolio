@@ -1,11 +1,20 @@
 import { useState, useRef } from "react";
 import "./Motion.css";
+import { DRIVE_VIDEOS, drivePreviewUrl, driveThumbUrl } from "../utils/drive";
 
 const MotionModal = ({ video, onClose }) => (
   <div className="motion-modal-overlay" onClick={onClose}>
     <button className="motion-modal-close" onClick={onClose}>✕</button>
     <div className="motion-modal-inner" onClick={(e) => e.stopPropagation()}>
-      {video.type === "youtube" ? (
+      {video.type === "drive" ? (
+        <iframe
+          src={drivePreviewUrl(video.link)}
+          title={video.title}
+          allow="autoplay; fullscreen"
+          allowFullScreen
+          frameBorder="0"
+        />
+      ) : video.type === "youtube" ? (
         <iframe
           src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1`}
           title={video.title}
@@ -39,7 +48,16 @@ const MotionCard = ({ video, onOpen }) => {
   return (
     <div className="motion-card" onClick={() => onOpen(video)} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       <div className="motion-thumb">
-        {video.type === "youtube" ? (
+        {video.type === "drive" ? (
+          <img
+            src={driveThumbUrl(video.link)}
+            alt={video.title}
+            className="motion-thumb-img"
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            onError={(e) => { e.currentTarget.style.visibility = "hidden"; }}
+          />
+        ) : video.type === "youtube" ? (
           <img src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`} alt={video.title} className="motion-thumb-img" />
         ) : (
           <video ref={videoRef} src={video.src} className="motion-thumb-video" muted loop playsInline preload="metadata" />
@@ -62,11 +80,11 @@ const PosterLightbox = ({ src, onClose }) => (
 );
 
 const motionWorks = [
-  { id: 1, title: "Trainex — Intro Video", tool: "After Effects", type: "local", src: "/assets/Trainexprefix.mov" },
-  { id: 2, title: "Voyd — Logo Animation", tool: "After Effects", type: "local", src: "/voydimages/voyd logo.mp4" },
-  { id: 3, title: "Trainex — Promotional Video 1", tool: "Premiere Pro", type: "local", src: "/assets/promotion1.mov" },
-  { id: 4, title: "Trainex — Promotional Video 2", tool: "Premiere Pro", type: "local", src: "/assets/promotion2.mov" },
-  { id: 5, title: "Trainex — Promotional Video 3", tool: "Premiere Pro", type: "local", src: "/assets/promotion3.mov" },
+  { id: 1, title: "Trainex — Intro Video", tool: "After Effects", type: "drive", link: DRIVE_VIDEOS.trainexIntro },
+  { id: 2, title: "Voyd — Logo Animation", tool: "After Effects", type: "drive", link: DRIVE_VIDEOS.voydLogo },
+  { id: 3, title: "Trainex — Promotional Video 1", tool: "Premiere Pro", type: "drive", link: DRIVE_VIDEOS.promo1 },
+  { id: 4, title: "Trainex — Promotional Video 2", tool: "Premiere Pro", type: "drive", link: DRIVE_VIDEOS.promo2 },
+  { id: 5, title: "Trainex — Promotional Video 3", tool: "Premiere Pro", type: "drive", link: DRIVE_VIDEOS.promo3 },
   { id: 6, title: "Voyd — Services Video", tool: "Premiere Pro", type: "youtube", youtubeId: "ZL5FCKvg6AE" },
 ];
 

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import "./TrainexDetail.css";
 import CaseStudyNav from "../components/CaseStudyNav";
+import { DRIVE_VIDEOS, drivePreviewUrl, driveThumbUrl } from "../utils/drive";
 
 const TRAINEX_SECTIONS = [
   { id: "tx-overview", label: "01 — Overview" },
@@ -19,7 +20,7 @@ const TRAINEX_SECTIONS = [
 /* ─────────────────────────────────────────────
    VIDEO MODAL
 ───────────────────────────────────────────── */
-const VideoModal = ({ src, title, onClose }) => {
+const VideoModal = ({ src, driveLink, title, onClose }) => {
   useEffect(() => {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handleKey);
@@ -38,9 +39,20 @@ const VideoModal = ({ src, title, onClose }) => {
           <button className="tx-modal-close" onClick={onClose}>✕</button>
         </div>
         <div className="tx-modal-video-wrap">
-          <video src={src} controls autoPlay className="tx-modal-video">
-            Your browser does not support the video tag.
-          </video>
+          {driveLink ? (
+            <iframe
+              src={drivePreviewUrl(driveLink)}
+              title={title}
+              className="tx-modal-iframe"
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              frameBorder="0"
+            />
+          ) : (
+            <video src={src} controls autoPlay className="tx-modal-video">
+              Your browser does not support the video tag.
+            </video>
+          )}
         </div>
       </div>
     </div>
@@ -77,7 +89,7 @@ const ImageLightbox = ({ src, alt, onClose }) => {
 /* ─────────────────────────────────────────────
    VIDEO CARD WITH PREVIEW THUMBNAIL
 ───────────────────────────────────────────── */
-const VideoCard = ({ src, title, tool, desc, disabled, onClick }) => {
+const VideoCard = ({ src, driveLink, title, tool, desc, disabled, onClick }) => {
   const videoRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -111,15 +123,26 @@ const VideoCard = ({ src, title, tool, desc, disabled, onClick }) => {
           </div>
         ) : (
           <>
-            <video
-              ref={videoRef}
-              src={src}
-              className="tx-vid-thumb-video"
-              muted
-              loop
-              playsInline
-              preload="metadata"
-            />
+            {driveLink ? (
+              <img
+                src={driveThumbUrl(driveLink)}
+                alt={title}
+                className="tx-vid-thumb-video"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                onError={(e) => { e.currentTarget.style.visibility = "hidden"; }}
+              />
+            ) : (
+              <video
+                ref={videoRef}
+                src={src}
+                className="tx-vid-thumb-video"
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+            )}
             <div className={`tx-vid-play-overlay ${isHovered ? "tx-vid-play-overlay--hidden" : ""}`}>
               <div className="tx-play-circle">▶</div>
             </div>
@@ -170,7 +193,7 @@ const TrainexDetail = () => {
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  const openVideo = (src, title) => setVideoModal({ src, title });
+  const openVideo = (src, title, driveLink) => setVideoModal({ src, title, driveLink });
   const closeVideo = () => setVideoModal(null);
   const openImage = (src, alt) => setLightbox({ src, alt });
   const closeImage = () => setLightbox(null);
@@ -196,7 +219,7 @@ const TrainexDetail = () => {
       <CaseStudyNav sections={TRAINEX_SECTIONS} projectTitle="Trainex Academy" />
 
       {videoModal && (
-        <VideoModal src={videoModal.src} title={videoModal.title} onClose={closeVideo} />
+        <VideoModal src={videoModal.src} driveLink={videoModal.driveLink} title={videoModal.title} onClose={closeVideo} />
       )}
       {lightbox && (
         <ImageLightbox src={lightbox.src} alt={lightbox.alt} onClose={closeImage} />
@@ -534,11 +557,11 @@ const TrainexDetail = () => {
             />
             {/* Platform Intro Video */}
             <VideoCard
-              src="/assets/Trainexprefix.mov"
+              driveLink={DRIVE_VIDEOS.trainexIntro}
               title="Platform Intro Video"
               tool="After Effects · Premiere Pro"
               desc="Brand introduction video for Trainex Academy — used for platform onboarding and marketing."
-              onClick={() => openVideo("/assets/Trainexprefix.mov", "Platform Intro Video")}
+              onClick={() => openVideo(null, "Platform Intro Video", DRIVE_VIDEOS.trainexIntro)}
             />
             {/* Trainer Profile Animation */}
             <VideoCard
@@ -554,17 +577,17 @@ const TrainexDetail = () => {
           <h3 className="tx-subheading tx-subheading-white" style={{ marginTop: "48px" }}>Promotional Videos</h3>
           <div className="tx-promo-grid">
             {[
-              { file: "/assets/promotion1.mov", label: "Promotional Video 1" },
-              { file: "/assets/promotion2.mov", label: "Promotional Video 2" },
-              { file: "/assets/promotion3.mov", label: "Promotional Video 3" },
+              { link: DRIVE_VIDEOS.promo1, label: "Promotional Video 1" },
+              { link: DRIVE_VIDEOS.promo2, label: "Promotional Video 2" },
+              { link: DRIVE_VIDEOS.promo3, label: "Promotional Video 3" },
             ].map((promo, i) => (
               <VideoCard
                 key={i}
-                src={promo.file}
+                driveLink={promo.link}
                 title={promo.label}
                 tool="Premiere Pro"
                 desc="Short-form video for marketing and awareness."
-                onClick={() => openVideo(promo.file, promo.label)}
+                onClick={() => openVideo(null, promo.label, promo.link)}
               />
             ))}
           </div>

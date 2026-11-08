@@ -1,12 +1,9 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import ProjectLink from "../components/ProjectLink";
 import { projects } from "../data/projects";
 import "./WorkPage.css";
 
 const WorkPage = () => {
-  const [filter, setFilter] = useState("all");
-
-  const filtered = projects.filter((p) => filter === "all" || p.kind === filter);
+  const filtered = projects;
 
   return (
     <main className="workpage">
@@ -15,33 +12,12 @@ const WorkPage = () => {
           <p className="section-eyebrow">Portfolio</p>
           <h1 className="workpage-title">My Work</h1>
           <p className="workpage-sub">Every project shipped, from Figma to production.</p>
-
-          <div className="workpage-toggle">
-            <button
-              className={filter === "all" ? "active" : ""}
-              onClick={() => setFilter("all")}
-            >
-              All
-            </button>
-            <button
-              className={filter === "live" ? "active" : ""}
-              onClick={() => setFilter("live")}
-            >
-              Live Projects
-            </button>
-            <button
-              className={filter === "case-study" ? "active" : ""}
-              onClick={() => setFilter("case-study")}
-            >
-              Case Studies
-            </button>
-          </div>
         </div>
 
         <div className="workpage-grid">
           {filtered.map((project, i) => (
-            <Link
-              to={project.path}
+            <ProjectLink
+              project={project}
               key={project.id}
               className="workpage-card"
               style={{ "--reveal-delay": `${i * 0.08}s` }}
@@ -72,7 +48,7 @@ const WorkPage = () => {
                   <span className="workpage-card-cta">View ↗</span>
                 </div>
               </div>
-            </Link>
+            </ProjectLink>
           ))}
         </div>
       </div>

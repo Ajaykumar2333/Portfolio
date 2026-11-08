@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
+// Case study pages have their own navigation, so the global navbar is hidden there.
+const CASE_STUDY_ROUTES = ["/trainex", "/jaldihire", "/voyd", "/bigleap", "/property-inspection"];
+
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
+  const hidden = CASE_STUDY_ROUTES.some((r) => location.pathname.startsWith(r));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -32,6 +36,8 @@ const Navbar = () => {
       setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 300);
     }
   };
+
+  if (hidden) return null;
 
   return (
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
