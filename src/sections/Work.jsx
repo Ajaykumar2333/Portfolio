@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import ProjectLink from "../components/ProjectLink";
+import ProjectShot from "../components/ProjectShot";
 import { projects } from "../data/projects";
 import "./Work.css";
 
@@ -32,7 +33,7 @@ const Work = () => {
                   <span className="work-card-url">{project.url}</span>
                 </div>
                 <div className="work-card-shot-wrap">
-                  <img src={project.image} alt={project.title} className="work-card-shot" loading="lazy" />
+                  <ProjectShot project={project} className="work-card-shot" />
                 </div>
               </div>
 

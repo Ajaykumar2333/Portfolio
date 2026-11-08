@@ -29,6 +29,7 @@ export const projects = [{
         tags: ["Website", "Landing Pages"],
         path: "/jaldihire",
         image: "/assets/Halfhomepage.png",
+        fallbacks: ["/JH-images/Halfhomepage.png", "/JH-images/JHHomepage.png", "/assets/JHHomepage.png"],
         url: "jaldihire.com",
         kind: "case-study",
     },
@@ -39,7 +40,8 @@ export const projects = [{
         desc: "The Trainex Academy website, designed from scratch, from research and Figma prototypes to final hand-off.",
         tags: ["Website", "UI/UX"],
         path: "/trainex",
-        image: "/assets/course.jpg",
+        image: "/assets/Homepage.png", // hero / homepage
+        fallbacks: ["/assets/course.jpg"],
         url: "trainexacademy.com",
         kind: "live",
     },
@@ -50,7 +52,8 @@ export const projects = [{
         desc: "The website and a placement-focused LMS, designed from scratch for an IT training institute.",
         tags: ["LMS", "UI/UX"],
         path: "/bigleap",
-        image: "/assets/BL-Ourprogram.jpg",
+        image: "/bl-images/BL-FinalHomepage.jpg", // hero / homepage
+        fallbacks: ["/assets/BL-FinalHomepage.jpg", "/assets/BL-Ourprogram.jpg"],
         url: "bigleaptech.in",
         kind: "live",
     },
@@ -62,7 +65,8 @@ export const projects = [{
         tags: ["Website", "UI Design"],
         path: "/work",
         external: "https://allyted.com/index.php",
-        image: "/assets/allyted-website.png",
+        image: "/assets/allyted-hero.png", // save a screenshot of the allyted.com hero here
+        fallbacks: ["/assets/allyted-website.png"],
         url: "allyted.com",
         kind: "live",
     },

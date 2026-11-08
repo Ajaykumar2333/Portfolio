@@ -1,4 +1,5 @@
 import ProjectLink from "../components/ProjectLink";
+import ProjectShot from "../components/ProjectShot";
 import { projects } from "../data/projects";
 import "./WorkPage.css";
 
@@ -30,7 +31,7 @@ const WorkPage = () => {
                   <span className="workpage-card-url">{project.url}</span>
                 </div>
                 <div className="workpage-card-shot-wrap">
-                  <img src={project.image} alt={project.title} className="workpage-card-shot" loading="lazy" />
+                  <ProjectShot project={project} className="workpage-card-shot" />
                 </div>
               </div>
 
