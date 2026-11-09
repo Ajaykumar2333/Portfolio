@@ -12,11 +12,11 @@ const particles = Array.from({ length: 18 }, (_, i) => ({
 const tools = [
   { name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
   { name: "Adobe XD", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-plain.svg" },
-  { name: "Photoshop", icon: "https://cdn.simpleicons.org/adobephotoshop" },
-  { name: "Illustrator", icon: "https://cdn.simpleicons.org/adobeillustrator" },
-  { name: "After Effects", icon: "https://cdn.simpleicons.org/adobeaftereffects" },
-  { name: "Premiere Pro", icon: "https://cdn.simpleicons.org/adobepremierepro" },
-  { name: "DaVinci Resolve", icon: "https://cdn.simpleicons.org/davinciresolve" },
+  { name: "Photoshop", icon: "/assets/tools/photoshop.svg" },
+  { name: "Illustrator", icon: "/assets/tools/illustrator.svg" },
+  { name: "After Effects", icon: "/assets/tools/after-effects.svg" },
+  { name: "Premiere Pro", icon: "/assets/tools/premiere-pro.svg" },
+  { name: "DaVinci Resolve", icon: "/assets/tools/davinci-resolve.svg" },
 ];
 
 const Hero = () => {
