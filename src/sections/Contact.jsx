@@ -14,10 +14,10 @@ const Contact = () => {
 
           <div className="contact-details">
             <a href="tel:+919346175460" className="contact-detail">+91 93461 75460</a>
-            <a href="mailto:vodlaajay113@gmail.com" className="contact-detail">vodlaajay113@gmail.com</a>
+            <a href="mailto:vajaykumar436@gmail.com" className="contact-detail">vajaykumar436@gmail.com</a>
           </div>
 
-          <a href="mailto:vodlaajay113@gmail.com" className="contact-btn">
+          <a href="mailto:vajaykumar436@gmail.com" className="contact-btn">
             Say Hello
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

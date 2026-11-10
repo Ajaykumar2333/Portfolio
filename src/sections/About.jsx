@@ -46,7 +46,7 @@ const About = () => {
           </div>
 
           <div className="about-socials">
-            <a href="mailto:vodlaajay113@gmail.com" aria-label="Email">✉</a>
+            <a href="mailto:vajaykumar436@gmail.com" aria-label="Email">✉</a>
             <a href="tel:+919346175460" aria-label="Phone">☎</a>
           </div>
         </div>
