@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* Case study cover — same feel as the JaldiHire cover */
+
+.cc-cover {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 92px 24px 48px;
+    overflow: hidden;
+    font-family: 'Poppins', 'Inter', sans-serif;
+    background: radial-gradient(60% 55% at 50% 60%, color-mix(in srgb, var(--cc-accent) 30%, #0a0a0a) 0%, #0a0a0a 72%);
+    background-color: #0a0a0a;
+}
+
+.cc-back {
+    position: absolute;
+    top: 28px;
+    left: max(28px, 5vw);
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.cc-back:hover {
+    color: var(--cc-accent);
+}
+
+.cc-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.cc-tag {
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.cc-tag--accent {
+    color: var(--cc-accent);
+    border-color: color-mix(in srgb, var(--cc-accent) 45%, transparent);
+    background: color-mix(in srgb, var(--cc-accent) 14%, transparent);
+}
+
+.cc-title {
+    margin: 0;
+    font-size: clamp(46px, 7.4vw, 108px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: #fff;
+    text-align: center;
+}
+
+.cc-title span {
+    color: var(--cc-accent);
+}
+
+
+/* Browser window that shows only the TOP of the homepage and fades out below */
+
+.cc-window {
+    width: min(86%, 1100px, calc((100vh - 420px) / 0.5));
+    min-width: min(100%, 520px);
+    margin-top: 28px;
+    border-radius: 14px 14px 0 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 0;
+    background: #111;
+    box-shadow: 0 -10px 60px color-mix(in srgb, var(--cc-accent) 22%, transparent);
+    -webkit-mask-image: linear-gradient(#000 72%, transparent);
+    mask-image: linear-gradient(#000 72%, transparent);
+}
+
+.cc-window-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 14px;
+    background: #1b1b1f;
+}
+
+.cc-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.cc-url {
+    margin-left: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.cc-window-shot {
+    aspect-ratio: 1 / 0.5; /* shows only the top part of the long screenshot */
+    overflow: hidden;
+    background: #fff;
+}
+
+.cc-window-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.cc-sub {
+    margin: 6px 0 0;
+    max-width: 680px;
+    font-size: clamp(15px, 1.7vw, 22px);
+    font-weight: 500;
+    line-height: 1.45;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+
+/* Details strip under the cover */
+
+.cc-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 24px;
+    padding: 30px max(24px, 5vw) 34px;
+    background: #09090b;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+.cc-strip-item small {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.cc-strip-item span,
+.cc-strip-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+}
+
+.cc-strip-link {
+    color: var(--cc-accent, #F16232);
+}
+
+.cc-strip-link:hover {
+    text-decoration: underline;
+}
+
+.cc-intro {
+    padding: 0 max(24px, 5vw) 48px;
+    background: #09090b;
+    font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+.cc-intro p {
+    max-width: 760px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 640px) {
+    .cc-cover {
+        padding: 84px 16px 36px;
+    }
+    .cc-window {
+        width: 100%;
+        min-width: 0;
+    }
+}

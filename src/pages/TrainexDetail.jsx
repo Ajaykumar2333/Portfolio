@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import "./TrainexDetail.css";
 import CaseStudyNav from "../components/CaseStudyNav";
+import CaseCover from "../components/CaseCover";
 import { DRIVE_VIDEOS, drivePreviewUrl, driveThumbUrl } from "../utils/drive";
 
 const TRAINEX_SECTIONS = [
@@ -225,55 +226,24 @@ const TrainexDetail = () => {
         <ImageLightbox src={lightbox.src} alt={lightbox.alt} onClose={closeImage} />
       )}
 
-      {/* ── HERO ── */}
-      <section className="tx-hero">
-        <div className="tx-hero-inner">
-          <Link to="/" className="tx-back">← Back to Work</Link>
-          <div className="tx-tags-row">
-            <span className="tx-tag tx-tag-orange">UI Design</span>
-            <span className="tx-tag">Frontend Dev</span>
-            <span className="tx-tag">Motion Design</span>
-          </div>
-          <h1 className="tx-hero-title">
-            Trainex <span className="tx-accent">Academy</span>
-          </h1>
-          <p className="tx-hero-sub">
-            IT Learning, Upskilling & Careers — Marketing Website · Motion Design
-          </p>
-          <div className="tx-meta-grid">
-            <div className="tx-meta-item">
-              <span className="tx-meta-label">My Role</span>
-              <span className="tx-meta-value">UI Designer + Frontend</span>
-            </div>
-            <div className="tx-meta-item">
-              <span className="tx-meta-label">Type</span>
-              <span className="tx-meta-value">Company Project</span>
-            </div>
-            <div className="tx-meta-item">
-              <span className="tx-meta-label">Platform</span>
-              <span className="tx-meta-value">Website</span>
-            </div>
-            <div className="tx-meta-item">
-              <span className="tx-meta-label">Tools</span>
-              <span className="tx-meta-value">Figma · HTML/CSS/JS · After Effects</span>
-            </div>
-            <div className="tx-meta-item">
-              <span className="tx-meta-label">Live</span>
-              <a href="https://www.trainexacademy.com" target="_blank" rel="noreferrer" className="tx-meta-link">trainexacademy.com ↗</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HERO BANNER IMAGE ── */}
-      <div className="tx-img-banner">
-        <img
-          src="/assets/Homepage.png"
-          alt="Trainex Homepage"
-          className="tx-banner-img tx-clickable-img"
-          onClick={() => openImage("/assets/Homepage.png", "Trainex Homepage")}
-        />
-      </div>
+      {/* ── HERO / COVER (same style as JaldiHire) ── */}
+      <CaseCover
+        backTo="/"
+        accent="#F16232"
+        tags={["UI Design", "Frontend Dev", "Motion Design"]}
+        title={<>Trainex <span>Academy</span></>}
+        image="/assets/Homepage.png"
+        imageAlt="Trainex Academy homepage hero"
+        url="trainexacademy.com"
+        sub="IT Learning, Upskilling & Careers — Marketing Website · Motion Design"
+        meta={[
+          { label: "My Role", value: "UI Designer + Frontend" },
+          { label: "Type", value: "Company Project" },
+          { label: "Platform", value: "Website" },
+          { label: "Tools", value: "Figma · HTML/CSS/JS · After Effects" },
+          { label: "Live", value: "trainexacademy.com ↗", href: "https://www.trainexacademy.com" },
+        ]}
+      />
 
       {/* ── 01 OVERVIEW ── */}
       <section className="tx-section tx-section-white" id="tx-overview">

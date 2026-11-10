@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./BigLeapDetail.css";
 import CaseStudyNav from "../components/CaseStudyNav";
+import CaseCover from "../components/CaseCover";
 
 const BIGLEAP_SECTIONS = [
   { id: "bl-problem", label: "01 — The Problem" },
@@ -86,54 +87,26 @@ const BigLeapDetail = () => {
 
       <CaseStudyNav sections={BIGLEAP_SECTIONS} projectTitle="Big Leap Technologies" />
 
-      {/* ── HERO ── */}
-      <section className="bl-hero">
-        <div className="bl-hero-inner">
-          <Link to="/" className="bl-back">← Back to Work</Link>
-          <div className="bl-tags-row">
-            <span className="bl-tag bl-tag-accent">UI/UX Design</span>
-            <span className="bl-tag">Frontend Dev</span>
-            <span className="bl-tag">EdTech</span>
-            <span className="bl-tag">LMS</span>
-            <span className="bl-tag">Freelance</span>
-          </div>
-          <h1 className="bl-hero-title">
-            Big Leap<br /><span className="bl-accent">Technologies</span>
-          </h1>
-          <p className="bl-hero-tagline">From Learning to Real Engineering</p>
-          <p className="bl-hero-sub">
-            A complete freelance project — I designed and frontend-developed the full marketing
-            website for a Hyderabad-based Data Engineering institute, with the Student LMS
-            currently in design. Zero to shipped product in 2 months.
-          </p>
-          <div className="bl-meta-grid">
-            <div className="bl-meta-item">
-              <span className="bl-meta-label">My Role</span>
-              <span className="bl-meta-value">UI/UX Designer + Frontend Dev</span>
-            </div>
-            <div className="bl-meta-item">
-              <span className="bl-meta-label">Type</span>
-              <span className="bl-meta-value">Freelance Project</span>
-            </div>
-            <div className="bl-meta-item">
-              <span className="bl-meta-label">Team</span>
-              <span className="bl-meta-value">Ajay (Design + Frontend) · Teja (Backend)</span>
-            </div>
-            <div className="bl-meta-item">
-              <span className="bl-meta-label">Duration</span>
-              <span className="bl-meta-value">2 Months</span>
-            </div>
-            <div className="bl-meta-item">
-              <span className="bl-meta-label">Tools</span>
-              <span className="bl-meta-value">Figma · HTML · CSS · JS · React</span>
-            </div>
-            <div className="bl-meta-item">
-              <span className="bl-meta-label">Live</span>
-              <a href="https://bigleaptech.in" target="_blank" rel="noreferrer" className="bl-meta-link">bigleaptech.in ↗</a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── HERO / COVER (same style as JaldiHire) ── */}
+      <CaseCover
+        backTo="/"
+        accent="#F16232"
+        tags={["UI/UX Design", "Frontend Dev", "EdTech", "LMS", "Freelance"]}
+        title={<>Big Leap <span>Technologies</span></>}
+        image={img("BL-FinalHomepage.jpg")}
+        imageAlt="Big Leap Technologies homepage hero"
+        url="bigleaptech.in"
+        sub="From Learning to Real Engineering"
+        intro="A complete freelance project — I designed and frontend-developed the full marketing website for a Hyderabad-based Data Engineering institute, with the Student LMS currently in design. Zero to shipped product in 2 months."
+        meta={[
+          { label: "My Role", value: "UI/UX Designer + Frontend Dev" },
+          { label: "Type", value: "Freelance Project" },
+          { label: "Team", value: "Ajay (Design + Frontend) · Teja (Backend)" },
+          { label: "Duration", value: "2 Months" },
+          { label: "Tools", value: "Figma · HTML · CSS · JS · React" },
+          { label: "Live", value: "bigleaptech.in ↗", href: "https://bigleaptech.in" },
+        ]}
+      />
 
       {/* ══════════════════════════════════════
           01 — THE PROBLEM
